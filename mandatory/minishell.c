@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/11 13:36:10 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:44:55 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void tokener(t_token **token, char *s_part)
     spaces = " \n\t";
     while (s_part[++i])
     {
-        if (s_part[i] == '<')
+        if (ft_strchr(spaces, s_part[i]))
+            continue ;
+        else if (s_part[i] == '<')
             ft_lstadd_back(token, ft_lstnew("<", T_REDIRECTE_IN));
         else if (s_part[i] == '>')
             ft_lstadd_back(token, ft_lstnew(">", T_REDIRECTE_OUT));
-        else if (ft_strchr(spaces, s_part[i]))
-            continue ;
         else if (s_part[i] == '|')
             ft_lstadd_back(token, ft_lstnew("|", T_PIPE));
         else 
@@ -103,7 +103,7 @@ void tokener(t_token **token, char *s_part)
                 exit(EXIT_FAILURE);
             ft_strlcpy(word, &s_part[i], start - i + 1);
             ft_lstadd_back(token, ft_lstnew(word, T_WORD));
-            i = start;
+            i = start - 1;
         }
     }
 }
