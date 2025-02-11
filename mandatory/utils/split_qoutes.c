@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/08 23:22:53 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:00:05 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static size_t	words_count(const char *s, char c)
 	size_t	count;
 	char	quote;
 
-	i = 0;
+	i = -1;
 	count = 0;
 	quote = 0;
-	while (s[i])
+	while (s[++i])
 	{
 		if (s[i] == '\'' || s[i] == '"')
 		{
@@ -36,7 +36,6 @@ static size_t	words_count(const char *s, char c)
 		}
 		else if (s[i] != c && (i == 0 || s[i - 1] == c) && !quote)
 			count++;
-		i++;
 	}
 	return (count);
 }
@@ -81,18 +80,19 @@ static char	*store_next_word(const char *s, size_t *i, char c)
 	if (s[*i] == '\'' || s[*i] == '"' )
 	{
 		q = s[*i];
-		(*i)++;
+		char_count++;
+		while (s[*i + char_count] && s[*i + char_count] != q)
+			char_count++;
+		if (s[*i + char_count] == q)
+			char_count++;
 	}
-	while (s[*i + char_count] && ((!q && s[*i + char_count] != c) || \
-	(q && s[*i + char_count] != q)))
+	while (s[*i + char_count] && s[*i + char_count] != c) // "this is na"this
 		char_count++;
 	p = (char *)malloc(char_count + 1);
 	if (!p)
 		return (NULL);
 	fill(p, s, *i, char_count);
 	*i += char_count;
-	if (q && s[*i] == q)
-		(*i)++;
 	return (p);
 }
 

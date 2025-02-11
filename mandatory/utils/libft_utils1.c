@@ -18,3 +18,47 @@ char	*ft_strrchr(const char *s, int c)
 		return ((char *)s);
 	return (store);
 }
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	str_len;
+	size_t	i;
+
+	i = 0;
+	str_len = ft_strlen(src);
+	if (dstsize == 0)
+		return (str_len);
+	while (src[i] && i < dstsize - 1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (str_len);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	s_len;
+	char	*sub;
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (start + len > s_len)
+		len = s_len - start;
+	sub = (char *)malloc(len + 1);
+	if (!sub)
+		return (NULL);
+	while (i < len)
+	{
+		sub[i] = s[i + start];
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
+}
