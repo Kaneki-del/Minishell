@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/12 15:04:15 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:30:09 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void tokener(t_token **token, char *s_part)
         if (ft_strchr(spaces, s_part[i]))
             continue ;
         else if (s_part[i] == '<')
-            ft_lstadd_back(token, ft_lstnew("<", T_REDIRECTE_IN));
+            ft_lstadd_back(token, ft_lstnew(ft_strdup("<"), T_REDIRECTE_IN));
         else if (s_part[i] == '>')
-            ft_lstadd_back(token, ft_lstnew(">", T_REDIRECTE_OUT));
+            ft_lstadd_back(token, ft_lstnew(ft_strdup(">"), T_REDIRECTE_OUT));
         else if (s_part[i] == '|')
-            ft_lstadd_back(token, ft_lstnew("|", T_PIPE));
+            ft_lstadd_back(token, ft_lstnew(ft_strdup("|"), T_PIPE));
         else 
         {
             start = i;
@@ -93,12 +93,82 @@ void joiner(t_token **token)
     }
 }
 
-// void parser(t_token **token)
+
+// t_token *init_data(t_token *token)
 // {
-//     redirecter();
+//     char *inname;
+//     char *outname;
+//     char *command;
+
+//     command = NULL;
+//     inname = NULL;
+//     outname = NULL;
+//     while (token && ft_strncmp(token->value, "|", 2) != 0)
+//     {
+//         // init_data()
+//         // check_input_file();
+//         // check_output_file();
+//         if (token->next && ft_strncmp(token->value, "<", 2) == 0)
+//             inname = ft_strdup(token->next->value);
+//         else if (token->next && ft_strncmp(token->value, ">", 2) == 0)
+//             outname = ft_strdup(token->next->value);
+//         token = token->next;
+//     }
+//     printf("(%s)\n", inname);
+//     printf("(%s)\n", outname);
+//     if (token && ft_strncmp(token->value, "|", 2) == 0 && token->next)
+//         return (token->next);
+//     return (NULL);
 // }
 
+t_token *init_data(t_token *token)
+{
+    while (token && ft_strncmp(token->value, "|", 2) != 0)
+    {
+        // init_data()
+        // check_input_file();
+        // check_out_file();
+        printf("%s", token->value);
+        token = token->next;
+    }
+    if (token && ft_strncmp(token->value, "|", 2) == 0 && token->next)
+        return (token->next);
+    return (NULL);
+}
 
+void parser(t_token **token, t_data **data)
+{
+    t_token *iter;
+
+    iter = *token;
+    while (iter)
+    {
+        // init_data()
+        iter = init_data(iter);
+        printf("\n");
+    } 
+}
+
+void ft_free_tokens(t_token **token)
+{
+    t_token *hold;
+    t_token *iter;
+
+    iter = *token;
+    while (iter)
+    {
+        hold = (iter)->next;
+        if (iter)
+            free(iter);
+        iter = hold;
+    }
+    
+}
+
+void f()
+{
+    system("leaks minishell");
+}
 int main(int ac, char **av, char **env)
 {
     (void)ac;
@@ -109,12 +179,13 @@ int main(int ac, char **av, char **env)
     char cwd[PATH_MAX];
     t_token *tokens;
     t_data *data;
-
     // printf("%s\n",ft_split("'hello this is'", ' ')[0]);
     // exit(0);
+    atexit(f);
     if (ac != 1)
         return (1);
     getcwd(cwd, sizeof(cwd));
+    tokens = NULL;
     while (1)
     {
         line = readline("\033[2;34mshell$> \033[0m");
@@ -124,13 +195,15 @@ int main(int ac, char **av, char **env)
             add_history(line);
         tokener(&tokens, line);
         joiner(&tokens);
-        // parser(&tokens, data);
-        while (tokens)
-        {
-            printf("%s          %d\n", tokens->value, tokens->token_type);
-            tokens=tokens->next;
-        }
-        // ft_free_tokens(&tokens);
+        parser(&tokens, &data);
+        // tok = tokens;
+        // while (tok)
+        // {
+        //     printf("%s          %d   -> %d\n", tok->value, tok->token_type, tok->index);
+        //     tok=tok->next;
+        // }
+        free(line);
+        ft_free_tokens(&tokens);
     }
     return (0);
 }
