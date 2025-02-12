@@ -6,14 +6,14 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:12:08 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/09 16:25:30 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:37:32 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../includes/parsing.h"
 
-t_token	*ft_lstnew(void *content, t_type_token type)
+t_token	*ft_lstnew(char *content, t_type_token type)
 {
 	t_token	*head;
     static int index;
