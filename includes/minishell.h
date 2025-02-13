@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/13 11:45:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:54:42 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct s_data
 {
     char **cmds;
     char **directions;
-    t_type_token *dir_input_type;
-    t_type_token *dir_outpue_type;
+    t_type_token dir_input_type;
+    t_type_token dir_output_type;
     struct  s_data *next;
     int type;
 } t_data;
@@ -49,5 +49,7 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+t_data  *new_data_node(char **command, char **directions, t_type_token dir_input_type, t_type_token dir_output_type);
+void	add_data_back(t_data **lst, t_data *new);
 
 # endif

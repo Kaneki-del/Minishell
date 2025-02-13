@@ -6,17 +6,12 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 22:37:24 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/13 11:31:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:55:32 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef PARSING_H
 # define PARSING_H
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 typedef enum s_type_token
 {
