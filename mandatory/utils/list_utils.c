@@ -6,12 +6,11 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:12:08 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/12 15:11:56 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:35:29 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
 
 t_token	*ft_lstnew(char *content, t_type_token type)
 {
