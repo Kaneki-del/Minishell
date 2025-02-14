@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/14 12:36:57 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:22:29 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void get_dir_files(char **dir_files, t_type_token *input_type, t_type_token *out
     else if ((token->token_type == T_REDIRECTE_OUT || token->token_type == T_REDIRECTE_APPEND) && \
     token->token_type != T_PIPE)
     {
+        printf("(%d)\n", token->token_type);
         *dir_files = ft_strjoin(*dir_files, token->value);
         *dir_files = ft_strjoin(*dir_files, " ");
         *dir_files = ft_strjoin(*dir_files, token->next->value);
@@ -203,6 +204,7 @@ t_token *init_data(t_token *token, t_data **data)
 
         token = token->next;
     }
+
     // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
     add_data_back(data, new_data_node(ft_split(only_command, ' '), \
     ft_split(dir_files, ' '), input_type, output_type));
@@ -262,31 +264,6 @@ void parsing_case(t_token **tokens, t_data **data, char *line)
     parser(tokens, data);
 }
 
-// static void printf_general(t_data **data)
-// {
-//     t_data *iter;
-
-//     iter = *data;
-//     while (iter)
-//     {
-//         int i = -1;
-//         printf("commands :");
-//         while (iter->cmds[++i])
-//             printf("%s ", iter->cmds[i]);
-//         printf("\ndirections :");
-//         i = 0;
-//         while (iter->directions[++i])
-//             printf("%s \n", iter->directions[i]);
-//         printf("\ninput_file_type : %d", iter->dir_input_type);
-//         printf("\noutput_file_type : %d", iter->dir_input_type);
-//         iter = iter->next;
-//     }
-// }
-void f()
-{
-    system("leaks minishell");
-}
-
 int main(int ac, char **av, char **env)
 {
     (void)ac;
@@ -297,7 +274,6 @@ int main(int ac, char **av, char **env)
     char cwd[PATH_MAX];
     t_token *tokens;
     t_data *data;
-    atexit(f);
     if (ac != 1)
         return (1);
     getcwd(cwd, sizeof(cwd));
@@ -311,14 +287,6 @@ int main(int ac, char **av, char **env)
             add_history(line);
         //this function contains all paring cases
         parsing_case(&tokens, &data, line);
-        // printf_general(&data);
-        // while (tokens)
-        // {
-        //     printf("%s %d\n", tokens->value, tokens->token_type);
-        //     tokens = tokens->next;
-        // }
-        
-        free(line);
         ft_free_tokens(&tokens);
     }
     return (0);
