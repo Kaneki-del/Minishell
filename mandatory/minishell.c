@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/14 18:22:29 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/14 23:58:14 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,65 +70,6 @@ void tokener(t_token **token, char *s_part)
     }
 }
 
-// t_token *to_one(t_token *token, t_token *de_token, t_type_token type)
-// {
-//     if (!token || !token->next || !de_token)
-//         return (NULL);
-//     t_token *tmp;
-//     token->value = ft_strjoin(token->value, token->next->value);
-//     if (!token->value)
-//         return (NULL);
-//     tmp = token->next->next;
-//     free(token->next->value);
-//     free(token->next);
-//     token->next = tmp;
-//     token->token_type = type;
-//     return (token);
-// }
-
-// void joiner(t_token **token)
-// {
-//     t_token *iter;
-
-//     iter = *token;
-//     while (iter && iter->next)
-//     {
-//         if (ft_strncmp(iter->value, "<", 2) == 0 && \
-//         ft_strncmp(iter->next->value, "<", 2) == 0)
-//             iter = to_one(iter, iter->next, T_REDIRECTE_HEREDOC);
-//         else if (ft_strncmp(iter->value, ">", 2) == 0 && \
-//         ft_strncmp(iter->next->value, ">", 2) == 0)
-//             iter = to_one(iter, iter->next, T_REDIRECTE_APPEND);
-//         iter = iter->next;
-//     }
-// }
-
-// t_token *init_data(t_token *token)
-// {
-//     char *inname;
-//     char *outname;
-//     char *command;
-//     command = NULL;
-//     inname = NULL;
-//     outname = NULL;
-//     while (token && ft_strncmp(token->value, "|", 2) != 0)
-//     {
-//         // init_data()
-//         // check_input_file();
-//         // check_output_file();
-//         if (token->next && ft_strncmp(token->value, "<", 2) == 0)
-//             inname = ft_strdup(token->next->value);
-//         else if (token->next && ft_strncmp(token->value, ">", 2) == 0)
-//             outname = ft_strdup(token->next->value);
-//         token = token->next;
-//     }
-//     printf("(%s)\n", inname);
-//     printf("(%s)\n", outname);
-//     if (token && ft_strncmp(token->value, "|", 2) == 0 && token->next)
-//         return (token->next);
-//     return (NULL);
-// }
-
 void get_dir_files(char **dir_files, t_type_token *input_type, t_type_token *output_type,t_token *token)
 {
     if (!token || !token->next)
@@ -148,7 +89,6 @@ void get_dir_files(char **dir_files, t_type_token *input_type, t_type_token *out
     else if ((token->token_type == T_REDIRECTE_OUT || token->token_type == T_REDIRECTE_APPEND) && \
     token->token_type != T_PIPE)
     {
-        printf("(%d)\n", token->token_type);
         *dir_files = ft_strjoin(*dir_files, token->value);
         *dir_files = ft_strjoin(*dir_files, " ");
         *dir_files = ft_strjoin(*dir_files, token->next->value);
@@ -287,6 +227,7 @@ int main(int ac, char **av, char **env)
             add_history(line);
         //this function contains all paring cases
         parsing_case(&tokens, &data, line);
+        free(line);
         ft_free_tokens(&tokens);
     }
     return (0);

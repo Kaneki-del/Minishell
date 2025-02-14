@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 22:37:24 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/13 16:55:32 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:24:18 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ t_token	*ft_lstnew(char *content, t_type_token type);
 void	ft_lstadd_back(t_token **lst, t_token *new);
 
 # endif
-
