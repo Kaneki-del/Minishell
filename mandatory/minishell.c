@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/13 18:01:25 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:36:57 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,16 @@ void tokener(t_token **token, char *s_part)
     {
         if (ft_strchr(spaces, s_part[i]))
             continue ;
+        else if (s_part[i] == '<' && s_part[i + 1] == '<')
+        {
+            ft_lstadd_back(token, ft_lstnew(ft_strdup("<<"), T_REDIRECTE_HEREDOC));
+            i++;
+        }
+        else if (s_part[i] == '>' && s_part[i + 1] == '>')
+        {
+            ft_lstadd_back(token, ft_lstnew(ft_strdup(">>"), T_REDIRECTE_APPEND));
+            i++;
+        }
         else if (s_part[i] == '<')
             ft_lstadd_back(token, ft_lstnew(ft_strdup("<"), T_REDIRECTE_IN));
         else if (s_part[i] == '>')
@@ -60,46 +70,44 @@ void tokener(t_token **token, char *s_part)
     }
 }
 
-t_token *to_one(t_token *token, t_token *de_token, t_type_token type)
-{
-    if (!token || !token->next || !de_token)
-        return (NULL);
-    t_token *tmp;
-    token->value = ft_strjoin(token->value, token->next->value);
-    if (!token->value)
-        return (NULL);
-    tmp = token->next->next;
-    free(token->next->value);
-    free(token->next);
-    token->next = tmp;
-    token->token_type = type;
-    return (token);
-}
+// t_token *to_one(t_token *token, t_token *de_token, t_type_token type)
+// {
+//     if (!token || !token->next || !de_token)
+//         return (NULL);
+//     t_token *tmp;
+//     token->value = ft_strjoin(token->value, token->next->value);
+//     if (!token->value)
+//         return (NULL);
+//     tmp = token->next->next;
+//     free(token->next->value);
+//     free(token->next);
+//     token->next = tmp;
+//     token->token_type = type;
+//     return (token);
+// }
 
-void joiner(t_token **token)
-{
-    t_token *iter;
+// void joiner(t_token **token)
+// {
+//     t_token *iter;
 
-    iter = *token;
-    while (iter && iter->next)
-    {
-        if (ft_strncmp(iter->value, "<", 2) == 0 && \
-        ft_strncmp(iter->next->value, "<", 2) == 0)
-            iter = to_one(iter, iter->next, T_REDIRECTE_HEREDOC);
-        else if (ft_strncmp(iter->value, ">", 2) == 0 && \
-        ft_strncmp(iter->next->value, ">", 2) == 0)
-            iter = to_one(iter, iter->next, T_REDIRECTE_APPEND);
-        iter = iter->next;
-    }
-}
-
+//     iter = *token;
+//     while (iter && iter->next)
+//     {
+//         if (ft_strncmp(iter->value, "<", 2) == 0 && \
+//         ft_strncmp(iter->next->value, "<", 2) == 0)
+//             iter = to_one(iter, iter->next, T_REDIRECTE_HEREDOC);
+//         else if (ft_strncmp(iter->value, ">", 2) == 0 && \
+//         ft_strncmp(iter->next->value, ">", 2) == 0)
+//             iter = to_one(iter, iter->next, T_REDIRECTE_APPEND);
+//         iter = iter->next;
+//     }
+// }
 
 // t_token *init_data(t_token *token)
 // {
 //     char *inname;
 //     char *outname;
 //     char *command;
-
 //     command = NULL;
 //     inname = NULL;
 //     outname = NULL;
@@ -153,23 +161,21 @@ void get_dir_files(char **dir_files, t_type_token *input_type, t_type_token *out
 
 void get_command(char **only_command, t_token *token)
 {
-    if (!token && !token->next)
-        return ;
-    (void)only_command;
-    while (token)
+    static int input_check;
+    static int output_check;
+    
+    // apply a check for all the redirections and files skeep them and make sure to get only 
+    // the command no mutter if they are behinde the input or output redirection sing
+    if (token->token_type == T_REDIRECTE_OUT || token->token_type == T_REDIRECTE_APPEND)
+        output_check = 1;
+    else if (token->token_type == T_REDIRECTE_IN || token->token_type == T_REDIRECTE_HEREDOC)
+        input_check = 1;
+    else if (token->token_type == T_WORD && (input_check == 1 || output_check == 1 ))
+        (input_check = 0, output_check = 0);
+    else if (token->token_type == T_WORD && (input_check == 0 || output_check == 0))
     {
-        // if (token->next && )
-        // {
-        //     if 
-        //     token = token->next->next;
-        // }
-        // else
-        // {
-            
-        //     token = token->next;
-        // }
-        printf("(%s)\n", token->value);
-        token = token->next;
+        *only_command = ft_strjoin(*only_command, token->value);
+        *only_command = ft_strjoin(*only_command, " ");
     }
 }
 
@@ -184,8 +190,7 @@ t_token *init_data(t_token *token, t_data **data)
     only_command = NULL;
     input_type = 0;
     output_type = 0;
-    (void)data;
-    while (token && ft_strncmp(token->value, "|", 2) != 0)
+    while (token && token->token_type != T_PIPE)
     {
         // check_input_file(); 
         // check_out_file();
@@ -195,9 +200,9 @@ t_token *init_data(t_token *token, t_data **data)
 
         // get only command and there options as a single string
         get_command(&only_command, token);
+
         token = token->next;
     }
-    printf("(%s)\n", dir_files);
     // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
     add_data_back(data, new_data_node(ft_split(only_command, ' '), \
     ft_split(dir_files, ' '), input_type, output_type));
@@ -249,9 +254,10 @@ void ft_free_tokens(t_token **token)
 void parsing_case(t_token **tokens, t_data **data, char *line)
 {
     // split all the command line by four sings "< |>" and initial them in linked list in shape of tokens
+    (void)data;
     tokener(tokens, line);
     // joining for append or here_docd (<< or >>)
-    joiner(tokens);
+    // joiner(tokens);
     // in parser fuction ill deal with all data amoung the pipes
     parser(tokens, data);
 }
@@ -306,6 +312,12 @@ int main(int ac, char **av, char **env)
         //this function contains all paring cases
         parsing_case(&tokens, &data, line);
         // printf_general(&data);
+        // while (tokens)
+        // {
+        //     printf("%s %d\n", tokens->value, tokens->token_type);
+        //     tokens = tokens->next;
+        // }
+        
         free(line);
         ft_free_tokens(&tokens);
     }
