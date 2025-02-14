@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/14 23:58:14 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/15 00:31:53 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,25 @@ void tokener(t_token **token, char *s_part)
     }
 }
 
-void get_dir_files(char **dir_files, t_type_token *input_type, t_type_token *output_type,t_token *token)
+void get_dir_files(char **dir_files, t_token *token)
 {
     if (!token || !token->next)
         return ;
     if ((token->token_type == T_REDIRECTE_IN || token->token_type == T_REDIRECTE_HEREDOC) && \
     token->token_type != T_PIPE)
     {
-        *dir_files = ft_strjoin(*dir_files, token->value);
-        *dir_files = ft_strjoin(*dir_files, " ");
-        *dir_files = ft_strjoin(*dir_files, token->next->value);
-        *dir_files = ft_strjoin(*dir_files, " ");
-        if (token->token_type == T_REDIRECTE_IN)
-            *input_type = T_REDIRECTE_IN;
-        else
-            *input_type = T_REDIRECTE_HEREDOC;
+       *dir_files = ft_strjoin(*dir_files, token->value);
+       *dir_files = ft_strjoin(*dir_files, " ");
+       *dir_files = ft_strjoin(*dir_files, token->next->value);
+       *dir_files = ft_strjoin(*dir_files, " ");
     }
     else if ((token->token_type == T_REDIRECTE_OUT || token->token_type == T_REDIRECTE_APPEND) && \
     token->token_type != T_PIPE)
     {
-        *dir_files = ft_strjoin(*dir_files, token->value);
-        *dir_files = ft_strjoin(*dir_files, " ");
-        *dir_files = ft_strjoin(*dir_files, token->next->value);
-        *dir_files = ft_strjoin(*dir_files, " ");
-        if (token->token_type == T_REDIRECTE_OUT)
-            *output_type = T_REDIRECTE_OUT;
-        else
-            *output_type = T_REDIRECTE_APPEND;
+       *dir_files = ft_strjoin(*dir_files, token->value);
+       *dir_files = ft_strjoin(*dir_files, " ");
+       *dir_files = ft_strjoin(*dir_files, token->next->value);
+       *dir_files = ft_strjoin(*dir_files, " ");
     }
 }
 
@@ -115,40 +107,23 @@ void get_command(char **only_command, t_token *token)
         (input_check = 0, output_check = 0);
     else if (token->token_type == T_WORD && (input_check == 0 || output_check == 0))
     {
-        *only_command = ft_strjoin(*only_command, token->value);
         *only_command = ft_strjoin(*only_command, " ");
+        *only_command = ft_strjoin(*only_command, token->value);
     }
 }
 
-t_token *init_data(t_token *token, t_data **data)
+t_token *init_data(t_token *token, char **dir_files, char **only_command)
 {
-    char *dir_files;
-    char *only_command;
-    t_type_token input_type;
-    t_type_token output_type;
-
-    dir_files = NULL;
-    only_command = NULL;
-    input_type = 0;
-    output_type = 0;
     while (token && token->token_type != T_PIPE)
     {
         // check_input_file(); 
         // check_out_file();
-
         // get input and output directions as a string and files type
-        get_dir_files(&dir_files, &input_type, &output_type ,token);
-
+        get_dir_files(dir_files, token);
         // get only command and there options as a single string
-        get_command(&only_command, token);
-
+        get_command(only_command, token);
         token = token->next;
     }
-
-    // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
-    add_data_back(data, new_data_node(ft_split(only_command, ' '), \
-    ft_split(dir_files, ' '), input_type, output_type));
-
     // stop the loop at every pipe to consider all between pipes as single separated node
     if (token && ft_strncmp(token->value, "|", 2) == 0 && token->next)
         return (token->next);
@@ -158,13 +133,18 @@ t_token *init_data(t_token *token, t_data **data)
 void parser(t_token **token, t_data **data)
 {
     t_token *iter;
+    char *dir_files;
+    char *only_command;
 
+    dir_files = NULL;
+    only_command = NULL;
     iter = *token;
-    (void)data;
     while (iter)
     {
         // loop until |
-        iter = init_data(iter, data);
+        iter = init_data(iter, &dir_files, &only_command);
+        // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
+        add_data_back(data, new_data_node(ft_split(only_command, ' '), ft_split(dir_files, ' ')));
     }
 }
 
