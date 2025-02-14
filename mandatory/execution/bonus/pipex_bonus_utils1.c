@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/01/10 10:55:19 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:34:53 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,14 @@ static char	*try_direct_access(char **cmd_tabs)
 	return (NULL);
 }
 
-char	*find_executable_path(char **env, char *cmd_name)
+char	*find_executable_path(char **env, char **cmd_tabs)
 {
-	char	**cmd_tabs;
 	char	**path_list;
 	char	*path_value;
 	char	*cmd_v;
 
-	if (!cmd_name || !env)
+	if (!env)
 		return (NULL);
-	cmd_tabs = ft_split(cmd_name, ' ');
 	if (!cmd_tabs || !cmd_tabs[0])
 		return (free_commands(cmd_tabs), NULL);
 	cmd_v = try_direct_access(cmd_tabs);

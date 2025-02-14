@@ -14,7 +14,7 @@ int open_file(char *file, int in_or_out) {
   if (in_or_out == 2)
     ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
   if (ret == -1) {
-    ft_putstr_fd("zsh: no such file or directory: ", 2, 's');
+    ft_putstr_fd("bash: no such file or directory: ", 2, 's');
     ft_putstr_fd(file, 2, 'n');
   }
   return (ret);
@@ -47,12 +47,13 @@ void get_fds(t_list *list) {
         close(list->out_fd);
       list->out_fd = open_file(full_cmd[i], 2);
     }
-
     i++;
   }
 }
-
-int main() {
+int main(int argc, char *argv[], char **env)
+{
+  (void)argc;
+  (void)argv;
   t_list *list = NULL;
   list = malloc(sizeof(t_list));
   list->cmd = NULL;
@@ -60,5 +61,7 @@ int main() {
   list->in_fd = 0;
   list->out_fd = 0;
   list->redirect = ft_split("< file cat file < file1 > file2", ' ');
+  list->cmd = ft_split("cat -e", ' ');
   get_fds(list);
+  single_command(list, env);
 }

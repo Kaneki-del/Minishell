@@ -6,13 +6,13 @@
 #    By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 16:26:54 by sait-nac          #+#    #+#              #
-#    Updated: 2025/01/10 14:50:45 by sait-nac         ###   ########.fr        #
+#    Updated: 2025/02/14 21:39:42 by sait-nac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-NAME_BONUS = pipex_bonus
+NAME_BONUS = pipex_bonus.a
 
 CC = cc
 
@@ -56,7 +56,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 $(NAME_BONUS): $(BOBJS)
-	$(CC) $(CFLAGS) $(BOBJS) -o $(NAME_BONUS)
+	ar rcs $@ $^
 
 clean:
 	$(RM) $(OBJS) $(BOBJS)
