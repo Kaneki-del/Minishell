@@ -28,6 +28,9 @@ void print_tab(char **str) {
 }
 
 void get_fds(t_list *list) {
+
+  list->in_fd = 0;
+  list->out_fd = 0;
   char **full_cmd = list->redirect;
   int i = 0;
   while (full_cmd[i]) {
@@ -49,19 +52,4 @@ void get_fds(t_list *list) {
     }
     i++;
   }
-}
-int main(int argc, char *argv[], char **env)
-{
-  (void)argc;
-  (void)argv;
-  t_list *list = NULL;
-  list = malloc(sizeof(t_list));
-  list->cmd = NULL;
-  list->redirect = NULL;
-  list->in_fd = 0;
-  list->out_fd = 0;
-  list->redirect = ft_split("< file cat file < file1 > file2", ' ');
-  list->cmd = ft_split("cat -e", ' ');
-  get_fds(list);
-  single_command(list, env);
 }
