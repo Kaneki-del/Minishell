@@ -191,13 +191,12 @@ int main(int ac, char **av, char **env)
     (void)env;
     
     char *line;
-    char cwd[PATH_MAX];
     t_token *tokens;
     t_data *data;
     if (ac != 1)
         return (1);
-    getcwd(cwd, sizeof(cwd));
     tokens = NULL;
+    data = NULL;
     while (1)
     {
         line = readline("\033[2;34mshell$> \033[0m");

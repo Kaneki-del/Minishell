@@ -24,19 +24,19 @@ t_data *new_data_node(char **command, char **directions)
     return (head);
 }
 
-void	add_data_back(t_data **lst, t_data *new)
+void add_data_back(t_data **lst, t_data *new)
 {
-	t_data	*head;
+    t_data *current;
 
-	if (!lst || !new)
-		return ;
-	if (*lst != NULL)
-	{
-		head = *lst;
-		while (head->next != NULL)
-			head = head->next;
-		head->next = new;
-	}
-	else
-		*lst = new;
+    if (!lst || !new)
+        return;
+    if (*lst)
+    {
+        current = *lst;
+        while (current->next)
+            current = current->next;
+        current->next = new;
+    }
+    else
+        *lst = new;
 }
