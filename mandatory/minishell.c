@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/15 12:59:31 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/15 22:59:56 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void tokener(t_token **token, char *s_part)
                     start++;
             }
             // check for qoutations if are closed 
-            if (in_qoute == 1)
-                printf("bash : qoutations error `%c`\n", qoute); // shoud stop here 
+
             word = (char *)malloc(sizeof(char *) * (start - i + 1));
             if (!word)
                 exit(EXIT_FAILURE);
@@ -113,8 +112,8 @@ void get_command(char **only_command, t_token *token)
         (input_check = 0, output_check = 0);
     else if (token->token_type == T_WORD && (input_check == 0 || output_check == 0))
     {
-        *only_command = ft_strjoin(*only_command, " ");
         *only_command = ft_strjoin(*only_command, token->value);
+        *only_command = ft_strjoin(*only_command, " ");
     }
 }
 
@@ -134,6 +133,11 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command)
     return (NULL);
 }
 
+// void backslash_hander()
+// {
+    
+// }
+
 char *filer_qoutations(char *command_line)
 {
     int i;
@@ -152,6 +156,19 @@ char *filer_qoutations(char *command_line)
         return (NULL);// shoud handle 
     while (command_line[i])
     {
+        if (command_line[i] == '\\' && command_line[i + 2] == '\0')
+            printf("%s", "bash : backslash \n");
+        else if (command_line[i] == '\\' && in_qoute && qoute == '\'')
+            ;
+        else if (command_line[i] == '\\' && in_qoute && qoute == '"' && command_line[i + 1] != qoute)
+            ;
+        else if (command_line[i] == '\\')
+        {
+            i++;
+            if (command_line[i] != '\0')
+                words_between[j++] = command_line[i++];
+            continue ;
+        }
         if ((command_line[i] == '"' || command_line[i] == '\'' ) && !in_qoute)
         {
             qoute = command_line[i];
@@ -163,9 +180,12 @@ char *filer_qoutations(char *command_line)
             words_between[j++] = command_line[i++];
     }
     words_between[j] = '\0';
+    if (in_qoute == 1)
+        printf("bash : qoutations error `%c`\n", qoute); // shoud stop here 
     free(command_line);
     return (words_between);
 }
+
 void parser(t_token **token, t_data **data)
 {
     t_token *iter;
@@ -182,7 +202,7 @@ void parser(t_token **token, t_data **data)
 
         // filter beside or secounded qoutes
         only_command = filer_qoutations(only_command);
-
+        printf("(%s)\n", only_command);
         // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
         add_data_back(data, new_data_node(ft_split(only_command, ' '), ft_split(dir_files, ' ')));
     }
