@@ -29,8 +29,8 @@ void print_tab(char **str) {
 
 void get_fds(t_list *list) {
 
-  list->in_fd = 0;
-  list->out_fd = 0;
+  /* list->in_fd = 0; */
+  /* list->out_fd = 0; */
   char **full_cmd = list->redirect;
   int i = 0;
   while (full_cmd[i]) {
