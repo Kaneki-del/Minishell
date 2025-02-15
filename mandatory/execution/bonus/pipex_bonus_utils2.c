@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/14 21:36:11 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/15 20:52:35 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,23 @@ void	print_error(char *cmd_input)
 	ft_putstr_fd(cmd_input, 2, 'n');
 	exit(127);
 }
-
+#include <stdio.h>
 void	executing(char **env, char **cmd_args)
 {
 	char	*cmd_path;
 
 	if (!env)
 		exit (127);
+	if (!cmd_args || !cmd_args[0])  // Check if command is NULL
+	{
+		print_error("Empty command");
+		exit(127);
+	}
 	cmd_path = find_executable_path(env, cmd_args);
 	if (cmd_args)
 	{
 		if (execve(cmd_path, cmd_args, env) == -1)
 		{
-			free(cmd_path);
-			free_commands(cmd_args);
 			print_error(cmd_args[0]);
 			exit(127);
 		}

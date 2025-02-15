@@ -49,7 +49,7 @@ int execute_last(t_list *list, int *p_fd, char **env) {
       perror("dup2 out_fd");
       exit(1);
     }
-    return (executing(env, list->cmd), 1);
+    executing(env, list->cmd);
   }
   close(p_fd[0]); // Close read end in parent
   return pid;

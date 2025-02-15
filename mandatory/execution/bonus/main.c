@@ -1,4 +1,5 @@
 #include "pipex_bonus.h"
+#include <stdio.h>
 
 int main(int argc, char *argv[], char **env) {
   (void)argc;
@@ -20,7 +21,7 @@ int main(int argc, char *argv[], char **env) {
   list2->next = list3;
 
   list3->redirect = ft_split("  file1  file2", ' ');
-  list3->cmd = ft_split("cat -e ", ' ');
+  list3->cmd = ft_split("cddat -e ", ' ');
   list3->next = NULL;
   list->in_fd = 0;
   list->in_fd = 0;
@@ -31,10 +32,13 @@ int main(int argc, char *argv[], char **env) {
 
 
   int list_size = ft_lstsize(list);
+  int exit_code;
   if (list_size == 1) {
     get_fds(list);
     single_command(list, env);
   } else if (list_size >= 2) {
-    run_multiple(&list, env);
+    exit_code = run_multiple(&list, env);
   }
+  exit(exit_code);
+
 }
