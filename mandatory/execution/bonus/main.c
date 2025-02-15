@@ -18,7 +18,7 @@ int main(int argc, char *argv[], char **env) {
   if (list_size == 1) {
     get_fds(list);
     single_command(list, env);
-  } else if (list_size >= 2)
-    get_fds(list);
-  run_multiple(list);
+  } else if (list_size >= 2) {
+    run_multiple(&list, env);
+  }
 }

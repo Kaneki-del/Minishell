@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 11:00:07 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/15 10:50:31 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:54:36 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ void print_error(char *cmd_input);
 void single_command(t_list *list, char **env);
 int ft_lstsize(t_list *lst);
 void get_fds(t_list *list);
+int run_multiple(t_list **list, char **env);
 
 #endif
