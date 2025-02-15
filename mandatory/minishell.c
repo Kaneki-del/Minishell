@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/15 00:31:53 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:59:31 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void tokener(t_token **token, char *s_part)
     char *word;
     char *spaces;
     char qoute;
+    int  in_qoute;
     
     i = -1;
+    in_qoute = 0;
     spaces = " \n\t";
     while (s_part[++i])
     {
@@ -50,16 +52,20 @@ void tokener(t_token **token, char *s_part)
                 if (s_part[start] == '\'' || s_part[start] == '"')
                 {
                     qoute = s_part[start];
+                    in_qoute = 1;
                     start++;
                     while (s_part[start] && s_part[start] != qoute)
                         start++;
                     if (s_part[start] == qoute)
-                        start++;
+                        (start++, in_qoute = 0);
                 }
                 while (s_part[start] && (s_part[start] != '\'' && s_part[start] != '"') && \
                 !ft_strchr("<|>", s_part[start]) && !ft_strchr(spaces, s_part[start]))
                     start++;
             }
+            // check for qoutations if are closed 
+            if (in_qoute == 1)
+                printf("bash : qoutations error `%c`\n", qoute); // shoud stop here 
             word = (char *)malloc(sizeof(char *) * (start - i + 1));
             if (!word)
                 exit(EXIT_FAILURE);
@@ -68,7 +74,7 @@ void tokener(t_token **token, char *s_part)
             i = start - 1;
         }
     }
-}
+} 
 
 void get_dir_files(char **dir_files, t_token *token)
 {
@@ -116,8 +122,6 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command)
 {
     while (token && token->token_type != T_PIPE)
     {
-        // check_input_file(); 
-        // check_out_file();
         // get input and output directions as a string and files type
         get_dir_files(dir_files, token);
         // get only command and there options as a single string
@@ -125,11 +129,43 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command)
         token = token->next;
     }
     // stop the loop at every pipe to consider all between pipes as single separated node
-    if (token && ft_strncmp(token->value, "|", 2) == 0 && token->next)
+    if (token && token->token_type == T_PIPE && token->next)
         return (token->next);
     return (NULL);
 }
 
+char *filer_qoutations(char *command_line)
+{
+    int i;
+    int j;
+    int in_qoute;
+    char qoute;
+    char *words_between;
+
+    in_qoute = 0;
+    j = 0;
+    i = 0;
+    if (!command_line)
+        return (NULL);
+    words_between = malloc(ft_strlen(command_line) + 1);
+    if (!words_between)
+        return (NULL);// shoud handle 
+    while (command_line[i])
+    {
+        if ((command_line[i] == '"' || command_line[i] == '\'' ) && !in_qoute)
+        {
+            qoute = command_line[i];
+            (in_qoute = 1, i++);
+        }
+        else if (command_line[i] == qoute && in_qoute)
+            (in_qoute = 0, i++);
+        else
+            words_between[j++] = command_line[i++];
+    }
+    words_between[j] = '\0';
+    free(command_line);
+    return (words_between);
+}
 void parser(t_token **token, t_data **data)
 {
     t_token *iter;
@@ -143,6 +179,10 @@ void parser(t_token **token, t_data **data)
     {
         // loop until |
         iter = init_data(iter, &dir_files, &only_command);
+
+        // filter beside or secounded qoutes
+        only_command = filer_qoutations(only_command);
+
         // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
         add_data_back(data, new_data_node(ft_split(only_command, ' '), ft_split(dir_files, ' ')));
     }
@@ -176,20 +216,29 @@ void ft_free_tokens(t_token **token)
 void parsing_case(t_token **tokens, t_data **data, char *line)
 {
     // split all the command line by four sings "< |>" and initial them in linked list in shape of tokens
-    (void)data;
     tokener(tokens, line);
-    // joining for append or here_docd (<< or >>)
-    // joiner(tokens);
     // in parser fuction ill deal with all data amoung the pipes
     parser(tokens, data);
 }
+
+// void print_tokens(t_token **tokens)
+// {
+//     t_token *hold;
+
+//     hold = *tokens;
+//     while (hold)
+//     {
+//         printf("  %s\n", hold->value);
+//         hold = hold->next;
+//     }
+// }
 
 int main(int ac, char **av, char **env)
 {
     (void)ac;
     (void)av;
     (void)env;
-    
+
     char *line;
     char cwd[PATH_MAX];
     t_token *tokens;
@@ -198,6 +247,7 @@ int main(int ac, char **av, char **env)
         return (1);
     getcwd(cwd, sizeof(cwd));
     tokens = NULL;
+    data = NULL;
     while (1)
     {
         line = readline("\033[2;34mshell$> \033[0m");
@@ -207,6 +257,8 @@ int main(int ac, char **av, char **env)
             add_history(line);
         //this function contains all paring cases
         parsing_case(&tokens, &data, line);
+        
+        // print_tokens(&tokens);
         free(line);
         ft_free_tokens(&tokens);
     }
