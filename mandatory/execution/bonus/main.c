@@ -10,18 +10,18 @@ int main(int argc, char *argv[], char **env) {
   t_list *list3 = malloc(sizeof(t_list));
   list->cmd = NULL;
   list->redirect = NULL;
-  list->redirect = ft_split("  file1  file2", ' ');
-  list->cmd = ft_split("ls ", ' ');
+  list->redirect = ft_split(" < in < /dev/stdin  ", ' ');
+  list->cmd = ft_split("cat ", ' ');
   list->next = list2;
 
   list2->cmd = NULL;
   list2->redirect = NULL;
-  list2->redirect = ft_split("  file1  file2", ' ');
+  list2->redirect = ft_split("  file", ' ');
   list2->cmd = ft_split("ls", ' ');
-  list2->next = list3;
+  list2->next = NULL;
 
-  list3->redirect = ft_split("  file1  file2", ' ');
-  list3->cmd = ft_split("cddat -e ", ' ');
+  list3->redirect = ft_split("  > /dev/stdout", ' ');
+  list3->cmd = ft_split("ls ", ' ');
   list3->next = NULL;
   list->in_fd = 0;
   list->in_fd = 0;
@@ -29,7 +29,6 @@ int main(int argc, char *argv[], char **env) {
   list2->out_fd = 0;
   list3->out_fd = 0;
   list3->out_fd = 0;
-
 
   int list_size = ft_lstsize(list);
   int exit_code;
@@ -40,5 +39,4 @@ int main(int argc, char *argv[], char **env) {
     exit_code = run_multiple(&list, env);
   }
   exit(exit_code);
-
 }
