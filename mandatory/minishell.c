@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/15 22:59:56 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/16 15:58:48 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@ void tokener(t_token **token, char *s_part)
     char *word;
     char *spaces;
     char qoute;
-    int  in_qoute;
     
     i = -1;
-    in_qoute = 0;
     spaces = " \n\t";
     while (s_part[++i])
     {
         if (ft_strchr(spaces, s_part[i]))
             continue ;
+        else if ((ft_strchr("<|>", s_part[i]) && s_part[i + 1] == '\0' ) || (s_part[0] == '|'))
+            printf("bash: syntax error near unexpected token `%c'\n", s_part[i]);
+            if (s_part[0] == '|')
+                break ;
         else if (s_part[i] == '<' && s_part[i + 1] == '<')
         {
             ft_lstadd_back(token, ft_lstnew(ft_strdup("<<"), T_REDIRECTE_HEREDOC));
@@ -44,6 +46,11 @@ void tokener(t_token **token, char *s_part)
             ft_lstadd_back(token, ft_lstnew(ft_strdup(">"), T_REDIRECTE_OUT));
         else if (s_part[i] == '|')
             ft_lstadd_back(token, ft_lstnew(ft_strdup("|"), T_PIPE));
+        else if (s_part[i] == '\\' && ft_strchr("<|>", s_part[i + 1]))
+        {
+            ft_lstadd_back(token, ft_lstnew(ft_chrjoin('\\', s_part[i + 1]), T_WORD));
+            i++;
+        }
         else 
         {
             start = i;
@@ -52,19 +59,17 @@ void tokener(t_token **token, char *s_part)
                 if (s_part[start] == '\'' || s_part[start] == '"')
                 {
                     qoute = s_part[start];
-                    in_qoute = 1;
                     start++;
                     while (s_part[start] && s_part[start] != qoute)
                         start++;
                     if (s_part[start] == qoute)
-                        (start++, in_qoute = 0);
+                        start++;
                 }
                 while (s_part[start] && (s_part[start] != '\'' && s_part[start] != '"') && \
                 !ft_strchr("<|>", s_part[start]) && !ft_strchr(spaces, s_part[start]))
                     start++;
             }
             // check for qoutations if are closed 
-
             word = (char *)malloc(sizeof(char *) * (start - i + 1));
             if (!word)
                 exit(EXIT_FAILURE);
@@ -119,6 +124,10 @@ void get_command(char **only_command, t_token *token)
 
 t_token *init_data(t_token *token, char **dir_files, char **only_command)
 {
+    free(*only_command);
+    *only_command = NULL;
+    free(*dir_files);
+    *dir_files = NULL;
     while (token && token->token_type != T_PIPE)
     {
         // get input and output directions as a string and files type
@@ -157,11 +166,14 @@ char *filer_qoutations(char *command_line)
     while (command_line[i])
     {
         if (command_line[i] == '\\' && command_line[i + 2] == '\0')
-            printf("%s", "bash : backslash \n");
+            printf("%s", "bash: unexpected EOF while looking for matching \\ \n");
         else if (command_line[i] == '\\' && in_qoute && qoute == '\'')
             ;
         else if (command_line[i] == '\\' && in_qoute && qoute == '"' && command_line[i + 1] != qoute)
-            ;
+        {
+            if (command_line[i + 1] == '\\')
+                i++;
+        }
         else if (command_line[i] == '\\')
         {
             i++;
@@ -186,6 +198,21 @@ char *filer_qoutations(char *command_line)
     return (words_between);
 }
 
+void	ft_free_2d(char **content)
+{
+	int	i;
+
+	i = 0;
+	if (!content)
+		return ;
+	while (content[i])
+	{
+		free(content[i]);
+		i++;
+	}
+	free(content);
+}
+
 void parser(t_token **token, t_data **data)
 {
     t_token *iter;
@@ -199,10 +226,9 @@ void parser(t_token **token, t_data **data)
     {
         // loop until |
         iter = init_data(iter, &dir_files, &only_command);
-
         // filter beside or secounded qoutes
         only_command = filer_qoutations(only_command);
-        printf("(%s)\n", only_command);
+        printf("(  %s )\n", only_command);
         // split redirections and command (with options) and pass them to creat a new node (general structer) than add the node at the end of list
         add_data_back(data, new_data_node(ft_split(only_command, ' '), ft_split(dir_files, ' ')));
     }
@@ -225,33 +251,27 @@ void ft_free_tokens(t_token **token)
     *token = NULL;
 }
 
-// typedef struct s_token
-// {
-//     char *value;
-//     int index;
-//     t_type_token token_type;
-//     struct s_token *next;
-// } t_token;
+void print_tokens(t_token **tokens)
+{
+    t_token *hold;
+
+    hold = *tokens;
+    while (hold)
+    {
+        printf("(%s)\n", hold->value);
+        hold = hold->next;
+    }
+}
 
 void parsing_case(t_token **tokens, t_data **data, char *line)
 {
     // split all the command line by four sings "< |>" and initial them in linked list in shape of tokens
     tokener(tokens, line);
+    print_tokens(tokens);
     // in parser fuction ill deal with all data amoung the pipes
     parser(tokens, data);
 }
 
-// void print_tokens(t_token **tokens)
-// {
-//     t_token *hold;
-
-//     hold = *tokens;
-//     while (hold)
-//     {
-//         printf("  %s\n", hold->value);
-//         hold = hold->next;
-//     }
-// }
 
 int main(int ac, char **av, char **env)
 {

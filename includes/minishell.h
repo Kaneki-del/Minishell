@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/15 00:19:40 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:18:34 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 t_data  *new_data_node(char **command, char **directions);
 void	add_data_back(t_data **lst, t_data *new);
+char    *ft_chrjoin(char c, char b);
 
 # endif

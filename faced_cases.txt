@@ -37,3 +37,7 @@ Input: echo '\\'
 Output: \ (backslash is treated as a literal inside single quotes)
 Input: echo '\''
 Output: ' (escaped single quote)
+
+
+echo \$HOME
+echo "\"" | cat
