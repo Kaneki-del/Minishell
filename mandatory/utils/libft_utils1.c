@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_utils1.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
+/*   Updated: 2025/02/16 11:16:53 by kben-tou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
 
 char	*ft_strrchr(const char *s, int c)
 {
@@ -61,4 +72,17 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	sub[i] = '\0';
 	return (sub);
+}
+
+char *ft_chrjoin(char c, char b)
+{
+	char *new;
+
+	new = malloc(3 * sizeof(char));
+	if (!new)
+		return (NULL);
+	new[0] = c;
+	new[1] = b;
+	new[2] = '\0';
+	return (new);
 }

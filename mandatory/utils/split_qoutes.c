@@ -6,12 +6,11 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/11 13:00:05 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:35:29 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
 
 static size_t	words_count(const char *s, char c)
 {

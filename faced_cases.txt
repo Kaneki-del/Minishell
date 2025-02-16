@@ -1,0 +1,43 @@
+cat < test ls || >> in -e
+
+
+bash-3.2$ \>
+bash: >: command not found
+
+
+1.1 Escaping Regular Characters
+Input: echo \a
+Output: a
+Input: echo \\a
+Output: \a
+Input: echo \\\a
+Output: \a
+1.2 Escaping Special Characters
+Input: echo \ (backslash at the end)
+Output: bash: unexpected EOF while looking for matching \\'`
+Input: echo \\
+Output: \
+Input: echo \n
+Output: \n (not interpreted as a newline)
+Input: echo \"
+Output: " (escaped double quote)
+Input: echo \'
+Output: ' (escaped single quote)
+1.3 Escaping Inside Double Quotes
+Input: echo "hello\world"
+Output: hello\world
+Input: echo "hello\"world"
+Output: hello"world
+Input: echo "hello\\world"
+Output: hello\world
+1.4 Escaping Inside Single Quotes
+Input: echo '\a'
+Output: \a (backslash is treated as a literal inside single quotes)
+Input: echo '\\'
+Output: \ (backslash is treated as a literal inside single quotes)
+Input: echo '\''
+Output: ' (escaped single quote)
+
+
+echo \$HOME
+echo "\"" | cat

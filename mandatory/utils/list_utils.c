@@ -6,12 +6,11 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:12:08 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/12 14:37:32 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/15 00:56:45 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
 
 t_token	*ft_lstnew(char *content, t_type_token type)
 {
@@ -21,11 +20,10 @@ t_token	*ft_lstnew(char *content, t_type_token type)
 	head = malloc(sizeof(t_token));
 	if (!head)
 		return (NULL);
-    index = -1;
-    index++;
 	head->value = content;
     head->token_type = type;
     head->index = index;
+    index++;
 	head->next = NULL;
 	return (head);
 }

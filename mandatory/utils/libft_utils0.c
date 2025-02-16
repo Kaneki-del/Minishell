@@ -6,12 +6,11 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 23:17:21 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/12 14:39:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:35:29 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -89,7 +88,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[strlen])
 		str[i++] = s2[strlen++];
 	str[i] = '\0';
-	// free(s1);
+	free(s1);
 	return (str);
 }
 
