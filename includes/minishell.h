@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 20:30:53 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/16 21:23:17 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ void single_command(t_data *list, char **env);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
 int run_multiple(t_data **list, char **env);
-void execute_package(t_data **list, char **env);
+int execute_package(t_data **list, char **env);
 
-void free_commands(char **commands);
 char *check_cmd_path(char **path_list, char *cmd_name);
 char *find_executable_path(char **env, char **cmd_tabs);
 char *get_env_path(char **env);

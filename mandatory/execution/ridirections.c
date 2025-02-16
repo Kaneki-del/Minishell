@@ -31,18 +31,20 @@ void get_fds(t_data
   /* list->out_fd = 0; */
   char **full_cmd = list->directions;
   int i = 0;
+  if (!full_cmd)
+    return;
   while (full_cmd[i]) {
-    if (strcmp(full_cmd[i], ">") == 0) {
+    if (ft_strncmp(full_cmd[i], ">", 2) == 0) {
       i++;
       if (list->out_fd != 0)
         close(list->out_fd);
       list->out_fd = open_file(full_cmd[i], 1);
-    } else if (strcmp(full_cmd[i], "<") == 0) {
+    } else if (ft_strncmp(full_cmd[i], "<", 2) == 0) {
       i++;
       if (list->in_fd != 0)
         close(list->in_fd);
       list->in_fd = open_file(full_cmd[i], 0);
-    } else if (strcmp(full_cmd[i], ">>") == 0) {
+    } else if (ft_strncmp(full_cmd[i], ">>", 3) == 0) {
       i++;
       if (list->out_fd != 0)
         close(list->out_fd);

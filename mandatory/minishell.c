@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 20:32:40 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:16:14 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ char *filer_qoutations(char *command_line) {
   if (!words_between)
     return (NULL); // shoud handle
   while (command_line[i]) {
-    if (command_line[i] == '\\' && command_line[i + 2] == '\0')
+    if (command_line[i] == '\\' && command_line[i + 1] == '\0')
       printf("%s", "bash: unexpected EOF while looking for matching \\ \n");
     else if (command_line[i] == '\\' && in_qoute && qoute == '\'')
       ;
@@ -198,10 +198,26 @@ void ft_free_2d(char **content) {
   free(content);
 }
 
+char **filterd(char **cmds)
+{
+  int i;
+
+  i = 0;
+  if (!cmds)
+    return (NULL);
+  while (cmds[i] != NULL)
+  {
+    cmds[i] = filer_qoutations(cmds[i]);
+    i++;
+  }
+  return (cmds);
+}
+
 void parser(t_token **token, t_data **data) {
   t_token *iter;
   char *dir_files;
   char *only_command;
+  char **cmd_optios;
 
   dir_files = NULL;
   only_command = NULL;
@@ -210,12 +226,11 @@ void parser(t_token **token, t_data **data) {
     // loop until |
     iter = init_data(iter, &dir_files, &only_command);
     // filter beside or secounded qoutes
-    only_command = filer_qoutations(only_command);
-    printf("(  %s )\n", only_command);
+    // only_command = filer_qoutations(only_command);
+    cmd_optios = filterd(ft_split(only_command, ' '));
     // split redirections and command (with options) and pass them to creat a
     // new node (general structer) than add the node at the end of list
-    add_data_back(data, new_data_node(ft_split(only_command, ' '),
-                                      ft_split(dir_files, ' ')));
+    add_data_back(data, new_data_node(cmd_optios, ft_split(dir_files, ' ')));
   }
 }
 
@@ -234,21 +249,21 @@ void ft_free_tokens(t_token **token) {
   *token = NULL;
 }
 
-void print_tokens(t_token **tokens) {
-  t_token *hold;
+// void print_tokens(t_token **tokens) {
+//   t_token *hold;
 
-  hold = *tokens;
-  while (hold) {
-    printf("(%s)\n", hold->value);
-    hold = hold->next;
-  }
-}
+//   hold = *tokens;
+//   while (hold) {
+//     printf("(%s)\n", hold->value);
+//     hold = hold->next;
+//   }
+// }
 
 void parsing_case(t_token **tokens, t_data **data, char *line) {
   // split all the command line by four sings "< |>" and initial them in linked
   // list in shape of tokens
   tokener(tokens, line);
-  print_tokens(tokens);
+  // print_tokens(tokens);
   // in parser fuction ill deal with all data amoung the pipes
   parser(tokens, data);
 }
@@ -256,7 +271,8 @@ void parsing_case(t_token **tokens, t_data **data, char *line) {
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
-
+  int status;
+  status = 0;
   char *line;
   t_token *tokens;
   t_data *data;
@@ -272,7 +288,7 @@ int main(int ac, char **av, char **env) {
       add_history(line);
     // this function contains all paring cases
     parsing_case(&tokens, &data, line);
-    execute_package(&data, env);
+    status = execute_package(&data, env);
     // print_tokens(&tokens);
     free(line);
     ft_free_tokens(&tokens);

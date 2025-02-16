@@ -10,7 +10,7 @@ static void intial(t_data **list) {
   }
 }
 
-void execute_package(t_data **list, char **env) {
+int execute_package(t_data **list, char **env) {
   int list_size = ft_lstsize(*list);
   int exit_code;
   exit_code = 0;
@@ -21,5 +21,5 @@ void execute_package(t_data **list, char **env) {
   } else if (list_size >= 2) {
     exit_code = run_multiple(list, env);
   }
-  exit(exit_code);
+  return(exit_code);
 }
