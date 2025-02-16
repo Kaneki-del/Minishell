@@ -1,8 +1,5 @@
-#include "pipex_bonus.h"
-#include <fcntl.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "../../includes/minishell.h"
+
 
 int open_file(char *file, int in_or_out) {
   int ret;
@@ -27,11 +24,12 @@ void print_tab(char **str) {
   }
 }
 
-void get_fds(t_list *list) {
+void get_fds(t_data
+ *list) {
 
   /* list->in_fd = 0; */
   /* list->out_fd = 0; */
-  char **full_cmd = list->redirect;
+  char **full_cmd = list->directions;
   int i = 0;
   while (full_cmd[i]) {
     if (strcmp(full_cmd[i], ">") == 0) {

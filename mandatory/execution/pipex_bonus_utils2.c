@@ -1,0 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus_utils2.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/02/16 19:35:40 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+void print_error(char *cmd_input) {
+  ft_putstr_fd("zsh: command not found: ", 2, 's');
+  ft_putstr_fd(cmd_input, 2, 'n');
+  exit(127);
+}
+
+void executing(char **env, char **cmd_args) {
+  char *cmd_path;
+
+  if (!env)
+    exit(127);
+  if (!cmd_args || !cmd_args[0]) // Check if command is NULL
+  {
+    print_error("Empty command");
+    exit(127);
+  }
+  cmd_path = find_executable_path(env, cmd_args);
+  if (cmd_args) {
+    if (execve(cmd_path, cmd_args, env) == -1) {
+      print_error(cmd_args[0]);
+      exit(127);
+    }
+  }
+  
+  exit(127);
+}

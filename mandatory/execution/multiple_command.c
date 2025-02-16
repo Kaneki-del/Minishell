@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include "pipex_bonus.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 
-void execute_first(t_list *list, int *p_fd, char **env) {
+#include "../../includes/minishell.h"
+
+void execute_first(t_data
+ *list, int *p_fd, char **env) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -23,12 +21,14 @@ void execute_first(t_list *list, int *p_fd, char **env) {
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmd);
+    executing(env, list->cmds
+);
   }
   close(p_fd[1]); // Close write end in parent
 }
 
-int execute_last(t_list *list, int *p_fd, char **env) {
+int execute_last(t_data
+ *list, int *p_fd, char **env) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -49,13 +49,15 @@ int execute_last(t_list *list, int *p_fd, char **env) {
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmd);
+    executing(env, list->cmds
+);
   }
   close(p_fd[0]); // Close read end in parent
   return pid;
 }
 
-static void execut(t_list *list, int *p_fd, char **env, int in) {
+static void execut(t_data
+ *list, int *p_fd, char **env, int in) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -79,15 +81,18 @@ static void execut(t_list *list, int *p_fd, char **env, int in) {
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmd);
+    executing(env, list->cmds
+);
   }
   close(p_fd[1]); // Close write end in parent
   close(in); // Close previous pipe input in parent
 }
 
-static int handle_pipes(t_list **list, char **env) {
+static int handle_pipes(t_data
+ **list, char **env) {
   int p_fd[2];
-  t_list *current = *list;
+  t_data
+ *current = *list;
 
   if (pipe(p_fd) == -1)
     exit(1);
@@ -112,7 +117,8 @@ static int handle_pipes(t_list **list, char **env) {
 
 }
 
-int run_multiple(t_list **list, char **env) {
+int run_multiple(t_data
+ **list, char **env) {
   int status = 0;
   int exit_code = 0;
   int id_last_command = handle_pipes(list, env);

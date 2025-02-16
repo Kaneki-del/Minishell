@@ -1,6 +1,8 @@
-#include "pipex_bonus.h"
+#include "../../includes/minishell.h"
 
-void single_command(t_list *list, char **env) {
+
+void single_command(t_data
+ *list, char **env) {
   pid_t pid;
   pid = fork();
   if (pid < 0)
@@ -20,7 +22,8 @@ void single_command(t_list *list, char **env) {
       close(list->out_fd);
       exit(1);
     }
-    executing(env, list->cmd);
+    executing(env, list->cmds
+);
   } else {
     int status;
     waitpid(pid, &status, 0); // Wait for the child process to finish
