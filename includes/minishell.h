@@ -6,13 +6,12 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 21:23:17 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:12:18 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
-
 
 #include "./parsing.h"
 #include <fcntl.h>
@@ -42,6 +41,11 @@ typedef struct s_data {
   struct s_data *next;
   int type;
 } t_data;
+typedef struct s_env {
+  char *value;
+  char *key;
+  struct s_env *next;
+} t_env;
 
 char *ft_strrchr(const char *s, int c);
 size_t ft_strlen(const char *s);
@@ -54,18 +58,22 @@ char *ft_substr(char const *s, unsigned int start, size_t len);
 t_data *new_data_node(char **command, char **directions);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b);
-void single_command(t_data *list, char **env);
+void single_command(t_data *list, t_env *env);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
-int run_multiple(t_data **list, char **env);
-int execute_package(t_data **list, char **env);
+int run_multiple(t_data **list, t_env *env_list);
+int execute_package(t_data **list, t_env *env_list);
+int check_builtin_commands(char **commands);
 
+// execution
 char *check_cmd_path(char **path_list, char *cmd_name);
-char *find_executable_path(char **env, char **cmd_tabs);
-char *get_env_path(char **env);
+char *find_executable_path(t_env *env_list, char **cmd_tabs);
+char *get_env_path(t_env *env_list);
 void ft_putstr_fd(char *s, int fd, char c);
 int open_file(char *file, int in_or_out);
-void executing(char **env, char **cmd_args);
+void executing(t_env *env_list, char **cmd_args);
 void print_error(char *cmd_input);
+t_env *get_env_list(char **env);
+int built_in(char **cmd, t_env *env_list);
 
 #endif

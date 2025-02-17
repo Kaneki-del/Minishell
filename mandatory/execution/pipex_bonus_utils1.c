@@ -6,46 +6,46 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/16 18:51:57 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:27:31 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <string.h>
 
-char *get_env_path(char **env) {
-  int i;
-  char *path_value;
+char *get_env_path(t_env *env_list) {
   char *env_path;
-
-  i = 0;
-  while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
-    i++;
-  if (!env[i])
-    return (NULL);
-  env_path = env[i];
-  path_value = ft_substr(env_path, 5, ft_strlen(env_path));
-  return (path_value);
+  t_env *current;
+  current = NULL;
+  current = env_list;
+  env_path = NULL;
+  while (current) {
+    if (ft_strncmp(current->key, "PATH", ft_strlen(current->key)) == 0) {
+      env_path = ft_strdup(current->value);
+      if (env_path == NULL)
+        return NULL;
+    }
+    current = current->next;
+  }
+  return env_path;
 }
-
-
 
 char *check_cmd_path(char **path_list, char *cmd_name) {
   int i;
   char *full_cmd_path;
-
   i = 0;
   while (path_list[i]) {
     full_cmd_path = ft_strjoin(path_list[i], "/");
     full_cmd_path = ft_strjoin(full_cmd_path, cmd_name);
     if (!full_cmd_path) {
-      
+
       return (NULL);
     }
     if (access(full_cmd_path, X_OK) == 0) {
-     
+
       return (full_cmd_path);
     }
-  
+
     i++;
   }
 
@@ -62,19 +62,19 @@ static char *try_direct_access(char **cmd_tabs) {
   return (NULL);
 }
 
-char *find_executable_path(char **env, char **cmd_tabs) {
+char *find_executable_path(t_env *env_list, char **cmd_tabs) {
   char **path_list;
   char *path_value;
   char *cmd_v;
 
-  if (!env)
+  if (!env_list)
     return (NULL);
   if (!cmd_tabs || !cmd_tabs[0])
-    return ( NULL);
+    return (NULL);
   cmd_v = try_direct_access(cmd_tabs);
   if (cmd_v)
     return (cmd_v);
-  path_value = get_env_path(env);
+  path_value = get_env_path(env_list);
   if (!path_value)
     return (NULL);
   path_list = ft_split(path_value, ':');

@@ -6,11 +6,12 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 22:16:14 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:13:15 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <string.h>
 
 void tokener(t_token **token, char *s_part) {
   int i;
@@ -198,15 +199,13 @@ void ft_free_2d(char **content) {
   free(content);
 }
 
-char **filterd(char **cmds)
-{
+char **filterd(char **cmds) {
   int i;
 
   i = 0;
   if (!cmds)
     return (NULL);
-  while (cmds[i] != NULL)
-  {
+  while (cmds[i] != NULL) {
     cmds[i] = filer_qoutations(cmds[i]);
     i++;
   }
@@ -280,6 +279,10 @@ int main(int ac, char **av, char **env) {
     return (1);
   tokens = NULL;
   data = NULL;
+  // our local env
+  t_env *env_list;
+  env_list = NULL;
+  env_list = get_env_list(env);
   while (1) {
     line = readline("\033[2;34mshell$> \033[0m");
     if (!line)
@@ -288,7 +291,7 @@ int main(int ac, char **av, char **env) {
       add_history(line);
     // this function contains all paring cases
     parsing_case(&tokens, &data, line);
-    status = execute_package(&data, env);
+    status = execute_package(&data, env_list);
     // print_tokens(&tokens);
     free(line);
     ft_free_tokens(&tokens);

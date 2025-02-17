@@ -1,35 +1,17 @@
 #include "../../includes/minishell.h"
-/* char *ft_substr(char const *s, unsigned int start, size_t len) { */
-/*   size_t i; */
-/*   char *str; */
-/**/
-/*   if (!s) */
-/*     return (NULL); */
-/*   if (len > ft_strlen(s) - start) */
-/*     len = ft_strlen(s) - start; */
-/*   if (start >= ft_strlen(s)) */
-/*     return (ft_strdup("")); */
-/*   i = 0; */
-/*   str = (char *)malloc(len + 1); */
-/*   if (str == NULL) */
-/*     return (NULL); */
-/*   while (i < len) { */
-/*     str[i] = s[start + i]; */
-/*     i++; */
-/*   } */
-/*   str[i] = '\0'; */
-/*   return (str); */
-/* } */
-/**/
-#include <stdio.h>
-void print_tab(char **str) {
-  int i = 0;
-  printf("->%s\n", str[i]);
-  i++;
-  if (str[i] == NULL)
-    printf("i am here\n");
-  i++;
+
+t_env *lstnew_env(char *key, char *value) {
+  t_env *new_node;
+
+  new_node = (t_env *)malloc(sizeof(t_env));
+  if (!new_node)
+    return (NULL);
+  new_node->key = key;
+  new_node->value = value;
+  new_node->next = NULL;
+  return (new_node);
 }
+
 char **ft_split_equal_to(const char *s) {
   if (s == NULL)
     return NULL;
@@ -58,9 +40,39 @@ char **ft_split_equal_to(const char *s) {
   str[2] = NULL; // Null-terminate the array
   return str;
 }
+t_env *ft_lstlast(t_env *lst) {
+  t_env *ptr;
 
-int main() {
-  char *str = "VALUE";
-  char **sp = ft_split_equal_to(str);
-  print_tab(sp);
+  ptr = lst;
+  if (!lst)
+    return (NULL);
+  while (ptr->next)
+    ptr = ptr->next;
+  return (ptr);
+}
+void lstadd_back_env(t_env **lst, t_env *new) {
+  t_env *ptr;
+
+  if (!lst || !new)
+    return;
+  else if (*lst == NULL)
+    *lst = new;
+  else {
+    ptr = ft_lstlast(*lst);
+    ptr->next = new;
+  }
+}
+
+t_env *get_env_list(char **env) {
+  int i = 0;
+  t_env *returned_env;
+  returned_env = NULL;
+  char **temp;
+  while (env[i]) {
+    temp = ft_split_equal_to(env[i]);
+    lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1]));
+    free(temp);
+    i++;
+  }
+  return returned_env;
 }
