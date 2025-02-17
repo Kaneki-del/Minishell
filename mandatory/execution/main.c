@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 static void intial(t_data **list) {
-  t_data *current = *list;
-  current = NULL;
+  t_data *current = NULL;
+  current = *list;
 
   while (current) {
     current->in_fd = 0;
@@ -21,5 +21,5 @@ int execute_package(t_data **list, char **env) {
   } else if (list_size >= 2) {
     exit_code = run_multiple(list, env);
   }
-  return(exit_code);
+  return (exit_code);
 }

@@ -10,7 +10,7 @@ FILS = $(wildcard $(M)/$(U)/*.c) \
 			 $(wildcard $(M)/$(ET)/*.c) \
 		$(wildcard $(M)/*.c)
 
-CFLAGS =  -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror -g
 REDLINE = -lreadline -lncurses
 OBJS = 	$(FILS:.c=.o)
 
