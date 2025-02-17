@@ -1,8 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-void execute_first(t_data
- *list, int *p_fd, char **env) {
+void execute_first(t_data *list, int *p_fd, char **env) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -21,14 +20,15 @@ void execute_first(t_data
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmds
-);
+    if (list->in_fd != 0)
+      close(list->in_fd);
+    if (list->out_fd != 0)
+      close(list->in_fd);
+    executing(env, list->cmds);
   }
-  close(p_fd[1]); // Close write end in parent
 }
 
-int execute_last(t_data
- *list, int *p_fd, char **env) {
+int execute_last(t_data *list, int *p_fd, char **env) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -49,15 +49,13 @@ int execute_last(t_data
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmds
-);
+    executing(env, list->cmds);
   }
   close(p_fd[0]); // Close read end in parent
   return pid;
 }
 
-static void execut(t_data
- *list, int *p_fd, char **env, int in) {
+static void execut(t_data *list, int *p_fd, char **env, int in) {
   pid_t pid = fork();
   if (pid < 0)
     exit(1);
@@ -81,44 +79,42 @@ static void execut(t_data
       perror("dup2 out_fd");
       exit(1);
     }
-    executing(env, list->cmds
-);
+    executing(env, list->cmds);
   }
   close(p_fd[1]); // Close write end in parent
-  close(in); // Close previous pipe input in parent
+  close(in);      // Close previous pipe input in parent
 }
 
-static int handle_pipes(t_data
- **list, char **env) {
+static int handle_pipes(t_data **list, char **env) {
   int p_fd[2];
-  t_data
- *current = *list;
+  t_data *current = *list;
 
   if (pipe(p_fd) == -1)
     exit(1);
-  
+
   execute_first(current, p_fd, env);
+  /* if (current->in_fd != 0) */
+  /*   close(current->in_fd); */
+  /* if (current->out_fd != 0) */
+  /*   close(current->in_fd); */
   current = current->next;
 
   while (current != NULL && current->next != NULL) {
     int t = p_fd[0]; // Save previous pipe read end
     if (pipe(p_fd) == -1)
       exit(1);
-    
+
     get_fds(current);
     execut(current, p_fd, env, t);
     close(t); // Close previous read end in parent
     current = current->next;
   }
 
-  close(p_fd[1]); // Close last write end
   get_fds(current);
   return execute_last(current, p_fd, env);
-
 }
 
-int run_multiple(t_data
- **list, char **env) {
+int run_multiple(t_data **list, char **env) {
   int status = 0;
   int exit_code = 0;
   int id_last_command = handle_pipes(list, env);
@@ -127,6 +123,7 @@ int run_multiple(t_data
     exit_code = WEXITSTATUS(status);
   }
 
-  while (wait(NULL) > 0); // Wait for all remaining child processes
+  while (wait(NULL) > 0)
+    ; // Wait for all remaining child processes
   return exit_code;
 }
