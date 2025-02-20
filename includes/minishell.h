@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 22:37:15 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:41:13 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,13 @@ void print_error(char *cmd_input);
 t_env *get_env_list(char **env);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int built_in(char **cmd, t_env *env_list);
+int built_in(char **cmd, t_env *env_list, t_gc **gc);
 t_env *lstnew_env(char *key, char *value);
 void print_env_list(t_env *env_list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+void print_export(t_env *env_list);
+int add_export(char **cmd, t_env **env_list, t_gc **gc);
+void lstadd_back_env(t_env **lst, t_env *new);
+t_env *ft_lstlast(t_env *lst);
 #endif

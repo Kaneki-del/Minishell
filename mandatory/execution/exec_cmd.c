@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus_utils2.c                               :+:      :+:    :+:   */
+/*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/20 19:41:08 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:05:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <string.h>
+
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	dst_lent;
@@ -86,7 +86,7 @@ char **env_to_array(t_env *head, t_gc **g_collector) {
     count++;
     temp = temp->next;
   }
-  printf("the counts %d\n", count);
+
   char **env_array = malloc((count + 1) * sizeof(char *));
   if (!env_array) {
     perror("malloc failed");
@@ -95,27 +95,16 @@ char **env_to_array(t_env *head, t_gc **g_collector) {
   temp = head;
   char *tem = NULL;
   int i = 0;
-  /* printf("the temp value env____________________\n"); */
-  /* print_env_list(temp);  */
+
   while (temp) {
-    // Allocate memory for the concatenated key=value string
-    /* size_t len = */
-    /*     ft_strlen(temp->key) + ft_strlen(temp->value) + 2; // +2 for '=' and '\0' */
-    /* env_array[i] = malloc(len * sizeof(char)); */
-    /* if (!env_array[i]) { */
-    /*   perror("malloc failed"); */
-    /*   exit(1); */
-    /* } */
-    /* env_array[i] = ft_strjoin(temp->key, "=", g_collector); */
-    /* env_array[i] = ft_strjoin(env_array[i], temp->value, g_collector); */
+   
     tem = ft_str_join(temp->key, "=", g_collector);
     env_array[i] = ft_str_join(tem, temp->value, g_collector);
     i++;
     temp = temp->next;
   }
-  printf("i ======== %d\n", i);
-
-  env_array[i] = NULL; // Null-terminate the array
+ 
+  env_array[i] = NULL; 
   return env_array;
 }
 
@@ -127,11 +116,10 @@ void print_error(char *cmd_input) {
 
 void executing(t_env *env_list, char **cmd_args, t_gc **gc) {
   char *cmd_path;
-  /* t_env *tmp =NULL; */
-  /* tmp = copy_list(env_list) ; */
+  
   if (!env_list)
     exit(127);
-  if (!cmd_args || !cmd_args[0]) // Check if command is NULL
+  if (!cmd_args || !cmd_args[0]) 
   {
     print_error("Empty command");
     exit(127);

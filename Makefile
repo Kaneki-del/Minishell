@@ -8,7 +8,8 @@ NAME = minishell
 
 FILS = $(wildcard $(M)/$(U)/*.c) \
 		$(wildcard $(M)/$(ET)/*.c) \
-		$(wildcard $(M)/*.c)
+		$(wildcard $(M)/$(B)/*.c)\
+		$(wildcard $(M)/*.c) 
 
 CFLAGS =  -Wall -Wextra -Werror -g
 REDLINE = -lreadline -lncurses

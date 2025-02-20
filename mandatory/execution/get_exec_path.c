@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/20 19:22:11 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/20 21:21:59 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char *get_env_path(t_env *env_list, t_gc **gc)
     if (ft_strcmp(current->key, "PATH") == 0) {
       env_path = ft_strdup(current->value, gc);
       //to see is the path is catched or not
-      printf("the pathis (%s)\n", env_path);
+
       if (env_path == NULL)
         return NULL;
     }
@@ -46,7 +46,7 @@ char *check_cmd_path(char **path_list, char *cmd_name, t_gc **gc) {
     }
     if (access(full_cmd_path, X_OK) == 0) {
 
-      printf("the returned path is %s\n", full_cmd_path);
+   
       return (full_cmd_path);
     }
 
