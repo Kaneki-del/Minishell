@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 22:41:13 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:52:46 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_direction {
 } t_direction;
 
 typedef struct s_data {
+  char *line;
   char **cmds;
   char **directions;
   int in_fd;
@@ -62,11 +63,10 @@ typedef struct s_gc {
   struct s_gc *next;
 } t_gc;
 
-
 //the env  list struct
 typedef struct s_env {
-  char *value;
   char *key;
+  char *value;
   struct s_env *next;
 } t_env;
 

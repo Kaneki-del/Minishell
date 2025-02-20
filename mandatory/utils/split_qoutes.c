@@ -6,84 +6,82 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 12:09:10 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 00:24:12 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static size_t words_count(const char *s, char c) {
-  size_t i;
-  size_t count;
-  char quote;
 
-  i = -1;
-  count = 0;
-  quote = 0;
-  while (s[++i]) {
-    if (s[i] == '\'' || s[i] == '"') {
-      count++;
-      quote = s[i];
-      while (s[++i] && s[i] != quote)
-        ;
-      if (s[i] == quote)
-        i++;
-      quote = 0;
-    } else if (s[i] != c && (i == 0 || s[i - 1] == c) && !quote)
-      count++;
-  }
-  return (count);
-}
 
-// static void mem_free(char **p) {
-//   size_t i;
 
-//   i = 0;
-//   while (p[i]) {
-//     free(p[i]);
-//     i++;
-//   }
-//   free(p);
-// }
 
-static char *fill(char *p, const char *s, size_t i, size_t len_chrs) {
-  size_t k;
+#include "../../includes/minishell.h"
 
-  k = 0;
-  while (k < len_chrs) {
-    p[k] = s[i + k];
-    k++;
-  }
-  p[k] = '\0';
-  return (p);
+// shoud take a looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooook
+
+static size_t words_count(const char *s, char c) // this" name s"
+{
+    size_t count = 0;
+    int in_quote = 0;
+    char quote = 0;
+    size_t i = 0;
+
+    while (s[i]) {
+        while (s[i] == c && !in_quote)
+            i++;
+        if (!s[i])
+            break;
+        count++;
+        while (s[i] && (in_quote || s[i] != c))
+        {
+            if (s[i] == '\'' || s[i] == '"') 
+            {
+                if (!in_quote)
+                {
+                    in_quote = 1;
+                    quote = s[i];
+                }
+                else if (s[i] == quote) 
+                {
+                    in_quote = 0;
+                    quote = 0;
+                }
+            }
+            i++;
+        }
+    }
+    return (count);
 }
 
 static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector) {
-  char *p;
-  size_t char_count;
-  char q;
+    size_t start;
+    size_t len = 0;
+    int in_quote = 0;
+    char quote = 0;
 
-  char_count = 0;
-  q = 0;
-  while (s[*i] && s[*i] == c)
-    (*i)++;
-  if (s[*i] == '\'' || s[*i] == '"') {
-    q = s[*i];
-    char_count++;
-    while (s[*i + char_count] && s[*i + char_count] != q)
-      char_count++;
-    if (s[*i + char_count] == q)
-      char_count++;
-  }
-  while (s[*i + char_count] && s[*i + char_count] != c) // "this is na"this
-    char_count++;
-  // p = (char *)malloc(char_count + 1);
-  p = gc(sizeof(char *) * (char_count + 1), g_collector);
-  if (!p)
-    return (clear_bin(g_collector), NULL);
-  fill(p, s, *i, char_count);
-  *i += char_count;
-  return (p);
+    while (s[*i] == c)
+        (*i)++;
+    
+    start = *i;
+    while (s[*i] && (in_quote || s[*i] != c)) {
+        if (s[*i] == '\'' || s[*i] == '"') {
+            if (!in_quote) {
+                in_quote = 1;
+                quote = s[*i];
+            } else if (s[*i] == quote) {
+                in_quote = 0;
+                quote = 0;
+            }
+        }
+        (*i)++;
+        len++;
+    }
+    char *word = gc(len + 1, g_collector);
+    if (!word)
+        return (clear_bin(g_collector), NULL);
+    ft_strlcpy(word, s + start, len + 1);
+    return (word);
 }
 
 char **ft_split(char const *s, char c,  t_gc **g_collector) {
@@ -109,3 +107,66 @@ char **ft_split(char const *s, char c,  t_gc **g_collector) {
   p[j] = NULL;
   return (p);
 }
+
+
+// char **ft_split(char const *s, char c, t_gc **g_collector) {
+//     char **result;
+//     size_t word_count;
+//     size_t i = 0;
+//     size_t j = 0;
+
+//     if (!s)
+//         return (NULL);
+    
+//     word_count = words_count(s, c);
+//     result = gc((word_count + 1) * sizeof(char *), g_collector);
+//     if (!result)
+//         return (clear_bin(g_collector), NULL);
+    
+//     while (j < word_count) {
+//         result[j] = store_next_word(s, &i, c, g_collector);
+//         if (!result[j]) {
+//             clear_bin(g_collector);
+//             return (NULL);
+//         }
+//         j++;
+//     }
+//     result[j] = NULL;
+//     return (result);
+// }
+
+// static size_t words_count(const char *s, char c) {
+//   size_t i;
+//   size_t count;
+//   char quote;
+
+//   i = -1;
+//   count = 0;
+//   quote = 0;
+//   while (s[++i]) {
+//     if (s[i] == '\'' || s[i] == '"') {
+//       count++;
+//       quote = s[i];
+//       while (s[++i] && s[i] != quote)
+//         ;
+//       if (s[i] == quote)
+//         i++;
+//       quote = 0;
+//     } else if (s[i] != c && (i == 0 || s[i - 1] == c) && !quote)
+//       count++;
+//   }
+//   return (count);
+// }
+
+// // static void mem_free(char **p) {
+// //   size_t i;
+
+// //   i = 0;
+// //   while (p[i]) {
+// //     free(p[i]);
+// //     i++;
+// //   }
+// //   free(p);
+// // }
+
+  

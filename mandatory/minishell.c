@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 22:41:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 00:27:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,18 +193,35 @@ char **filterd(char **cmds, t_gc **g_collector)
   return (cmds);
 }
 
-/* void check_env_var(char **command) */
-/* { */
-/*   int i; */
-/**/
-/*   i = 0; */
-/*   while (command[i]) */
-/*   { */
-/*      */
-/*   } */
-/* } */
+// int check_env_var(char **command, t_env **env_list, t_gc **g_collector)
+// {
+//   int i;
+//   int start;
+//   int end;
+//   char *key;
 
-int parser(t_token **token,  t_gc **g_collector, t_data **data) {
+//   i = 0;
+//   start = 0;
+//   end = 0;
+//   while (command[i])
+//   {
+//     if (command[i++] == '$')
+//     {
+//       start = i;
+//       while (command[i + end] && command[i + end] != ' ' && command[i + end] != '$')
+//         end++;
+//       key = gc(end - start + 1, g_collector);
+//       if (!key)
+//         return (ft_error("bash : allocation failed for key","",))
+//     }
+
+    
+//     i++;
+//   }
+//   return (1);
+// }
+
+int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list) {
   t_token *iter;
   char *dir_files;
   char *only_command;
@@ -213,13 +230,13 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data) {
   dir_files = NULL;
   only_command = NULL;
   iter = *token;
+  (void)env_list;
   while (iter) {
     // loop until |
     iter = init_data(iter, &dir_files, &only_command, g_collector);
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
-    /* printf("(%s)\n", only_command); */
-    /* check_env_var(&only_command); */
+    // check_env_var(&only_command, env_list, g_collector);
     cmd_optios = filterd(ft_split(only_command, ' ', g_collector), g_collector);
     if (!cmd_optios)
       return (0);
@@ -230,14 +247,14 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data) {
   return (1);
 }
 
-int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line) {
+int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line, t_env **env_list) {
   // split all the command line by four sings "< |>" and initial them in linked
   // list in shape of tokens
   if (tokener(tokens, g_collector, line) == 0)
     return (0);
   // print_tokens(tokens);
   // in parser fuction ill deal with all data amoung the pipes
-  if (parser(tokens, g_collector, data) == 0)
+  if (parser(tokens, g_collector, data, env_list) == 0)
     return (0);
   return (1);
 }
@@ -252,8 +269,7 @@ int main(int ac, char **av, char **env) {
   t_gc *g_collector;
   // our local env
   t_env *env_list;
-  env_list = NULL;
-    env_list = get_env_list(env);
+  env_list = get_env_list(env);
   while (1) {
     //remember to remove it from here
     status = 0;
@@ -266,9 +282,9 @@ int main(int ac, char **av, char **env) {
     if (line[0] != '\0')
       add_history(line);
     // this function contains all paring cases
-    if (parsing_case(&tokens, &data, &g_collector ,line) == 0)
+    if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
-    status = execute_package(&data, env, &g_collector);
+    status = execute_package(&data, &g_collector, env_list);
     free(line);
     clear_bin(&g_collector);
   }
