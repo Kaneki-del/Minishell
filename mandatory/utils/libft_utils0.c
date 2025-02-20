@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils0.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 23:17:21 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 12:09:18 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:45:56 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,30 +64,24 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char *s2, t_gc **g_collector)
+char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc)
 {
-	int		strlen;
-	char	*str;
-	int		i;
+	size_t	total_len;
+	char	*result;
 
-	i = -1;
+	if (!s1 && !s2)
+		return (NULL);
 	if (!s1)
-	{
-		s1 = gc(1, g_collector);
-        if (!s1)
-			return (clear_bin(g_collector), NULL);
-		s1[0] = '\0';
-	}
-	strlen = ft_strlen(s1) + ft_strlen(s2);
-	str = gc(strlen + 1, g_collector);
-	if (!str)
-		return (clear_bin(g_collector), NULL);
-	while (s1[++i])
-		str[i] = s1[i];
-	strlen = 0;
-	while (s2[strlen])
-		str[i++] = s2[strlen++];
-	str[i] = '\0';
-	return (str);
+		return (ft_strdup(s2, gc));
+	if (!s2)
+		return (ft_strdup(s1, gc));
+	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	result = (char *)malloc(total_len);
+	if (!result)
+		return (NULL);
+	ft_strlcpy(result, s1, total_len);
+	ft_strlcat(result, s2, total_len);
+	return (result);
 }
+
 

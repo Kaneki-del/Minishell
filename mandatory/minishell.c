@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 21:07:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:35:08 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,16 +193,16 @@ char **filterd(char **cmds, t_gc **g_collector)
   return (cmds);
 }
 
-void check_env_var(char **command)
-{
-  int i;
-
-  i = 0;
-  while (command[i])
-  {
-    
-  }
-}
+/* void check_env_var(char **command) */
+/* { */
+/*   int i; */
+/**/
+/*   i = 0; */
+/*   while (command[i]) */
+/*   { */
+/*      */
+/*   } */
+/* } */
 
 int parser(t_token **token,  t_gc **g_collector, t_data **data) {
   t_token *iter;
@@ -218,8 +218,8 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data) {
     iter = init_data(iter, &dir_files, &only_command, g_collector);
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
-    printf("(%s)\n", only_command);
-    check_env_var(&only_command);
+    /* printf("(%s)\n", only_command); */
+    /* check_env_var(&only_command); */
     cmd_optios = filterd(ft_split(only_command, ' ', g_collector), g_collector);
     if (!cmd_optios)
       return (0);
@@ -250,8 +250,12 @@ int main(int ac, char **av, char **env) {
   t_token *tokens;
   t_data *data;
   t_gc *g_collector;
-
+  // our local env
+  t_env *env_list;
+  env_list = NULL;
+    env_list = get_env_list(env);
   while (1) {
+    //remember to remove it from here
     status = 0;
     tokens = NULL;
     data = NULL;
@@ -264,7 +268,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line) == 0)
       continue;
-    status = execute_package(&data, env, &g_collector);
+    status = execute_package(&data, &g_collector, env_list);
     free(line);
     clear_bin(&g_collector);
   }
