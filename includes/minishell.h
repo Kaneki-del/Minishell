@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 12:12:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 20:42:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
 void *gc(size_t size, t_gc **garbage_list);
-void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
+void ft_error(char *msg, char dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
 
 

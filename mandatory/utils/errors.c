@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-void ft_error(char *msg, char *dis,int fd, t_gc **g_collector)
+void ft_error(char *msg, char dis,int fd, t_gc **g_collector)
 {
     (void)fd;
     if (!msg)
@@ -9,6 +9,6 @@ void ft_error(char *msg, char *dis,int fd, t_gc **g_collector)
         clear_bin(g_collector);
         return ;
     }
-    printf("%s `%s'\n",msg, dis);
+    printf("%s `%c'\n",msg, dis);
     clear_bin(g_collector);
 }
