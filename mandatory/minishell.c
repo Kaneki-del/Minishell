@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 16:20:41 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:08:10 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,8 +281,12 @@ int main(int ac, char **av, char **env) {
   t_token *tokens;
   t_data *data;
   t_gc *g_collector;
-
+  // our local env
+  t_env *env_list;
+  env_list = NULL;
+    env_list = get_env_list(env);
   while (1) {
+    //remember to remove it from here
     status = 0;
     tokens = NULL;
     data = NULL;
@@ -294,7 +298,7 @@ int main(int ac, char **av, char **env) {
       add_history(line);
     // this function contains all paring cases
     parsing_case(&tokens, &data, &g_collector ,line);
-    status = execute_package(&data, env, &g_collector);
+    status = execute_package(&data,&g_collector, env_list);
     free(line);
     clear_bin(&g_collector);
   }
