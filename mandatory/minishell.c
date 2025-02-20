@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 20:51:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 21:07:42 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,17 @@ char **filterd(char **cmds, t_gc **g_collector)
   return (cmds);
 }
 
+void check_env_var(char **command)
+{
+  int i;
+
+  i = 0;
+  while (command[i])
+  {
+    
+  }
+}
+
 int parser(t_token **token,  t_gc **g_collector, t_data **data) {
   t_token *iter;
   char *dir_files;
@@ -207,6 +218,8 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data) {
     iter = init_data(iter, &dir_files, &only_command, g_collector);
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
+    printf("(%s)\n", only_command);
+    check_env_var(&only_command);
     cmd_optios = filterd(ft_split(only_command, ' ', g_collector), g_collector);
     if (!cmd_optios)
       return (0);
