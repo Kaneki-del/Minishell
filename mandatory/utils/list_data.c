@@ -6,18 +6,18 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:57:56 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/15 10:18:48 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:31:43 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_data *new_data_node(char **command, char **directions)
+t_data *new_data_node(char **command, char **directions, t_gc **g_collector)
 {
     t_data *head;
-    head = malloc(sizeof(t_data));
+    head = gc(sizeof(t_data), g_collector);
     if (!head)
-        return (NULL);
+        return (clear_bin(g_collector), NULL);
     head->cmds = command;
     head->directions = directions;
     head->next = NULL;

@@ -6,15 +6,13 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 21:23:17 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:12:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-
-#include "./parsing.h"
 #include <fcntl.h>
 #include <limits.h>
 #include <readline/history.h>
@@ -23,6 +21,22 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+typedef enum s_type_token {
+  T_WORD,
+  T_PIPE,
+  T_REDIRECTE_IN,
+  T_REDIRECTE_OUT,
+  T_REDIRECTE_APPEND,
+  T_REDIRECTE_HEREDOC,
+} t_type_token;
+
+typedef struct s_token {
+  char *value;
+  int index;
+  t_type_token token_type;
+  struct s_token *next;
+} t_token;
 
 typedef struct s_direction {
   char *infd;
@@ -43,29 +57,41 @@ typedef struct s_data {
   int type;
 } t_data;
 
+typedef struct s_gc {
+  void *adress;
+  struct s_gc *next;
+} t_gc;
+
 char *ft_strrchr(const char *s, int c);
 size_t ft_strlen(const char *s);
-char *ft_strdup(const char *s1);
+char *ft_strdup(const char *s1, t_gc **g_collector);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strchr(const char *s, int c);
-char *ft_strjoin(char *s1, char *s2);
+char *ft_strjoin(char *s1, char *s2, t_gc **g_collector);
 size_t ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char *ft_substr(char const *s, unsigned int start, size_t len);
-t_data *new_data_node(char **command, char **directions);
+char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collector);
+t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
-char *ft_chrjoin(char c, char b);
-void single_command(t_data *list, char **env);
+char *ft_chrjoin(char c, char b, t_gc **g_collector);
+void single_command(t_data *list, char **env, t_gc **g_collector);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
-int run_multiple(t_data **list, char **env);
-int execute_package(t_data **list, char **env);
+int run_multiple(t_data **list, char **env, t_gc **g_collector);
+int execute_package(t_data **list, char **env, t_gc **g_collector);
+char **ft_split(char const *s, char c, t_gc **g_collector);
+t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
+void ft_lstadd_back(t_token **lst, t_token *new);
+void *gc(size_t size, t_gc **garbage_list);
+void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
+void clear_bin(t_gc **garbage_list);
 
-char *check_cmd_path(char **path_list, char *cmd_name);
-char *find_executable_path(char **env, char **cmd_tabs);
-char *get_env_path(char **env);
+
+char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
+char *find_executable_path(char **env, char **cmd_tabs, t_gc **g_collector);
+char *get_env_path(char **env, t_gc **g_collector);
 void ft_putstr_fd(char *s, int fd, char c);
 int open_file(char *file, int in_or_out);
-void executing(char **env, char **cmd_args);
+void executing(char **env, char **cmd_args, t_gc **g_collector);
 void print_error(char *cmd_input);
 
 #endif

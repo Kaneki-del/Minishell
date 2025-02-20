@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/16 19:35:40 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:03:57 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void print_error(char *cmd_input) {
   exit(127);
 }
 
-void executing(char **env, char **cmd_args) {
+void executing(char **env, char **cmd_args, t_gc **g_collector) {
   char *cmd_path;
 
   if (!env)
@@ -28,13 +28,12 @@ void executing(char **env, char **cmd_args) {
     print_error("Empty command");
     exit(127);
   }
-  cmd_path = find_executable_path(env, cmd_args);
+  cmd_path = find_executable_path(env, cmd_args, g_collector);
   if (cmd_args) {
     if (execve(cmd_path, cmd_args, env) == -1) {
       print_error(cmd_args[0]);
       exit(127);
     }
   }
-  
   exit(127);
 }

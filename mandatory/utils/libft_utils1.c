@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 11:16:53 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:30:41 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (str_len);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collector)
 {
 	size_t	s_len;
 	char	*sub;
@@ -59,12 +59,12 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	s_len = ft_strlen(s);
 	if (start >= s_len)
-		return (ft_strdup(""));
+		return (ft_strdup("", g_collector));
 	if (start + len > s_len)
 		len = s_len - start;
-	sub = (char *)malloc(len + 1);
+	sub = gc(len + 1, g_collector);
 	if (!sub)
-		return (NULL);
+		return (clear_bin(g_collector), NULL);
 	while (i < len)
 	{
 		sub[i] = s[i + start];
@@ -74,13 +74,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-char *ft_chrjoin(char c, char b)
+char *ft_chrjoin(char c, char b,  t_gc **g_collector)
 {
 	char *new;
 
-	new = malloc(3 * sizeof(char));
+	new = gc(3, g_collector);
 	if (!new)
-		return (NULL);
+		return (clear_bin(g_collector), NULL);
 	new[0] = c;
 	new[1] = b;
 	new[2] = '\0';

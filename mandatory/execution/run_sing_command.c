@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void single_command(t_data *list, char **env) {
+void single_command(t_data *list, char **env, t_gc **g_collector) {
 
   pid_t pid;
   pid = fork();
@@ -26,7 +26,7 @@ void single_command(t_data *list, char **env) {
       close(list->in_fd);
     if (list->out_fd != 0)
       close(list->in_fd);
-    executing(env, list->cmds);
+    executing(env, list->cmds, g_collector);
   } else {
     int status;
     waitpid(pid, &status, 0); // Wait for the child process to finish

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/16 18:48:06 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:09:10 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ static size_t words_count(const char *s, char c) {
   return (count);
 }
 
-static void mem_free(char **p) {
-  size_t i;
+// static void mem_free(char **p) {
+//   size_t i;
 
-  i = 0;
-  while (p[i]) {
-    free(p[i]);
-    i++;
-  }
-  free(p);
-}
+//   i = 0;
+//   while (p[i]) {
+//     free(p[i]);
+//     i++;
+//   }
+//   free(p);
+// }
 
 static char *fill(char *p, const char *s, size_t i, size_t len_chrs) {
   size_t k;
@@ -58,7 +58,7 @@ static char *fill(char *p, const char *s, size_t i, size_t len_chrs) {
   return (p);
 }
 
-static char *store_next_word(const char *s, size_t *i, char c) {
+static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector) {
   char *p;
   size_t char_count;
   char q;
@@ -77,30 +77,31 @@ static char *store_next_word(const char *s, size_t *i, char c) {
   }
   while (s[*i + char_count] && s[*i + char_count] != c) // "this is na"this
     char_count++;
-  p = (char *)malloc(char_count + 1);
+  // p = (char *)malloc(char_count + 1);
+  p = gc(sizeof(char *) * (char_count + 1), g_collector);
   if (!p)
-    return (NULL);
+    return (clear_bin(g_collector), NULL);
   fill(p, s, *i, char_count);
   *i += char_count;
   return (p);
 }
 
-char **ft_split(char const *s, char c) {
+char **ft_split(char const *s, char c,  t_gc **g_collector) {
   char **p;
   size_t i;
   size_t j;
 
   if (!s)
     return (NULL);
-  p = malloc((words_count(s, c) + 1) * sizeof(char *));
+  p = gc((words_count(s, c) + 1) * sizeof(char *), g_collector);
   if (!p)
-    return (NULL);
+    return (clear_bin(g_collector), NULL);
   i = 0;
   j = 0;
   while ((words_count(s, c)) > j) {
-    p[j] = store_next_word(s, &i, c);
+    p[j] = store_next_word(s, &i, c, g_collector);
     if (!(p[j])) {
-      mem_free(p);
+      clear_bin(g_collector);
       return (NULL);
     }
     j++;
