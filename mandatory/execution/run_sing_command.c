@@ -4,7 +4,7 @@ void single_command(t_data *list, t_gc **g_collector, t_env *env_list) {
 
   pid_t pid;
 if (check_builtin_commands(list->cmds)) {
-    built_in(list->cmds, env_list);
+    built_in(list->cmds, env_list, g_collector);
     return;
   }
   pid = fork();

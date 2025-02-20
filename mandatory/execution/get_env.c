@@ -40,17 +40,17 @@ char	*ft_sobstr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-t_env *lstnew_env(char *key, char *value) {
-  t_env *new_node;
+ t_env *lstnew_env(char *key, char *value){
+   t_env *new_node; 
 
-  new_node = (t_env *)malloc(sizeof(t_env));
-  if (!new_node)
-    return (NULL);
-  new_node->key = key;
-  new_node->value = value;
-  new_node->next = NULL;
-  return (new_node);
-}
+ new_node = (t_env *)malloc(sizeof(t_env)); 
+ if (!new_node) 
+    return (NULL); 
+   new_node->key = key;
+  new_node->value = value; 
+  new_node->next = NULL; 
+   return (new_node); 
+} 
 
 char **ft_split_equal_to(const char *s) {
   if (s == NULL)
@@ -80,16 +80,16 @@ char **ft_split_equal_to(const char *s) {
   str[2] = NULL; // Null-terminate the array
   return str;
 }
-t_env *ft_lstlast(t_env *lst) {
-  t_env *ptr;
+// t_env *ft_lstlast(t_env *lst) {
+//   t_env *ptr;
 
-  ptr = lst;
-  if (!lst)
-    return (NULL);
-  while (ptr->next)
-    ptr = ptr->next;
-  return (ptr);
-}
+//   ptr = lst;
+//   if (!lst)
+//     return (NULL);
+//   while (ptr->next)
+//     ptr = ptr->next;
+//   return (ptr);
+// }
 /* int ft_strcmp(const char *s1, const char *s2) { */
 /*   size_t i; */
 /**/
