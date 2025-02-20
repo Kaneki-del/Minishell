@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 13:50:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:20:41 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ void parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *lin
   parser(tokens, g_collector, data);
 }
 
+
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
@@ -281,13 +282,10 @@ int main(int ac, char **av, char **env) {
   t_data *data;
   t_gc *g_collector;
 
-  status = 0;
-  if (ac != 1)
-    return (1);
-  tokens = NULL;
-  data = NULL;
-  
   while (1) {
+    status = 0;
+    tokens = NULL;
+    data = NULL;
     g_collector = NULL;
     line = readline("\033[2;34mshell$> \033[0m");
     if (!line)
@@ -297,13 +295,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     parsing_case(&tokens, &data, &g_collector ,line);
     status = execute_package(&data, env, &g_collector);
-    // print_tokens(&tokens);
-    // while (g_collector && g_collector->next)
-    // {
-    //   printf("(%p)\n", g_collector->adress);
-    //   g_collector = g_collector->next;
-    // }
-    printf("i am here\n");
+    free(line);
     clear_bin(&g_collector);
   }
   return (0);

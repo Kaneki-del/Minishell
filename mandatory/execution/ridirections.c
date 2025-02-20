@@ -16,13 +16,6 @@ int open_file(char *file, int in_or_out) {
   }
   return (ret);
 }
-void print_tab(char **str) {
-  int i = 0;
-  while (str[i]) {
-    printf("the tab = %s\n", str[i]);
-    i++;
-  }
-}
 
 void get_fds(t_data
  *list) {

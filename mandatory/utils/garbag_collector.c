@@ -11,7 +11,7 @@ t_gc *gc_node(t_gc **garbage_list) {
         return (*garbage_list = calloc(sizeof(char), sizeof(t_gc)));
     while (last_node && last_node->next)
         last_node = last_node->next;
-    printf("yes\n");
+
     return (last_node->next = calloc(sizeof(char), sizeof(t_gc)));
 }
 
