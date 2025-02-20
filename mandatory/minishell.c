@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 21:07:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:36:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,8 +250,12 @@ int main(int ac, char **av, char **env) {
   t_token *tokens;
   t_data *data;
   t_gc *g_collector;
-
+  // our local env
+  t_env *env_list;
+  env_list = NULL;
+    env_list = get_env_list(env);
   while (1) {
+    //remember to remove it from here
     status = 0;
     tokens = NULL;
     data = NULL;
