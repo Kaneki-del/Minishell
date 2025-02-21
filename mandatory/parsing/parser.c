@@ -31,7 +31,8 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list
   only_command = NULL;
   iter = *token;
   (void)env_list;
-  while (iter) {
+  while (iter)
+  {
     // loop until |
     iter = init_data(iter, &dir_files, &only_command, g_collector);
     // filter beside or secounded qoutes
@@ -47,13 +48,36 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list
   return (1);
 }
 
+int token_checker(t_token **tokens, t_gc **g_collector)
+{
+  t_token *iter;
+
+  if (!tokens)
+    return (0);
+  iter = *tokens;
+  while (iter && iter->next)
+  {
+    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_IN)
+        return (ft_error("bash: syntax error near unexpected token", '<', 2, g_collector), 0);
+    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_OUT)
+        return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
+    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_APPEND)
+        return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
+    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_HEREDOC)
+        return (ft_error("bash: syntax error near unexpected token", '<', 2, g_collector), 0);
+    iter = iter->next;
+  }
+  return (1);
+}
+
 int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line, t_env **env_list)
 {
   // split all the command line by four sings "< |>" and initial them in linked
   // list in shape of tokens
   if (tokener(tokens, g_collector, line) == 0)
     return (0);
-  // print_tokens(tokens);
+  if (token_checker(tokens, g_collector) == 0)
+    return (0);
   // in parser fuction ill deal with all data amoung the pipes
   if (parser(tokens, g_collector, data, env_list) == 0)
     return (0);

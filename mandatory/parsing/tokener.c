@@ -5,7 +5,7 @@ int token_split(t_token **token, char *s_part, int *pos,t_gc **g_collector)
     int i;
 
     i = *pos;
-    if ((ft_strchr("<|>", s_part[i]) && s_part[i + 1] == '\0') || (s_part[0] == '|'))
+    if ((ft_strchr("<|>", s_part[i]) && (s_part[i + 1] == '\0' || s_part[i + 1] == '\n')) || (s_part[0] == '|'))
         return (ft_error("bash: syntax error near unexpected token", s_part[i], 2, g_collector), 0);
     else if (s_part[i] == '<' && s_part[i + 1] == '<') {
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
