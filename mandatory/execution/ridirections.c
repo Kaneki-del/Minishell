@@ -11,8 +11,8 @@ int open_file(char *file, int in_or_out) {
   if (in_or_out == 2)
     ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
   if (ret == -1) {
-    ft_putstr_fd("bash: no such file or directory: ", 2, 's');
-    ft_putstr_fd(file, 2, 'n');
+    ft_putstr_fd("bash: no such file or directory: ", 2);
+    ft_putstr_fd(file, 2);
   }
   return (ret);
 }

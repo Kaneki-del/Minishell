@@ -40,14 +40,18 @@ char	*ft_sobstr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+#include <string.h>
  t_env *lstnew_env(char *key, char *value){
    t_env *new_node; 
 
  new_node = (t_env *)malloc(sizeof(t_env)); 
  if (!new_node) 
     return (NULL); 
-   new_node->key = key;
-  new_node->value = value; 
+   new_node->key = strdup(key);
+  if (value)
+    new_node->value = strdup(value); 
+  else 
+    new_node->value = NULL;
   new_node->next = NULL; 
    return (new_node); 
 } 
@@ -80,39 +84,19 @@ char **ft_split_equal_to(const char *s) {
   str[2] = NULL; // Null-terminate the array
   return str;
 }
-// t_env *ft_lstlast(t_env *lst) {
-//   t_env *ptr;
 
-//   ptr = lst;
-//   if (!lst)
-//     return (NULL);
-//   while (ptr->next)
-//     ptr = ptr->next;
-//   return (ptr);
-// }
-/* int ft_strcmp(const char *s1, const char *s2) { */
-/*   size_t i; */
-/**/
-/*   i = 0; */
-/*   if (ft_strlen(s1) != ft_strlen(s2)) */
-/*     return 1; */
-/*   while ((s1[i] || s2[i])) { */
-/*     if ((unsigned char)s1[i] != (unsigned char)s2[i]) */
-/*       return ((unsigned char)s1[i] - (unsigned char)s2[i]); */
-/*     i++; */
-/*   } */
-/*   return (0); */
-/* } */
-void lstadd_back_env(t_env **lst, t_env *new) {
+void lstadd_back_env(t_env **lst, t_env *new_t) {
   t_env *ptr;
-
-  if (!lst || !new)
+  
+  t_env *current = *lst;
+  if (!lst || !new_t){
     return;
+  }
   else if (*lst == NULL)
-    *lst = new;
+    *lst = new_t;
   else {
-    ptr = ft_lstlast(*lst);
-    ptr->next = new;
+    ptr = ft_lstlast(current);
+    ptr->next = new_t;
   }
 }
 void clean_pwd(t_env **env_list) {

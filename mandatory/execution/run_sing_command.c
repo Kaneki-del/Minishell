@@ -1,9 +1,22 @@
 #include "../../includes/minishell.h"
-
-int single_command(t_data *list, t_gc **g_collector, t_env *env_list) 
+void print_er(char **str)
+{
+  int i = 0;
+  while (str[i])
+  {
+    printf("->%s\n",str[i]);
+    i++;
+  }
+}
+int single_command(t_data *list, t_gc **g_collector, t_env **env_list) 
 {
     pid_t pid;
     int status = 0;
+    // print_er(list->cmds);
+    // printf("__________________\n");
+    // if (list->directions)
+    //   print_er(list->directions);
+    
     if (check_builtin_commands(list->cmds)) {
         return (built_in(list->cmds, env_list, g_collector));
        
@@ -29,7 +42,7 @@ int single_command(t_data *list, t_gc **g_collector, t_env *env_list)
             }
             close(list->out_fd);
         }
-        executing(env_list, list->cmds, g_collector);
+        executing(*env_list, list->cmds, g_collector);
     } 
     else {  // Parent process
         if (list->in_fd != 0)

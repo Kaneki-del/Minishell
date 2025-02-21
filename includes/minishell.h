@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 20:18:16 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 21:48:19 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
-int single_command(t_data *list, t_gc **g_collector, t_env *env_list);
+int single_command(t_data *list, t_gc **g_collector, t_env **env_list);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
 int run_multiple(t_data **list, char **env, t_gc **g_collector);
-int execute_package(t_data **list,t_gc **g_collector, t_env *env_list);
+int execute_package(t_data **list,t_gc **g_collector, t_env **env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
@@ -108,22 +108,28 @@ t_env *copy_list(t_env *head);
 char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
 char *find_executable_path(t_env *env_list, char **cmd_tabs, t_gc **gc);
 char *get_env_path(t_env *env_list, t_gc **gc);
-void ft_putstr_fd(char *s, int fd, char c);
+void ft_putstr_fd(char *s, int fd);
 int open_file(char *file, int in_or_out);
 void executing(t_env *env_list, char **cmd_args, t_gc **gc) ;
 void print_error(char *cmd_input);
 t_env *get_env_list(char **env);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int built_in(char **cmd, t_env *env_list, t_gc **gc);
+int built_in(char **cmd, t_env **env_list, t_gc **gc);
 t_env *lstnew_env(char *key, char *value);
 void print_env_list(t_env *env_list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void print_export(t_env *env_list);
 int add_export(char **cmd, t_env **env_list, t_gc **gc);
-void lstadd_back_env(t_env **lst, t_env *new);
+void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
+void delete_node(t_env **list_env, char *key);
+void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
+t_env *check_if_there(char *key, t_env **env_list);
+void handle_echo(char **cmd,  t_gc **gc);
+void handle_pwd(void);
+
 t_env *check_if_there(char *key, t_env **env_list);
 
 #endif

@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+
 static void intial(t_data **list) {
     t_data *current = *list;
 
@@ -9,7 +10,7 @@ static void intial(t_data **list) {
     }
 }
 
-int execute_package(t_data **list,t_gc **g_collector, t_env *env_list)
+int execute_package(t_data **list,t_gc **g_collector, t_env **env_list)
 {
   int list_size;
   int exit_code;

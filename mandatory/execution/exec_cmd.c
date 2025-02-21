@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/20 22:05:37 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:29:50 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ char **env_to_array(t_env *head, t_gc **g_collector) {
 }
 
 void print_error(char *cmd_input) {
-  ft_putstr_fd("zsh: command not found: ", 2, 's');
-  ft_putstr_fd(cmd_input, 2, 'n');
+  ft_putstr_fd("zsh: command not found: ", 2);
+  ft_putstr_fd(cmd_input, 2);
   exit(127);
 }
 

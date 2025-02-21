@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 20:17:55 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 21:46:07 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
-    status = execute_package(&data, &g_collector, env_list);
+    status = execute_package(&data, &g_collector, &env_list);
     free(line);
     clear_bin(&g_collector);
   }
