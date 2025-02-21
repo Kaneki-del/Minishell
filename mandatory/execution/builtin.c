@@ -11,20 +11,20 @@ void print_env_list(t_env *env_list) {
   }
 }
 
-void handle_export(char **cmd, t_env *env_list, t_gc **gc) {
+void handle_export(char **cmd, t_env **env_list, t_gc **gc) {
   int i = 0;
   while (cmd[i])
     i++;
   if (i == 1)
-    print_export(env_list);
+    print_export(*env_list);
   else if (i >= 2)
-    add_export(cmd + 1, &env_list, gc);
+    add_export(cmd + 1, env_list, gc);
 }
 
-int built_in(char **cmd, t_env *env_list, t_gc **gc) 
+int built_in(char **cmd, t_env **env_list, t_gc **gc) 
 {
   if (ft_strcmp(cmd[0], "env") == 0) {
-    print_env_list(env_list);
+    print_env_list(*env_list);
     return 0;
   } 
   else if (ft_strcmp(cmd[0], "export") == 0) {

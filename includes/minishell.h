@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 10:15:22 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:47:00 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
-int single_command(t_data *list, t_gc **g_collector, t_env *env_list);
+int single_command(t_data *list, t_gc **g_collector, t_env **env_list);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
 int run_multiple(t_data **list, char **env, t_gc **g_collector);
-int execute_package(t_data **list,t_gc **g_collector, t_env *env_list);
+int execute_package(t_data **list,t_gc **g_collector, t_env **env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
@@ -104,13 +104,13 @@ void print_error(char *cmd_input);
 t_env *get_env_list(char **env);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int built_in(char **cmd, t_env *env_list, t_gc **gc);
+int built_in(char **cmd, t_env **env_list, t_gc **gc);
 t_env *lstnew_env(char *key, char *value);
 void print_env_list(t_env *env_list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void print_export(t_env *env_list);
 int add_export(char **cmd, t_env **env_list, t_gc **gc);
-void lstadd_back_env(t_env **lst, t_env *new);
+void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
 #endif

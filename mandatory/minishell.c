@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 10:21:04 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:17:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
-    status = execute_package(&data, &g_collector, env_list);
+    status = execute_package(&data, &g_collector, &env_list);
     free(line);
     clear_bin(&g_collector);
   }
