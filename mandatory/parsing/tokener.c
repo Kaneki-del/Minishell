@@ -1,0 +1,152 @@
+#include "../../includes/minishell.h"
+
+int token_split(t_token **token, char *s_part, int *pos,t_gc **g_collector)
+{
+    int i;
+
+    i = *pos;
+    if ((ft_strchr("<|>", s_part[i]) && s_part[i + 1] == '\0') || (s_part[0] == '|'))
+        return (ft_error("bash: syntax error near unexpected token", s_part[i], 2, g_collector), 0);
+    else if (s_part[i] == '<' && s_part[i + 1] == '<') {
+        ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
+        i++;
+      }
+    else if (s_part[i] == '>' && s_part[i + 1] == '>') {
+        ft_lstadd_back(token, ft_lstnew(ft_strdup(">>", g_collector), T_REDIRECTE_APPEND, g_collector));
+        i++;
+      }
+    else if (s_part[i] == '<')
+        ft_lstadd_back(token, ft_lstnew(ft_strdup("<", g_collector), T_REDIRECTE_IN, g_collector));
+    else if (s_part[i] == '>')
+        ft_lstadd_back(token, ft_lstnew(ft_strdup(">", g_collector), T_REDIRECTE_OUT, g_collector));
+    else if (s_part[i] == '|')
+        ft_lstadd_back(token, ft_lstnew(ft_strdup("|", g_collector), T_PIPE, g_collector));
+    else if (s_part[i] == '\\' && ft_strchr("<|>", s_part[i + 1])) {
+        ft_lstadd_back(token, ft_lstnew(ft_chrjoin('\\', s_part[i + 1], g_collector), T_WORD, g_collector));
+        i++;
+      }
+    return (1);
+}
+
+int skeep_special_char(char *s_part, int *start, t_gc **g_collector)
+{
+    int is_in;
+    char qoute;
+
+    is_in = 0;
+    while (s_part[(*start)] && !ft_strchr("<|>", s_part[(*start)]) && !ft_strchr(" \n\t", s_part[(*start)]))
+    {
+        if (s_part[(*start)] == '\'' || s_part[(*start)] == '"') {
+            qoute = s_part[(*start)];
+            ((*start)++, is_in = 1);
+            while (s_part[(*start)] && s_part[(*start)] != qoute)
+                (*start)++;
+            if (s_part[(*start)] == qoute)
+                ((*start)++, is_in = 0);
+        }
+        while (s_part[(*start)] && (s_part[(*start)] != '\'' && s_part[(*start)] != '"') && \
+        !ft_strchr("<|>", s_part[(*start)]) && !ft_strchr(" \n\t", s_part[(*start)]))
+            (*start)++;
+    }
+    if (is_in == 1)
+        return (ft_error("bash: syntax error near unexpected token", qoute, 2, g_collector), 0);
+    return (1);
+}
+
+int tokener(t_token **token, t_gc **g_collector, char *s_part)
+{
+    int i;
+    int start;
+    char *word;
+
+    i = -1;
+    if (!s_part)
+      return (0);
+    while (s_part[++i]) {
+        if (ft_strchr(" \n\t", s_part[i]))
+            continue ;
+        if (token_split(token, s_part, &i, g_collector) == 0)
+            return (0);
+        if (s_part[i] && !ft_strchr("<|>", s_part[i]) && !ft_strchr(" \n\t", s_part[i]))
+        {
+            start = i;
+            if (skeep_special_char(s_part, &start, g_collector) == 0)
+                return (0);
+            word = gc(start - i + 1, g_collector);
+            ft_strlcpy(word, &s_part[i], start - i + 1);
+            ft_lstadd_back(token, ft_lstnew(word, T_WORD, g_collector));
+            i = start - 1;
+        }
+    }
+    return (1);
+}
+
+// int tokener(t_token **token, t_gc **g_collector, char *s_part) {
+//     int i;
+//     int start;
+//     int is_in;
+//     char *word;
+//     char qoute;
+
+//     i = -1;
+//     is_in = 0;
+//     if (!s_part)
+//       return (0);
+//     while (s_part[++i]) {
+
+//       if (ft_strchr(" \n\t", s_part[i]))
+//         continue;
+//       else if ((ft_strchr("<|>", s_part[i]) && s_part[i + 1] == '\0') || (s_part[0] == '|'))
+//         return (ft_error("bash: syntax error near unexpected token", s_part[i], 2, g_collector), 0);
+//       else if (s_part[i] == '<' && s_part[i + 1] == '<') {
+//         ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
+//         i++;
+//       } else if (s_part[i] == '>' && s_part[i + 1] == '>') {
+//         ft_lstadd_back(token, ft_lstnew(ft_strdup(">>", g_collector), T_REDIRECTE_APPEND, g_collector));
+//         i++;
+//       } else if (s_part[i] == '<')
+//         ft_lstadd_back(token, ft_lstnew(ft_strdup("<", g_collector), T_REDIRECTE_IN, g_collector));
+//       else if (s_part[i] == '>')
+//         ft_lstadd_back(token, ft_lstnew(ft_strdup(">", g_collector), T_REDIRECTE_OUT, g_collector));
+//       else if (s_part[i] == '|')
+//         ft_lstadd_back(token, ft_lstnew(ft_strdup("|", g_collector), T_PIPE, g_collector));
+//       else if (s_part[i] == '\\' && ft_strchr("<|>", s_part[i + 1])) {
+//         ft_lstadd_back(token, ft_lstnew(ft_chrjoin('\\', s_part[i + 1], g_collector), T_WORD, g_collector));
+//         i++;
+//       }
+//       else
+//       {
+//         start = i;
+//         while (s_part[start] && !ft_strchr("<|>", s_part[start]) &&
+//               !ft_strchr(" \n\t", s_part[start])) {
+//           if (s_part[start] == '\'' || s_part[start] == '"') {
+//             qoute = s_part[start];
+//             start++;
+//             is_in = 1;
+//             while (s_part[start] && s_part[start] != qoute)
+//               start++;
+//             if (s_part[start] == qoute)
+//             {
+//               start++;
+//               is_in = 0;
+//             }
+//           }
+//           while (s_part[start] &&
+//                 (s_part[start] != '\'' && s_part[start] != '"') &&
+//                 !ft_strchr("<|>", s_part[start]) &&
+//                 !ft_strchr(" \n\t", s_part[start]))
+//             start++;
+//         }
+//         // check for qoutations if are closed
+//         if (is_in == 1)
+//           return (ft_error("bash: syntax error near unexpected token", qoute, 2, g_collector), 0);
+//         word = gc(start - i + 1, g_collector);
+//         if (!word)
+//           return (ft_error("bash: cannot allocate memory for token",s_part[start], 2, g_collector), 0);
+//         ft_strlcpy(word, &s_part[i], start - i + 1);
+//         ft_lstadd_back(token, ft_lstnew(word, T_WORD, g_collector));
+//         i = start - 1;
+//       }
+//     }
+//     return (1);
+// }

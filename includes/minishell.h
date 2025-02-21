@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 22:52:46 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:34:28 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,22 @@ int execute_package(t_data **list,t_gc **g_collector, t_env *env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
+int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list);
+int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line, t_env **env_list);
+void get_dir_files(char **dir_files, t_token *token, t_gc **g_collector);
+void get_command(char **only_command, t_token *token, t_gc **g_collector);
+t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc **g_collector);
+char *filer_qoutations(char *command_line,  t_gc **g_collector);
+char **filterd(char **cmds,t_env **env_list,t_gc **g_collector);
+int tokener(t_token **token, t_gc **g_collector, char *s_part);
+char *check_env_var(char *command, t_env **env_list, t_gc **g_collector);
+char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
+int	ft_isalnum(int c);
+
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_env *head);
-
 char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
 char *find_executable_path(t_env *env_list, char **cmd_tabs, t_gc **gc);
 char *get_env_path(t_env *env_list, t_gc **gc);
@@ -113,4 +124,6 @@ void print_export(t_env *env_list);
 int add_export(char **cmd, t_env **env_list, t_gc **gc);
 void lstadd_back_env(t_env **lst, t_env *new);
 t_env *ft_lstlast(t_env *lst);
+t_env *check_if_there(char *key, t_env **env_list);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 11:30:41 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:44:33 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,28 @@ char *ft_chrjoin(char c, char b,  t_gc **g_collector)
 	new[1] = b;
 	new[2] = '\0';
 	return (new);
+}
+
+char *ft_strchr_join(char *s1, char c, t_gc **g_collector)
+{
+	size_t	total_len;
+	char	*result;
+
+	if (!s1)
+	{
+		result = gc(2, g_collector);
+		if (!result)
+			return (NULL);
+		result[0] = c;
+		result[1] = '\0';
+		return (result);
+	}
+	total_len = ft_strlen(s1) + 2;
+	result = gc(total_len, g_collector);
+	if (!result)
+		return (NULL);
+	ft_strlcpy(result, s1, total_len);
+	result[ft_strlen(s1)] = c;
+	result[ft_strlen(s1) + 1] = '\0';
+	return (result);
 }

@@ -9,6 +9,8 @@ NAME = minishell
 FILS = $(wildcard $(M)/$(U)/*.c) \
 		$(wildcard $(M)/$(ET)/*.c) \
 		$(wildcard $(M)/$(B)/*.c)\
+		$(wildcard $(M)/$(P)/*.c)\
+		$(wildcard $(M)/$(ED)/*.c)\
 		$(wildcard $(M)/*.c) 
 
 CFLAGS =  -Wall -Wextra -Werror -g

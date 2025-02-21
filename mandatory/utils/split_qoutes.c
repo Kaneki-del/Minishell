@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 00:24:12 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:59:09 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static size_t words_count(const char *s, char c) // this" name s"
     return (count);
 }
 
-static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector) {
+static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector)
+{
     size_t start;
     size_t len = 0;
     int in_quote = 0;
@@ -84,7 +85,8 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
     return (word);
 }
 
-char **ft_split(char const *s, char c,  t_gc **g_collector) {
+char **ft_split(char const *s, char c,  t_gc **g_collector)
+{
   char **p;
   size_t i;
   size_t j;
