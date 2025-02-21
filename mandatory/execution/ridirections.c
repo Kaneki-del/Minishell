@@ -23,7 +23,8 @@ void get_fds(t_data *list)
   int i = 0;
   if (!full_cmd)
     return;
-  while (full_cmd[i]) {
+  while (full_cmd[i]) 
+  {
     if (ft_strcmp(full_cmd[i], ">") == 0) 
     {
       i++;
@@ -45,3 +46,4 @@ void get_fds(t_data *list)
     i++;
   }
 }
+

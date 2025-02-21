@@ -37,7 +37,7 @@ int filter_key(char *key, char *value)
           }
   return 0;
 }
-t_env *check_if_there(char *key, t_env **env_list)
+t_env *check_if_there(const char *key, t_env **env_list)
 {
   t_env *temp = NULL;
   temp = *env_list;

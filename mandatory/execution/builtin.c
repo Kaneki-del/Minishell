@@ -45,12 +45,15 @@ int built_in(char **cmd, t_env **env_list, t_gc **gc)
   
     handle_echo(cmd,gc);
     return 0;
-    
   }
    else if (ft_strcmp(cmd[0], "pwd") == 0) {
     handle_pwd();
     return 0;
    }
+  else if (ft_strcmp(cmd[0], "cd") == 0) {
+    handle_cd(cmd + 1, env_list, gc);
+    return 0;
+   }
   return 1;
-
+   
 }

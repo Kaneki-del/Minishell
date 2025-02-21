@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 16:17:57 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:14:54 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,32 @@ int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line
     return (0);
   return (1);
 }
+void ft_print2d(char **str)
+{
+  int i;
+  if (!str)
+    return;
+  i = 0;
+  while (str[i])
+  {
+    printf("%s ", str[i]);
+    i++;
+  }
+}
+void ft_printf(t_data **data)
+{
+  t_data *iter;
 
+  iter = *data;
+  while (iter)
+  {
+    ft_print2d(iter->cmds);
+    printf("\n");
+    ft_print2d(iter->directions);
+    printf("\n");
+    iter= iter->next;
+  }
+}
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
@@ -284,6 +309,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
+    ft_printf(&data);
     status = execute_package(&data, &g_collector, &env_list);
     free(line);
     clear_bin(&g_collector);

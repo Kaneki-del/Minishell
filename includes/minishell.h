@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 21:28:18 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:58:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,9 @@ void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
 void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
-t_env *check_if_there(char *key, t_env **env_list);
+t_env *check_if_there(const char *key, t_env **env_list);
 void handle_echo(char **cmd,  t_gc **gc);
 void handle_pwd(void);
+int handle_cd(char **new_path, t_env **env_list, t_gc **gc);
 
 #endif
