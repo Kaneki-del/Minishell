@@ -59,11 +59,19 @@ int token_checker(t_token **tokens, t_gc **g_collector)
   {
     if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_IN)
         return (ft_error("bash: syntax error near unexpected token", '<', 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_OUT)
+    else if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_OUT)
         return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_APPEND)
+    else if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_APPEND)
         return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_HEREDOC)
+    else if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_HEREDOC)
+        return (ft_error("bash: syntax error near unexpected token", '<', 2, g_collector), 0);
+    else if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_APPEND)
+        return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
+    else if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_OUT)
+        return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
+    else if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_HEREDOC)
+        return (ft_error("bash: syntax error near unexpected token", '>', 2, g_collector), 0);
+    else if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_IN)
         return (ft_error("bash: syntax error near unexpected token", '<', 2, g_collector), 0);
     iter = iter->next;
   }

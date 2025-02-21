@@ -19,7 +19,6 @@ char check_in_qoutation(char c)
     return (qoute);
 }
 
-
 char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
 {
     int i;
@@ -40,7 +39,7 @@ char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
     while (command[i])
     {
         check_in_qoutation(command[i]);
-        if (command[i] == '$' && check_in_qoutation(command[i]) != '\'' && ft_isalnum(command[i + 1]))
+        if (command[i] == '$' && check_in_qoutation(command[i]) != '\'' && (command[i + 1] == '_' || ft_isalnum(command[i + 1])))
         {
             i++;
             start = i;
@@ -55,7 +54,7 @@ char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
             new_command = ft_strjoin(new_command, pair->value, g_collector);
             continue ;
         }
-        if (command[i] == '~' && (command[i + 1] == ' ' || command[i + 1] == '\0') && (command[i - 1] == ' ' || command[i - 1] == '\0'))
+        else if (command[i] == '~' && (command[i + 1] == ' ' || command[i + 1] == '\0') && (command[i - 1] == ' ' || command[i - 1] == '\0'))
         {
             i++;
             pair = check_if_there("HOME", env_list);
