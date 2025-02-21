@@ -2,7 +2,7 @@
 #include "../../includes/minishell.h"
 int check_builtin_commands(char **commands) {
   // List of built-in commands
-  char *builtins[] = {"cd", "pwd", "export", "unset", "env", "exit"};
+  char *builtins[] = {"cd", "pwd", "export", "unset", "env", "exit", "echo"};
 
   // Check if the first command (index 0) matches any built-in command
   if (commands[0] != NULL) {

@@ -58,8 +58,12 @@ void do_mode(char **key_value, t_env **node, t_gc **gc, int a)
   value = key_value[1];
   if (a == 1)
     (*node)->value = ft_strjoin((*node)->value, value, gc);
-  else
+  else{
+    free((*node)->value);
+    (*node)->value = NULL;
+    if (value)
     (*node)->value = strdup(value);
+  }
 }
 char **get_befor(const char *cmd, t_gc **gc) 
 {

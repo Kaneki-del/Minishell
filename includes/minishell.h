@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 12:47:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:30:43 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_env *copy_list(t_env *head);
 char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
 char *find_executable_path(t_env *env_list, char **cmd_tabs, t_gc **gc);
 char *get_env_path(t_env *env_list, t_gc **gc);
-void ft_putstr_fd(char *s, int fd, char c);
+void ft_putstr_fd(char *s, int fd);
 int open_file(char *file, int in_or_out);
 void executing(t_env *env_list, char **cmd_args, t_gc **gc) ;
 void print_error(char *cmd_input);
@@ -113,4 +113,8 @@ void print_export(t_env *env_list);
 int add_export(char **cmd, t_env **env_list, t_gc **gc);
 void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
+void delete_node(t_env **list_env, char *key);
+void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
+t_env *check_if_there(char *key, t_env **env_list);
+void handle_echo(char **cmd,  t_gc **gc);
 #endif

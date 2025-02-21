@@ -10,7 +10,12 @@ void print_env_list(t_env *env_list) {
     current = current->next;
   }
 }
-
+// void prtin_tabs(char **cmd)
+// {
+//   int i = 0;
+//   printf("cmd=>|%s|\n", cmd[i]);
+//   i++;
+// }
 void handle_export(char **cmd, t_env **env_list, t_gc **gc) {
   int i = 0;
   while (cmd[i])
@@ -23,6 +28,7 @@ void handle_export(char **cmd, t_env **env_list, t_gc **gc) {
 
 int built_in(char **cmd, t_env **env_list, t_gc **gc) 
 {
+  // prtin_tabs(cmd);
   if (ft_strcmp(cmd[0], "env") == 0) {
     print_env_list(*env_list);
     return 0;
@@ -31,5 +37,15 @@ int built_in(char **cmd, t_env **env_list, t_gc **gc)
     handle_export(cmd, env_list, gc);
     return 0;
   }
+  else if (ft_strcmp(cmd[0], "unset") == 0) {
+    handle_unset(cmd, env_list, gc);
+    return 0;
+  }
+  else if (ft_strcmp(cmd[0], "echo") == 0) {
+    printf("i am here");
+    handle_echo(cmd,gc);
+    return 0;
+  }
   return 1;
+
 }
