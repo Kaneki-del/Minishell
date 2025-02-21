@@ -6,11 +6,50 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 21:46:07 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:55:10 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+// void ft_print2d(char **str)
+// {
+//   int i;
+
+//   i = 0;
+//   while (str[i])
+//   {
+//     printf("%s ", str[i]);
+//     i++;  
+//   }
+// }
+// void ft_printf(t_data **data)
+// {
+//   t_data *iter;
+
+//   iter = *data;
+//   while (iter)
+//   {
+//     ft_print2d(iter->cmds);
+//     printf("\n");
+//     ft_print2d(iter->directions);
+//     printf("\n");
+//     iter = iter->next;
+//   }
+// }
+
+
+// void ft_printf(t_token **data)
+// {
+//   t_token *iter;
+
+//   iter = *data;
+//   while (iter)
+//   {
+//     printf("[%s]\n", iter->value);
+//     iter = iter->next;
+//   }
+// }
 
 int main(int ac, char **av, char **env) {
   (void)ac;
@@ -37,6 +76,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
+    // ft_printf(&tokens);
     status = execute_package(&data, &g_collector, &env_list);
     free(line);
     clear_bin(&g_collector);

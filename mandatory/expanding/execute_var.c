@@ -19,13 +19,14 @@ char check_in_qoutation(char c)
     return (qoute);
 }
 
+
 char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
 {
     int i;
     int start;
     char *key;
     char *new_command;
-    t_env *par;
+    t_env *pair;
 
     (void)env_list;
     (void)g_collector;
@@ -33,8 +34,7 @@ char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
     start = 0;
     key = NULL;
     new_command = NULL;
-    par = NULL;
-    printf("( pid %d)", getpid());
+    pair = NULL;
     if (!command)
         return (NULL);
     while (command[i])
@@ -48,15 +48,24 @@ char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
                 start++;
             key = gc(start - i + 1, g_collector);
             ft_strlcpy(key, &command[i], start - i + 1 );
-            par = check_if_there(key, env_list);
+            pair = check_if_there(key, env_list);
             i = start;
-            if (!par)
+            if (!pair)
                 continue ;
-            new_command = ft_strjoin(new_command, par->value, g_collector);
+            new_command = ft_strjoin(new_command, pair->value, g_collector);
             continue ;
+        }
+        if (command[i] == '~' && (command[i + 1] == ' ' || command[i + 1] == '\0') && (command[i - 1] == ' ' || command[i - 1] == '\0'))
+        {
+            i++;
+            pair = check_if_there("HOME", env_list);
+            if (!pair)
+                continue ;
+            new_command = ft_strjoin(new_command, pair->value, g_collector);
         }
         new_command = ft_strchr_join(new_command, command[i], g_collector);
         i++;
     }
     return (new_command);
 }
+

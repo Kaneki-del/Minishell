@@ -1,30 +1,24 @@
 #include "../../includes/minishell.h"
 
-int token_split(t_token **token, char *s_part, int *pos,t_gc **g_collector)
+int token_split(t_token **token, char *s_part, int *i,t_gc **g_collector)
 {
-    int i;
-
-    i = *pos;
-    if ((ft_strchr("<|>", s_part[i]) && (s_part[i + 1] == '\0' || s_part[i + 1] == '\n')) || (s_part[0] == '|'))
-        return (ft_error("bash: syntax error near unexpected token", s_part[i], 2, g_collector), 0);
-    else if (s_part[i] == '<' && s_part[i + 1] == '<') {
+    if ((ft_strchr("<|>", s_part[(*i)]) && (s_part[(*i) + 1] == '\0' || s_part[(*i) + 1] == '\n')) || (s_part[0] == '|'))
+        return (ft_error("bash: syntax error near unexpected token", s_part[(*i)], 2, g_collector), 0);
+    else if (s_part[(*i)] == '<' && s_part[(*i) + 1] == '<')
+    {
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
-        i++;
-      }
-    else if (s_part[i] == '>' && s_part[i + 1] == '>') {
+        (*i) += 2;
+    }
+    else if (s_part[(*i)] == '>' && s_part[(*i) + 1] == '>') {
         ft_lstadd_back(token, ft_lstnew(ft_strdup(">>", g_collector), T_REDIRECTE_APPEND, g_collector));
-        i++;
+        (*i) += 2;
       }
-    else if (s_part[i] == '<')
+    else if (s_part[(*i)] == '<')
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<", g_collector), T_REDIRECTE_IN, g_collector));
-    else if (s_part[i] == '>')
+    else if (s_part[(*i)] == '>')
         ft_lstadd_back(token, ft_lstnew(ft_strdup(">", g_collector), T_REDIRECTE_OUT, g_collector));
-    else if (s_part[i] == '|')
+    else if (s_part[(*i)] == '|')
         ft_lstadd_back(token, ft_lstnew(ft_strdup("|", g_collector), T_PIPE, g_collector));
-    else if (s_part[i] == '\\' && ft_strchr("<|>", s_part[i + 1])) {
-        ft_lstadd_back(token, ft_lstnew(ft_chrjoin('\\', s_part[i + 1], g_collector), T_WORD, g_collector));
-        i++;
-      }
     return (1);
 }
 
@@ -36,7 +30,8 @@ int skeep_special_char(char *s_part, int *start, t_gc **g_collector)
     is_in = 0;
     while (s_part[(*start)] && !ft_strchr("<|>", s_part[(*start)]) && !ft_strchr(" \n\t", s_part[(*start)]))
     {
-        if (s_part[(*start)] == '\'' || s_part[(*start)] == '"') {
+        if (s_part[(*start)] == '\'' || s_part[(*start)] == '"')
+        {
             qoute = s_part[(*start)];
             ((*start)++, is_in = 1);
             while (s_part[(*start)] && s_part[(*start)] != qoute)
