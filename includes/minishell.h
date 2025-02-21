@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 16:34:28 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/21 20:18:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
-void single_command(t_data *list, t_gc **g_collector, t_env *env_list);
+int single_command(t_data *list, t_gc **g_collector, t_env *env_list);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
 int run_multiple(t_data **list, char **env, t_gc **g_collector);
