@@ -25,21 +25,25 @@ t_env *ft_lstlast(t_env *lst) {
 int filter_key(char *key, char *value)
 {
   int i = 0;
-  int j = 0;
+
   if (key[0] >= '0' && key[0] <= '9')
     return 1;
-  while (key[j])
-    j++;
-  while (key[i])
+ 
+  while (key[i] && key[i + 1])
   {
     if (!((key[i] >= 'a' && key[i] <= 'z') || 
           (key[i] >= 'A' && key[i] <= 'Z') || 
           (key[i] >= '0' && key[i] <= '9') ||
-          key[i] == '_' ||
-          (i == j - 1 && key[i] == '+' && value != NULL))) // Only allow '+' at the end
+          key[i] == '_' ))
       return 1; // Invalid key, return immediately
     i++; // Increment only if the character is valid
   }
+  if (!((key[i] >= 'a' && key[i] <= 'z') || 
+          (key[i] >= 'A' && key[i] <= 'Z') || 
+          (key[i] >= '0' && key[i] <= '9') ||
+          key[i] == '_'  || (key[i] == '+' && value != NULL ))){
+            return 1;
+          }
   return 0;
 }
 t_env *check_if_there(char *key, t_env **env_list)
@@ -72,10 +76,12 @@ char **get_befor(const char *cmd, t_gc **gc) {
   while (cmd[i] != '=' && cmd[i])
     i++;
   to_return[0] = ft_substr(cmd, 0, i, gc);
-  if (cmd[i] == '=') {
+  if (cmd[i] == '=') 
+  {
     i++;
-    to_return[1] = ft_substr(cmd + i, i, ft_strlen(cmd + i), gc);
-  } else
+    to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), gc);
+  } 
+  else
     to_return[1] = NULL;
   to_return[3] = 0;
   return to_return;
@@ -83,14 +89,16 @@ char **get_befor(const char *cmd, t_gc **gc) {
 int add_export(char **cmd, t_env **env_list, t_gc **gc)
 {
   int i = 0;
-  char **splited_equal;
-  int status;
+  char  **splited_equal;
+  int   status;
   t_env *temp = NULL;
-  while (cmd[i]) {
+
+  while (cmd[i]) 
+  {
     splited_equal = get_befor(cmd[i], gc);
-    if (filter_key(cmd[0], cmd[1]) == 0)
+    if (filter_key(splited_equal[0], splited_equal[1]) == 0)
     {
-      temp = check_if_there(cmd[0], env_list) ;
+      temp = check_if_there(splited_equal[0], env_list) ;
       if (temp != NULL)
         do_mode(cmd, &temp, gc);
       else
