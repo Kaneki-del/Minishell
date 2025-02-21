@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 19:30:43 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/21 21:28:18 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,6 @@ void delete_node(t_env **list_env, char *key);
 void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
 t_env *check_if_there(char *key, t_env **env_list);
 void handle_echo(char **cmd,  t_gc **gc);
+void handle_pwd(void);
+
 #endif

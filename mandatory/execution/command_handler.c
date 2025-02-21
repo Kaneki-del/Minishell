@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+
 static void intial(t_data **list) {
     t_data *current = *list;
 
