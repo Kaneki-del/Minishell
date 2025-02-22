@@ -3,6 +3,7 @@
 
 void echo(char **cmd, t_gc **gc)
 {
+
 	(void)gc;
 	int	i;
     int new_line;
