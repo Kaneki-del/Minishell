@@ -8,7 +8,7 @@ void print_er(char **str)
     i++;
   }
 }
-int single_command(t_data *list, t_gc **g_collector, t_env **env_list, t_gc **gc_env) 
+int single_command(t_data *list, t_gc **g_collector, t_env **env_list)
 {
     pid_t pid;
     int status = 0;
@@ -18,7 +18,7 @@ int single_command(t_data *list, t_gc **g_collector, t_env **env_list, t_gc **gc
     //   print_er(list->directions);
     
     if (check_builtin_commands(list->cmds)) {
-        return (built_in(list->cmds, env_list, gc_env));
+        return (built_in(list->cmds, env_list, g_collector));
        
     }
     pid = fork();
