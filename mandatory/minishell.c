@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/22 17:06:33 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/22 21:10:38 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int main(int ac, char **av, char **env) {
       continue;
     // ft_printf(&data);
     status = execute_package(&data, &g_collector, &env_list, &g_env_collector);
+  
     free(line);
     clear_bin(&g_collector);
   }

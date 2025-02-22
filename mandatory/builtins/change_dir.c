@@ -2,16 +2,16 @@
 
 #include <string.h>
 //updte the old pwd if the cd run succesfully
-// void update_old_pwd(t_env **env_list)
-// {
-//     t_env *old_pwd = NULL;
-//     old_pwd = check_if_there("OLDPWD", env_list);
-//     if (old_pwd != NULL)
-//     {
-//         // free(old_pwd->value);
-//         old_pwd->value = check_if_there(".OLDPWD", env_list)->value;
-//     } 
-// }
+void update_old_pwd(t_env **env_list)
+{
+    t_env *old_pwd = NULL;
+    old_pwd = check_if_there("OLDPWD", env_list);
+    if (old_pwd != NULL)
+    {
+        // free(old_pwd->value);
+        old_pwd->value = check_if_there(".OLDPWD", env_list)->value;
+    } 
+}
 //function that creat or update the hiden old pwd
 void update_original_pwd(t_env **env_list)
 {
@@ -55,7 +55,7 @@ void updte_old_pwd_hiden(t_env **env_list)
 
 int handle_cd(char **new_path, t_env **env_list, t_gc **gc)
 {
-    // updte_old_pwd_hiden(env_list);
+    updte_old_pwd_hiden(env_list);
     t_env *temp = NULL;
     if (new_path[0])
     {
@@ -75,6 +75,6 @@ int handle_cd(char **new_path, t_env **env_list, t_gc **gc)
         }
     }
     update_original_pwd(env_list);
-    // update_old_pwd(env_list);
+    update_old_pwd(env_list);
     return 0;
 }

@@ -113,7 +113,9 @@ void clean_pwd(t_env **env_list) {
 // function to copy a local of the env in a linked list
 t_env *get_env_list(char **env) 
 {
-  int i = 0;
+  int i;
+  
+  i = 0;
   t_env *returned_env;
   returned_env = NULL;
   char **temp;
@@ -123,6 +125,10 @@ t_env *get_env_list(char **env)
     free(temp);
     i++;
   }
-  clean_pwd(&returned_env);
+    if (check_if_there("OLDPWD", &returned_env) == NULL)
+      lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL));
+    else  
+      clean_pwd(&returned_env);
   return returned_env;
 }
+
