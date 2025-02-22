@@ -61,7 +61,7 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
 	if (only_command)
-    	only_command = check_env_var(only_command, env_list, g_collector);
+    	only_command = check_env_var(only_command, env_list, g_collector, data);
     cmd_optios = filterd(ft_split(only_command, ' ', g_collector), env_list, g_collector);
     if (!cmd_optios)
       return (0);
