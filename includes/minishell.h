@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/22 17:35:46 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/22 19:56:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
-int single_command(t_data *list, t_gc **g_collector, t_env **env_list, t_gc **gc_env) ;
+int single_command(t_data *list, t_gc **g_collector, t_env **env_list);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
 int run_multiple(t_data **list, t_env **env, t_gc **g_collector);
-int execute_package(t_data **list,t_gc **g_collector, t_env **env_list, t_gc **env_gc);
+int execute_package(t_data **list,t_gc **g_collector, t_env **env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
@@ -128,7 +128,7 @@ void delete_node(t_env **list_env, char *key);
 void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
 t_env *check_if_there(const char *key, t_env **env_list);
 void handle_echo(char **cmd,  t_gc **gc);
-void handle_pwd(t_env **env_list);
+void handle_pwd(void);
 int handle_cd(char **new_path, t_env **env_list, t_gc **gc);
 t_env *check_if_there(const char *key, t_env **env_list);
 
