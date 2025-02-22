@@ -19,50 +19,75 @@ char check_in_qoutation(char c)
     return (qoute);
 }
 
+char *expand(char *command, int* i, t_env **env_list, t_gc **g_collector )
+{
+    t_env *pair;
+    char *key;
+    int start;
+
+    pair = NULL;
+    key = NULL;
+    if (command[(*i)] == '$' && check_in_qoutation(command[(*i)]) != '\'' && (command[(*i) + 1] == '_' || ft_isalpha(command[(*i) + 1])))
+    {
+        (*i)++;
+        start = (*i);
+
+        while (command[start] && command[start] != ' ' && command[start] != '$' && command[start] != '"' && command[start] != '\'')
+            start++;
+        key = gc(start - (*i) + 1, g_collector);
+        ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
+        pair = check_if_there(key, env_list);
+        (*i) = start;
+        if (!pair)
+            return (NULL);
+        return (pair->value);
+    }
+    return (NULL);
+}
+
+char *expand_telda(char *command, int *i, t_env **env_list )
+{
+    t_env *pair;
+
+    pair = NULL;
+    if (command[(*i)] == '~' && !check_in_qoutation(command[(*i)]) && ((command[(*i) + 1] == ' ' || command[(*i) + 1] == '\0') && (command[(*i) - 1] == ' ')))
+    {
+        printf("(%c)", command[(*i)]);
+        (*i)++;
+        pair = check_if_there("HOME", env_list);
+        if (!pair)
+            return (NULL);
+        return (pair->value);
+    }
+    return (NULL);
+}
+
 char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
 {
     int i;
-    int start;
-    char *key;
     char *new_command;
-    t_env *pair;
+    char *curent_part;
 
-    (void)env_list;
-    (void)g_collector;
     i = 0;
-    start = 0;
-    key = NULL;
     new_command = NULL;
-    pair = NULL;
-    if (!command)
-        return (NULL);
+    curent_part = NULL;
     while (command[i])
     {
         check_in_qoutation(command[i]);
-        if (command[i] == '$' && check_in_qoutation(command[i]) != '\'' && (command[i + 1] == '_' || ft_isalpha(command[i + 1])))
+        curent_part  = expand(command, &i, env_list, g_collector);
+        if (curent_part)
         {
-            i++;
-            start = i;
-            while (command[start] && command[start] != ' ' && command[start] != '$' && command[start] != '"' && command[start] != '\'')
-                start++;
-            key = gc(start - i + 1, g_collector);
-            ft_strlcpy(key, &command[i], start - i + 1 );
-            pair = check_if_there(key, env_list);
-            i = start;
-            if (!pair)
-                continue ;
-            new_command = ft_strjoin(new_command, pair->value, g_collector);
+            new_command = ft_strjoin(new_command, curent_part, g_collector);
             continue ;
         }
-        else if (command[i] == '~' && (command[i + 1] == ' ' || command[i + 1] == '\0') && (command[i - 1] == ' ' || command[i - 1] == '\0'))
+        curent_part = expand_telda(command, &i, env_list);
+        if (curent_part)
         {
-            i++;
-            pair = check_if_there("HOME", env_list);
-            if (!pair)
-                continue ;
-            new_command = ft_strjoin(new_command, pair->value, g_collector);
+            new_command = ft_strjoin(new_command, curent_part, g_collector);
+            continue ;
         }
         new_command = ft_strchr_join(new_command, command[i], g_collector);
+        // printf("%s\n", command);
         i++;
     }
     return (new_command);

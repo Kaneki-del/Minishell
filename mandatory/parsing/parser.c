@@ -20,34 +20,6 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
   return (NULL);
 }
 
-int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list)
-{
-  t_token *iter;
-  char *dir_files;
-  char *only_command;
-  char **cmd_optios;
-
-  dir_files = NULL;
-  only_command = NULL;
-  iter = *token;
-  (void)env_list;
-  while (iter)
-  {
-    // loop until |
-    iter = init_data(iter, &dir_files, &only_command, g_collector);
-    // filter beside or secounded qoutes
-    // only_command = filer_qoutations(only_command);
-    only_command = check_env_var(only_command, env_list, g_collector);
-    cmd_optios = filterd(ft_split(only_command, ' ', g_collector), env_list, g_collector);
-    if (!cmd_optios)
-      return (0);
-    // split redirections and command (with options) and pass them to creat a
-    // new node (general structer) than add the node at the end of list
-    add_data_back(data, new_data_node(cmd_optios, ft_split(dir_files, ' ', g_collector), g_collector));
-  }
-  return (1);
-}
-
 int token_checker(t_token **tokens, t_gc **g_collector)
 {
   t_token *iter;
@@ -59,51 +31,43 @@ int token_checker(t_token **tokens, t_gc **g_collector)
   {
     if (iter->token_type == T_PIPE && iter->next->token_type == T_PIPE)
         return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-
-    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_IN)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_OUT)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_HEREDOC)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_REDIRECTE_APPEND)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_IN && iter->next->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_OUT)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_IN)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_HEREDOC)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_REDIRECTE_APPEND)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_OUT && iter->next->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_APPEND)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_HEREDOC)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_OUT)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_REDIRECTE_IN)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_APPEND && iter->next->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_HEREDOC)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_APPEND)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_IN)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_REDIRECTE_OUT)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (iter->token_type == T_REDIRECTE_HEREDOC && iter->next->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
+    if (redirection_pipe_check (iter, T_REDIRECTE_IN, g_collector) == 0)
+		return (0);
+	if (redirection_pipe_check (iter, T_REDIRECTE_OUT, g_collector) == 0)
+		return (0);
+	if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, g_collector) == 0)
+		return (0);
+	if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, g_collector) == 0)
+		return (0);
     iter = iter->next;
+  }
+  return (1);
+}
+
+int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list)
+{
+  t_token *iter;
+  char *dir_files;
+  char *only_command;
+  char **cmd_optios;
+
+  dir_files = NULL;
+  only_command = NULL;
+  iter = *token;
+  while (iter)
+  {
+    // loop until |
+    iter = init_data(iter, &dir_files, &only_command, g_collector);
+    // filter beside or secounded qoutes
+    // only_command = filer_qoutations(only_command);
+	if (only_command)
+    	only_command = check_env_var(only_command, env_list, g_collector);
+    cmd_optios = filterd(ft_split(only_command, ' ', g_collector), env_list, g_collector);
+    if (!cmd_optios)
+      return (0);
+    // split redirections and command (with options) and pass them to creat a
+    // new node (general structer) than add the node at the end of list
+    add_data_back(data, new_data_node(cmd_optios, ft_split(dir_files, ' ', g_collector), g_collector));
   }
   return (1);
 }

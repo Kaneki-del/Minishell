@@ -11,7 +11,8 @@ int token_split(t_token **token, char *s_part, int *i,t_gc **g_collector)
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
         (*i)++;
     }
-    else if (s_part[(*i)] == '>' && s_part[(*i) + 1] == '>') {
+    else if (s_part[(*i)] == '>' && s_part[(*i) + 1] == '>')
+    {
         ft_lstadd_back(token, ft_lstnew(ft_strdup(">>", g_collector), T_REDIRECTE_APPEND, g_collector));
         (*i)++;
       }
