@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 23:57:51 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:06:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int main(int ac, char **av, char **env) {
   t_token *tokens;
   t_data *data;
   t_gc *g_collector;
+  t_gc *g_env_collector;
   // our local env
   t_env *env_list;
   env_list = get_env_list(env);
@@ -68,6 +69,7 @@ int main(int ac, char **av, char **env) {
     tokens = NULL;
     data = NULL;
     g_collector = NULL;
+    g_env_collector = NULL;
     line = readline("\033[2;34mshell$> \033[0m");
     if (!line)
       exit(EXIT_SUCCESS);
@@ -77,7 +79,7 @@ int main(int ac, char **av, char **env) {
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
     // ft_printf(&data);
-    status = execute_package(&data, &g_collector, &env_list);
+    status = execute_package(&data, &g_collector, &env_list, &g_env_collector);
     free(line);
     clear_bin(&g_collector);
   }
