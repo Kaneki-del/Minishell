@@ -39,7 +39,7 @@ char *check_env_var(char *command, t_env **env_list, t_gc **g_collector)
     while (command[i])
     {
         check_in_qoutation(command[i]);
-        if (command[i] == '$' && check_in_qoutation(command[i]) != '\'' && (command[i + 1] == '_' || ft_isalnum(command[i + 1])))
+        if (command[i] == '$' && check_in_qoutation(command[i]) != '\'' && (command[i + 1] == '_' || ft_isalpha(command[i + 1])))
         {
             i++;
             start = i;

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 23:35:59 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/22 10:03:46 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char **filterd(char **cmds,t_env **env_list,t_gc **g_collector);
 int tokener(t_token **token, t_gc **g_collector, char *s_part);
 char *check_env_var(char *command, t_env **env_list, t_gc **g_collector);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
-int	ft_isalnum(int c);
+int	ft_isalpha(int c);
 
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char dis,int fd, t_gc **g_collector);

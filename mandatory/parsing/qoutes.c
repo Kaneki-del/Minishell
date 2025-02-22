@@ -34,6 +34,7 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
 char **filterd(char **cmds,t_env **env_list,t_gc **g_collector)
 {
   int i;
+  
 
   i = 0;
   (void)env_list;
