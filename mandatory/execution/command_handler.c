@@ -24,8 +24,8 @@ int execute_package(t_data **list,t_gc **g_collector, t_env **env_list)
     get_fds(*list);
     exit_code = single_command(*list, g_collector, env_list);
   } 
-  /* else if (list_size >= 2) { */
-  /*   exit_code = run_multiple(list, env, g_collector); */
-  /* } */
+  else if (list_size >= 2) { 
+    exit_code = run_multiple(list, env_list, g_collector); 
+  }
   return (exit_code);
 }

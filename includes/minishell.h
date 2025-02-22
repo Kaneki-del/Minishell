@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 23:35:59 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/22 11:09:50 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char *ft_chrjoin(char c, char b, t_gc **g_collector);
 int single_command(t_data *list, t_gc **g_collector, t_env **env_list);
 int ft_lstsize(t_data *lst);
 void get_fds(t_data *list);
-int run_multiple(t_data **list, char **env, t_gc **g_collector);
+int run_multiple(t_data **list, t_env **env, t_gc **g_collector);
 int execute_package(t_data **list,t_gc **g_collector, t_env **env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
@@ -130,7 +130,6 @@ t_env *check_if_there(const char *key, t_env **env_list);
 void handle_echo(char **cmd,  t_gc **gc);
 void handle_pwd(void);
 int handle_cd(char **new_path, t_env **env_list, t_gc **gc);
-
 t_env *check_if_there(const char *key, t_env **env_list);
 
 #endif
