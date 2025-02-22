@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:20:31 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 23:57:51 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:09:29 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void ft_print2d(char **str)
   int i;
 
   i = 0;
+  if (!str)
+    return ;
   while (str[i])
   {
     printf("%s ", str[i]);
@@ -30,9 +32,18 @@ void ft_printf(t_data **data)
   iter = *data;
   while (iter)
   {
+    printf("\n");
+    printf("================================\n");
+    printf("\n");
+    printf("\n");
+    printf("COMMAND   : ");
     ft_print2d(iter->cmds);
     printf("\n");
+    printf("DIRECTION : ");
     ft_print2d(iter->directions);
+    printf("\n");
+    printf("\n");
+    printf("================================\n");
     printf("\n");
     iter = iter->next;
   }
@@ -76,7 +87,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
       continue;
-    // ft_printf(&data);
+    ft_printf(&data);
     status = execute_package(&data, &g_collector, &env_list);
     free(line);
     clear_bin(&g_collector);

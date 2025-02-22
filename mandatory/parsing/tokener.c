@@ -2,8 +2,10 @@
 
 int token_split(t_token **token, char *s_part, int *i,t_gc **g_collector)
 {
-    if ((ft_strchr("<|>", s_part[(*i)]) && (s_part[(*i) + 1] == '\0' || s_part[(*i) + 1] == '\n')) || (s_part[0] == '|'))
-        return (ft_error("bash: syntax error near unexpected token", s_part[(*i)], 2, g_collector), 0);
+    if (s_part[(*i)] != '\0' && (ft_strchr("<|>", s_part[(*i)]) && (s_part[(*i) + 1] == '\0' || s_part[(*i) + 1] == '\n')))
+        return (ft_error("bash: syntax error near unexpected token", "newline", 2, g_collector), 0);
+    else if (s_part[0] == '|' || (s_part[(*i)] == '|' && s_part[(*i) + 1] == '\0'))
+        return (ft_error("bash: syntax error near unexpected token", "|", 2, g_collector), 0);
     else if (s_part[(*i)] == '<' && s_part[(*i) + 1] == '<')
     {
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<<", g_collector), T_REDIRECTE_HEREDOC, g_collector));
@@ -16,7 +18,11 @@ int token_split(t_token **token, char *s_part, int *i,t_gc **g_collector)
     else if (s_part[(*i)] == '<')
         ft_lstadd_back(token, ft_lstnew(ft_strdup("<", g_collector), T_REDIRECTE_IN, g_collector));
     else if (s_part[(*i)] == '>')
+    {
         ft_lstadd_back(token, ft_lstnew(ft_strdup(">", g_collector), T_REDIRECTE_OUT, g_collector));
+        if (s_part[(*i) + 1] == '|')
+            (*i)++;
+    }
     else if (s_part[(*i)] == '|')
         ft_lstadd_back(token, ft_lstnew(ft_strdup("|", g_collector), T_PIPE, g_collector));
     return (1);
@@ -44,7 +50,7 @@ int skeep_special_char(char *s_part, int *start, t_gc **g_collector)
             (*start)++;
     }
     if (is_in == 1)
-        return (ft_error("bash: syntax error near unexpected token", qoute, 2, g_collector), 0);
+        return (ft_error("bash: syntax error near unexpected token", &qoute, 2, g_collector), 0);
     return (1);
 }
 

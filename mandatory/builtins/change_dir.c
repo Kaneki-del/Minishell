@@ -16,7 +16,7 @@ int handle_cd(char **new_path, t_env **env_list, t_gc **gc)
 
         // temp = check_if_there("HOME", env_list); 
         if (chdir(check_if_there("HOME", env_list)->value) == -1) {
-            return (ft_error("bash: cd: HOME not set", '\0', 2, gc), 1);
+            return (ft_error("bash: cd: HOME not set", NULL, 2, gc), 1);
         }
     }
     return 0;

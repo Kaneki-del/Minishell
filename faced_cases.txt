@@ -46,3 +46,7 @@ echo "  ''"$USER"''  "
 echo "  ''$USER''  "
 echo "  '$USER'  "
 echo "'$USER'"
+
+bash-3.2$ ls << s >
+> s
+bash: syntax error near unexpected token `newline'
