@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/21 19:29:50 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/23 10:16:15 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,86 +52,71 @@ char	*ft_str_join(char const *s1, char const *s2, t_gc **gc)
 	ft_strlcat(result, s2, total_len);
 	return (result);
 }
-/* t_env *lstnew_env(char *key, char *value) { */
-/*   t_env *new_node; */
-/**/
-/*   new_node = (t_env *)malloc(sizeof(t_env)); */
-/*   if (!new_node) */
-/*     return (NULL); */
-/*   new_node->key = key; */
-/*   new_node->value = value; */
-/*   new_node->next = NULL; */
-/*   return (new_node); */
-/* } */
-/* t_env *copy_list(t_env *head) { */
-/*   if (!head) */
-/*     return NULL; */
-/*   t_env *new_head = lstnew_env(head->key, head->value); */
-/*   t_env *current_old = head->next; */
-/*   t_env *current_new = new_head; */
-/*   t_env *new_node; */
-/*   while (current_old) { */
-/*     new_node = lstnew_env(current_old->key, current_old->value); */
-/*     current_new->next = new_node; */
-/*     current_new = new_node; */
-/*     current_old = current_old->next; */
-/*   } */
-/*   return new_head; */
-/* } */
-char **env_to_array(t_env *head, t_gc **g_collector) {
-  t_env *temp = NULL;
-  int count = 0;
-  temp = head;
-  while (temp) {
-    count++;
-    temp = temp->next;
-  }
 
-  char **env_array = malloc((count + 1) * sizeof(char *));
-  if (!env_array) {
-    perror("malloc failed");
-    exit(1);
-  }
-  temp = head;
-  char *tem = NULL;
-  int i = 0;
+char	**env_to_array(t_env *head, t_gc **g_collector)
+{
+	t_env	*temp;
+	int		count;
+	char	**env_array;
+	char	*tem;
+	int		i;
 
-  while (temp) {
-   
-    tem = ft_str_join(temp->key, "=", g_collector);
-    env_array[i] = ft_str_join(tem, temp->value, g_collector);
-    i++;
-    temp = temp->next;
-  }
- 
-  env_array[i] = NULL; 
-  return env_array;
+	temp = NULL;
+	count = 0;
+	temp = head;
+	while (temp)
+	{
+		count++;
+		temp = temp->next;
+	}
+	env_array = malloc((count + 1) * sizeof(char *));
+	if (!env_array)
+	{
+		perror("malloc failed");
+		exit(1);
+	}
+	temp = head;
+	tem = NULL;
+	i = 0;
+	while (temp)
+	{
+		tem = ft_str_join(temp->key, "=", g_collector);
+		env_array[i] = ft_str_join(tem, temp->value, g_collector);
+		i++;
+		temp = temp->next;
+	}
+	env_array[i] = NULL;
+	return (env_array);
 }
 
-void print_error(char *cmd_input) {
-  ft_putstr_fd("zsh: command not found: ", 2);
-  ft_putstr_fd(cmd_input, 2);
-  exit(127);
+void	print_error(char *cmd_input)
+{
+	ft_putstr_fd("zsh: command not found: ", 2);
+	ft_putstr_fd(cmd_input, 2);
+	exit(127);
 }
 
-void executing(t_env *env_list, char **cmd_args, t_gc **gc) {
-  char *cmd_path;
-  
-  if (!env_list)
-    exit(127);
-  if (!cmd_args || !cmd_args[0]) 
-  {
-    print_error("Empty command");
-    exit(127);
-  }
-  cmd_path = find_executable_path(env_list, cmd_args, gc);
-  char **list_char = env_to_array(env_list, gc);
-  if (cmd_args) {
-    if (execve(cmd_path, cmd_args, list_char) == -1) {
-      print_error(cmd_args[0]);
-      exit(127);
-    }
-  }
+void	executing(t_env *env_list, char **cmd_args, t_gc **gc)
+{
+	char	*cmd_path;
+	char	**list_char;
 
-  exit(127);
+	if (!env_list)
+		exit(127);
+	if (!cmd_args || !cmd_args[0])
+	{
+		print_error("Empty command");
+		exit(127);
+	}
+	cmd_path = find_executable_path(env_list, cmd_args, gc);
+	list_char = env_to_array(env_list, gc);
+	if (cmd_args)
+	{
+		if (execve(cmd_path, cmd_args, list_char) == -1)
+		{
+			print_error(cmd_args[0]);
+			exit(127);
+		}
+	}
+	exit(127);
 }

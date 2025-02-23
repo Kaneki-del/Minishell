@@ -1,12 +1,12 @@
 
 #include "../../includes/minishell.h"
 
-void unset_key(char **cmd, t_env **env_list, t_gc **gc)
+void	unset_key(char **cmd, t_env **env_list, t_gc **gc)
 {
-	(void)gc;
-	int	i;
+	int		i;
 	t_env	*temp;
 
+	(void)gc;
 	i = 0;
 	temp = NULL;
 	while (cmd[i])
@@ -17,12 +17,14 @@ void unset_key(char **cmd, t_env **env_list, t_gc **gc)
 		i++;
 	}
 }
-void handle_unset(char **cmd, t_env **env_list, t_gc **gc)
+void	handle_unset(char **cmd, t_env **env_list, t_gc **gc)
 {
+	int	i;
+
 	(void)gc;
-    int i  = 0;
-    while (cmd[i])
-        i++;
-    if (i >= 2)
-     unset_key(cmd + 1, env_list, gc);
+	i = 0;
+	while (cmd[i])
+		i++;
+	if (i >= 2)
+		unset_key(cmd + 1, env_list, gc);
 }
