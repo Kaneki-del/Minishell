@@ -31,13 +31,12 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
   return (words_between);
 }
 
-char **filterd(char **cmds,t_env **env_list,t_gc **g_collector)
+char **filterd(char **cmds,t_gc **g_collector)
 {
   int i;
   
 
   i = 0;
-  (void)env_list;
   if (!cmds)
     return (NULL);
   while (cmds[i] != NULL)

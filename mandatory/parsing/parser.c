@@ -20,31 +20,31 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
   return (NULL);
 }
 
-int token_checker(t_token **tokens, t_gc **g_collector)
+int token_checker(t_container *content)
 {
   t_token *iter;
 
-  if (!tokens)
+  if (!content->tokens)
     return (0);
-  iter = *tokens;
+  iter = content->tokens;
   while (iter && iter->next)
   {
     if (iter->token_type == T_PIPE && iter->next->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, g_collector), 0);
-    if (redirection_pipe_check (iter, T_REDIRECTE_IN, g_collector) == 0)
+        return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, &content->g_collector), 0);
+    if (redirection_pipe_check (iter, T_REDIRECTE_IN, &content->g_collector) == 0)
 		return (0);
-	if (redirection_pipe_check (iter, T_REDIRECTE_OUT, g_collector) == 0)
+	if (redirection_pipe_check (iter, T_REDIRECTE_OUT, &content->g_collector) == 0)
 		return (0);
-	if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, g_collector) == 0)
+	if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, &content->g_collector) == 0)
 		return (0);
-	if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, g_collector) == 0)
+	if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, &content->g_collector) == 0)
 		return (0);
     iter = iter->next;
   }
   return (1);
 }
 
-int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list)
+int parser(t_container *content)
 {
   t_token *iter;
   char *dir_files;
@@ -53,35 +53,35 @@ int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list
 
   dir_files = NULL;
   only_command = NULL;
-  iter = *token;
+  iter = content->tokens;
   while (iter)
   {
     // loop until |
-    iter = init_data(iter, &dir_files, &only_command, g_collector);
+    iter = init_data(iter, &dir_files, &only_command, &content->g_collector);
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
 	if (only_command)
-    	only_command = check_env_var(only_command, env_list, g_collector, data);
-    cmd_optios = filterd(ft_split(only_command, ' ', g_collector), env_list, g_collector);
+    	only_command = check_env_var(content, only_command);
+    cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     if (!cmd_optios)
       return (0);
     // split redirections and command (with options) and pass them to creat a
     // new node (general structer) than add the node at the end of list
-    add_data_back(data, new_data_node(cmd_optios, ft_split(dir_files, ' ', g_collector), g_collector));
+    add_data_back(&content->data, new_data_node(cmd_optios, ft_split(dir_files, ' ', &content->g_collector), &content->g_collector));
   }
   return (1);
 }
 
-int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line, t_env **env_list)
+int parsing_case(t_container *content)
 {
   // split all the command line by four sings "< |>" and initial them in linked
   // list in shape of tokens
-  if (tokener(tokens, g_collector, line) == 0)
+  if (tokener(content) == 0)
     return (0);
-  if (token_checker(tokens, g_collector) == 0)
+  if (token_checker(content) == 0)
     return (0);
   // in parser fuction ill deal with all data amoung the pipes
-  if (parser(tokens, g_collector, data, env_list) == 0)
+  if (parser(content) == 0)
     return (0);
   return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/22 22:02:00 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/23 11:50:17 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,50 +50,31 @@ void ft_printf(t_data **data)
   }
 }
 
-
-// void ft_printf(t_token **data)
-// {
-//   t_token *iter;
-
-//   iter = *data;
-//   while (iter)
-//   {
-//     printf("[%s]\n", iter->value);
-//     iter = iter->next;
-//   }
-// }
-
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
-  int status;
-  char *line;
-  t_token *tokens;
-  t_data *data;
-  t_gc *g_collector;
-  t_gc *g_env_collector;
-  // our local env
-  t_env *env_list;
-  env_list = get_env_list(env);
+
+  t_container content;
+  content.env_list = get_env_list(env);
+  content.status = 0;
   while (1) {
     //remember to remove it from here
-    status = 0;
-    tokens = NULL;
-    data = NULL;
-    g_collector = NULL;
-    g_env_collector = NULL;
-    line = readline("\033[2;34mshell$> \033[0m");
-    if (!line)
+    content.tokens = NULL;
+    content.data = NULL;
+    content.g_collector = NULL;
+    content.g_env_collector = NULL;
+    content.line = readline("\033[2;34mshell$> \033[0m");
+    if (!content.line)
       exit(EXIT_SUCCESS);
-    if (line[0] != '\0')
-      add_history(line);
+    if (content.line[0] != '\0')
+      add_history(content.line);
     // this function contains all paring cases
-    if (parsing_case(&tokens, &data, &g_collector ,line, &env_list) == 0)
+    if (parsing_case(&content) == 0)
       continue;
-    ft_printf(&data);
-    status = execute_package(&data, &g_collector, &env_list);
-    free(line);
-    clear_bin(&g_collector);
+    ft_printf(&content.data);
+    content.status = execute_package(&content.data, &content.g_collector, &content.env_list);
+    free(content.line);
+    clear_bin(&content.g_collector);
   }
   return (0);
 }

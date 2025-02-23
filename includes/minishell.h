@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/22 22:06:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/23 11:37:13 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_data {
   t_type_token dir_input_type;
   t_type_token dir_output_type;
   struct s_data *next;
-  int status;
 } t_data;
 
 typedef struct s_gc {
@@ -70,13 +69,16 @@ typedef struct s_env {
   struct s_env *next;
 } t_env;
 
+// that struct contains most used variables
 typedef struct s_container
 {
   t_data *data;
-  t_token *token;
+  t_token *tokens;
   t_env *env_list;
   t_gc *g_collector;
   t_gc *g_env_collector;
+  int status;
+  char *line;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -98,15 +100,15 @@ int execute_package(t_data **list,t_gc **g_collector, t_env **env_list);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
-int parser(t_token **token,  t_gc **g_collector, t_data **data, t_env **env_list);
-int parsing_case(t_token **tokens, t_data **data, t_gc **g_collector, char *line, t_env **env_list);
+int parser(t_container *content);
+int parsing_case(t_container *content);
 void get_dir_files(char **dir_files, t_token *token, t_gc **g_collector);
 void get_command(char **only_command, t_token *token, t_gc **g_collector);
 t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc **g_collector);
 char *filer_qoutations(char *command_line,  t_gc **g_collector);
-char **filterd(char **cmds,t_env **env_list,t_gc **g_collector);
-int tokener(t_token **token, t_gc **g_collector, char *s_part);
-char *check_env_var(char *command, t_env **env_list, t_gc **g_collector, t_data **data);
+char **filterd(char **cmds,t_gc **g_collector);
+int tokener(t_container *content);
+char *check_env_var(t_container *content, char *command);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_gc **g_collector);
