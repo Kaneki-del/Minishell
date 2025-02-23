@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/23 12:18:35 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:39:17 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void print_error(char *cmd_input);
 t_env *get_env_list(char **env);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int built_in(char **cmd, t_env **env_list, t_gc **gc);
+int	built_in(char **cmd, t_env **env_list, t_gc **gc, t_data *list);
 t_env *lstnew_env(char *key, char *value);
 void print_env_list(t_env *env_list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
@@ -127,7 +127,7 @@ t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
 void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
 t_env *check_if_there(const char *key, t_env **env_list);
-void handle_echo(char **cmd,  t_gc **gc);
+void handle_echo(char **cmd,  t_gc **gc, t_data *list);
 void handle_pwd(t_env **env_list);
 int handle_cd(char **new_path, t_env **env_list, t_gc **gc);
 t_env *check_if_there(const char *key, t_env **env_list);

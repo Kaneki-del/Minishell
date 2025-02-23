@@ -32,20 +32,44 @@ void	echo(char **cmd, t_gc **gc)
 
 void	handle_echo(char **cmd, t_gc **gc, t_data *list)
 {
-	int new_fd;
+	int saved_stdout = -1; // Store original stdout
+
 	(void)gc;
 
-	if ((list->out_fd != 0))
-		close(list->out_fd);
 	if (list->in_fd != 0)
+		close(list->in_fd);
+	
+	if (list->out_fd != 0)
 	{
-		new_fd
-	}
-		
+		// Save stdout before redirection
+		saved_stdout = dup(1);
+		if (saved_stdout < 0)
+		{
+			perror("error saving stdout");
+			exit(10);
+		}
 
+		// Redirect stdout to out_fd
+		if (dup2(list->out_fd, 1) < 0)
+		{
+			perror("error in dup2");
+			exit(10);
+		}
+		close(list->out_fd);
+	}
+
+	// Execute echo
 	int i = 0;
 	while (cmd[i])
 		i++;
 	if (i >= 2)
 		echo(cmd + 1, gc);
+
+	// Restore stdout
+	if (saved_stdout != -1)
+	{
+		dup2(saved_stdout, 1);
+		close(saved_stdout);
+	}
 }
+

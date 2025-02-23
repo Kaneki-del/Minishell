@@ -29,7 +29,7 @@ void	handle_export(char **cmd, t_env **env_list, t_gc **gc)
 		add_export(cmd + 1, env_list, gc);
 }
 // for the norms 
-int	built_in(char **cmd, t_env **env_list, t_gc **gc, t_data **list)
+int	built_in(char **cmd, t_env **env_list, t_gc **gc, t_data *list)
 {
 	if (ft_strcmp(cmd[0], "env") == 0)
 	{
