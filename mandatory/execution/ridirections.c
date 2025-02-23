@@ -13,6 +13,7 @@ int open_file(char *file, int in_or_out) {
   if (ret == -1) {
     ft_putstr_fd("bash: no such file or directory: ", 2);
     ft_putstr_fd(file, 2);
+    exit(2);
   }
   return (ret);
 }

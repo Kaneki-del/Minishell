@@ -38,4 +38,6 @@ void handle_echo(char **cmd, t_gc **gc)
         i++;
     if (i >= 2)
       echo(cmd + 1,gc);
+    else
+        write(1, "\n", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/23 11:50:17 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:57:06 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ void ft_printf(t_data **data)
   }
 }
 
+void init_content(t_container *content)
+{
+	content->tokens = NULL;
+    content->data = NULL;
+    content->g_collector = NULL;
+    content->g_env_collector = NULL;
+}
+
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
@@ -59,10 +67,7 @@ int main(int ac, char **av, char **env) {
   content.status = 0;
   while (1) {
     //remember to remove it from here
-    content.tokens = NULL;
-    content.data = NULL;
-    content.g_collector = NULL;
-    content.g_env_collector = NULL;
+	init_content(&content);
     content.line = readline("\033[2;34mshell$> \033[0m");
     if (!content.line)
       exit(EXIT_SUCCESS);
