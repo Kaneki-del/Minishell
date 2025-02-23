@@ -1,6 +1,7 @@
 #include "../../includes/minishell.h"
 #include <stdio.h>
 
+
 void	print_env_list(t_env *env_list)
 {
 	t_env	*current;
@@ -28,7 +29,7 @@ void	handle_export(char **cmd, t_env **env_list, t_gc **gc)
 		add_export(cmd + 1, env_list, gc);
 }
 // for the norms 
-int	built_in(char **cmd, t_env **env_list, t_gc **gc)
+int	built_in(char **cmd, t_env **env_list, t_gc **gc, t_data **list)
 {
 	if (ft_strcmp(cmd[0], "env") == 0)
 	{
@@ -47,7 +48,7 @@ int	built_in(char **cmd, t_env **env_list, t_gc **gc)
 	}
 	else if (ft_strcmp(cmd[0], "echo") == 0)
 	{
-		handle_echo(cmd, gc);
+		handle_echo(cmd, gc, list);
 		return (0);
 	}
 	else if (ft_strcmp(cmd[0], "pwd") == 0)
@@ -60,5 +61,7 @@ int	built_in(char **cmd, t_env **env_list, t_gc **gc)
 		handle_cd(cmd + 1, env_list, gc);
 		return (0);
 	}
+	else if (ft_strcmp(cmd[0], "exit") == 0)
+		handle_exit(cmd + 1);
 	return (1);
 }

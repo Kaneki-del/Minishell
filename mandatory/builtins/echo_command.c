@@ -29,9 +29,20 @@ void	echo(char **cmd, t_gc **gc)
 	if (new_line == 0)
 		write(1, "\n", 1);
 }
-void	handle_echo(char **cmd, t_gc **gc)
+
+void	handle_echo(char **cmd, t_gc **gc, t_data *list)
 {
+	int new_fd;
 	(void)gc;
+
+	if ((list->out_fd != 0))
+		close(list->out_fd);
+	if (list->in_fd != 0)
+	{
+		new_fd
+	}
+		
+
 	int i = 0;
 	while (cmd[i])
 		i++;

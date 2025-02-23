@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/22 17:35:46 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/23 12:18:35 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,8 @@ void handle_echo(char **cmd,  t_gc **gc);
 void handle_pwd(t_env **env_list);
 int handle_cd(char **new_path, t_env **env_list, t_gc **gc);
 t_env *check_if_there(const char *key, t_env **env_list);
+int	ft_isdigit(int c);
+int	ft_atoi(const char *str);
+void handle_exit(char **args);
 
 #endif

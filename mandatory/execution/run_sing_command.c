@@ -8,9 +8,7 @@ int	single_command(t_data *list, t_gc **g_collector, t_env **env_list,
 
 	status = 0;
 	if (check_builtin_commands(list->cmds))
-	{
-		return (built_in(list->cmds, env_list, gc_env));
-	}
+		return (built_in(list->cmds, env_list, gc_env, list));
 	pid = fork();
 	if (pid < 0)
 		exit(1);
