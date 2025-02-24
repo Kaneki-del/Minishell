@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/24 16:17:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:34:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void handle_pwd(t_env **env_list, t_data *current);
 int handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
 int	ft_atoi(const char *str);
-void handle_exit(char **args);
+int handle_exit(char **args, t_container *content);
 void clean_fds(t_data *list);
 void ft_error_exec(char *msg, char *dis, char *left, int fd);
 int rideraction_builtins(t_data *current);

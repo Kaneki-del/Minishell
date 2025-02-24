@@ -28,13 +28,14 @@ void	update_original_pwd(t_env **env_list)
 	old = check_if_there("PWD", env_list);
 	if (old != NULL)
 	{
+		// free(old->value);
 		old->value = strdup(buffer);
 	}
 }
 
 // create a stored pwd
 
-void	updte_old_pwd_hiden(t_container *content)
+void	updte_old_pwd_hiden(t_env **env_list, t_gc *env_gc)
 {
 	char	buffer[PATH_MAX];
 	t_env	*temp;
@@ -46,36 +47,39 @@ void	updte_old_pwd_hiden(t_container *content)
 		return ;
 	}
 	temp = NULL;
-	temp = check_if_there(".OLDPWD", &content->env_list);
+	temp = check_if_there(".OLDPWD", env_list);
 	if (temp != NULL)
 	{
 		// free(temp->value);
 		temp->value = strdup(buffer);
 	}
-	else 
-		lstadd_back_env(&content->env_list, lstnew_env(".OLDPWD", strdup(buffer), &content->g_collector));
+	else
+		lstadd_back_env(env_list, lstnew_env(".OLDPWD", strdup(buffer), &env_gc));
 }
 
 int	handle_cd(char **new_path, t_container *content)
 {
 	t_env	*temp;
 
-	updte_old_pwd_hiden(content);
+	updte_old_pwd_hiden(&content->env_list, content->g_env_collector);
 	temp = NULL;
-	if (new_path && new_path[0])
+	if (new_path &&new_path[0])
 	{
-		
+		// update the old pwd to the get_cd
+		// and if there .OLDPWD UPDATE it else add it back
+			//bash: cd: sngrsd: No such file or directory
 		if (chdir(new_path[0]) == -1)
-		{
-			perror("chdir failed");
-			return (1);
-		}
+			return (ft_error_exec_two("bash: cd: ", new_path[0], ": No such file or directory", 2), 1);
 	}
 	else
 	{
 		temp = check_if_there("HOME", &content->env_list);
-		if (chdir(check_if_there("HOME", &content->env_list)->value) == -1)
-			return (ft_error("bash: cd: HOME not set", NULL, 2, &content->g_collector), 1);
+		if (temp != NULL){
+			if (chdir(temp->value) == -1)
+				return (0);
+		}
+		else 
+			return (ft_error_exec_two("bash: cd", ": HOME", " not set",  2), 1);
 	}
 	update_original_pwd(&content->env_list);
 	update_old_pwd(&content->env_list);
