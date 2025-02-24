@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/23 19:42:20 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:27:19 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,11 @@ void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_container *content);
 char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
-char *find_executable_path(t_container *content);
+char *find_executable_path(t_data *current, t_container *content);
 char *get_env_path(t_container *content);
 void ft_putstr_fd(char *s, int fd);
 int open_file(char *file, int in_or_out);
-void executing(t_container *content);
+void executing(t_data *current, t_container *content);
 void print_error(char *cmd_input);
 t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
@@ -138,13 +138,14 @@ int add_export(char **cmd, t_container *content);
 void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
-void handle_unset(char **cmd, t_env **env_list, t_gc **gc);
+int	handle_unset(char **cmd, t_env **env_list);
 t_env *check_if_there(const char *key, t_env **env_list);
-void handle_echo(char **cmd,  t_gc **gc, t_data *list);
+void handle_echo(char **cmd,  t_data *list);
 void handle_pwd(t_env **env_list);
 int handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
 int	ft_atoi(const char *str);
 void handle_exit(char **args);
 void clean_fds(t_data *list);
+void ft_error_exec(char *msg, char *dis, char *left, int fd);
 #endif

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/23 19:14:19 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:16:54 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,25 +96,25 @@ void	print_error(char *cmd_input)
 	exit(127);
 }
 
-void	executing(t_container *content)
+void	executing(t_data *current, t_container *content)
 {
 	char	*cmd_path;
 	char	**list_char;
 
 	if (!content->env_list)
 		exit(127);
-	if (!content->data->cmds || !content->data->cmds[0])
+	if (!current->cmds || !current->cmds[0])
 	{
 		print_error("Empty command");
 		exit(127);
 	}
-	cmd_path = find_executable_path(content);
+	cmd_path = find_executable_path(current, content);
 	list_char = env_to_array(content);
-	if (content->data->cmds)
+	if (current->cmds)
 	{
-		if (execve(cmd_path, content->data->cmds, list_char) == -1)
+		if (execve(cmd_path, current->cmds, list_char) == -1)
 		{
-			print_error(content->data->cmds[0]);
+			print_error(current->cmds[0]);
 			exit(127);
 		}
 	}

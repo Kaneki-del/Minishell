@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/23 18:59:50 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:03:55 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,25 @@ char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 	return (NULL);
 }
 
-static char	*try_direct_access(t_container *content)
+static char	*try_direct_access(t_data *current, t_container *content)
 {
 	char	*cmd_v;
 
-	if (access(content->data->cmds[0], X_OK) == 0)
+	if (access(current->cmds[0], X_OK) == 0)
 	{
-		cmd_v = ft_strdup(content->data->cmds[0], &content->g_collector);
+		cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
 		return (cmd_v);
 	}
 	return (NULL);
 }
 
-char	*find_executable_path(t_container *content)
+char	*find_executable_path(t_data *current, t_container *content)
 {
 	char	**path_list;
 	char	*path_value;
 	char	*cmd_v;
 
-	cmd_v = try_direct_access(content);
+	cmd_v = try_direct_access(current, content);
 	if (cmd_v)
 		return (cmd_v);
 	path_value = get_env_path(content);
@@ -83,6 +83,6 @@ char	*find_executable_path(t_container *content)
 	path_list = ft_split(path_value, ':', &content->g_collector);
 	if (!path_list)
 		return (NULL);
-	cmd_v = check_cmd_path(path_list, content->data->cmds[0], &content->g_collector);
+	cmd_v = check_cmd_path(path_list, current->cmds[0], &content->g_collector);
 	return (cmd_v);
 }

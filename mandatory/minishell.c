@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/23 20:47:03 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:32:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int main(int ac, char **av, char **env) {
     if (parsing_case(&content) == 0)
       continue;
     // ft_printf(&content.data);
-    if (execute_package(&content) == 0)
-      continue;
+    content.status = execute_package(&content);
+      
     free(content.line);
     clear_bin(&content.g_collector);
   }

@@ -19,7 +19,7 @@ int	filter_key(char *key, char *value)
 
 	i = 0;
 	if (key[0] >= '0' && key[0] <= '9')
-		return (1);
+		return ( 1);
 	while (key[i] && key[i + 1])
 	{
 		if (!((key[i] >= 'a' && key[i] <= 'z') || (key[i] >= 'A'
@@ -117,15 +117,15 @@ int	add_export(char **cmd, t_container *content)
 	t_env	*temp;
 
 	i = 0;
+	status = 0;
 	temp = NULL;
 	while (cmd[i])
 	{
 		splited_equal = get_befor(cmd[i], &content->g_collector);
 		if (filter_key(splited_equal[0], splited_equal[1]) == 0)
 			valid_key(splited_equal, content);
-		else
-		{
-			printf("this is not valid\n");
+		else{
+			ft_error_exec("bash: export:", splited_equal[0], ": not a valid identifier", 2),
 			status = 1;
 		}
 		i++;

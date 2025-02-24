@@ -4,6 +4,7 @@ static void	intial(t_data **list)
 {
 	t_data	*current;
 
+	current = NULL;
 	current = *list;
 	while (current)
 	{
@@ -20,10 +21,7 @@ int	execute_package(t_container *content)
 
 	exit_code = 0;
 	if (!content->data)
-	{
-		clear_bin(&content->g_collector);
-		return 0; // check here
-	}
+		return 0; 
 	list_size = ft_lstsize(content->data);
 	intial(&content->data);
 	if (list_size == 1)

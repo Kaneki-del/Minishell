@@ -1,14 +1,14 @@
 
 #include "../../includes/minishell.h"
 
-void	echo(char **cmd, t_gc **gc)
+void	echo(char **cmd)
 {
 	int		i;
 	int		new_line;
 	t_env	*temp;
 	int		espace;
 
-	(void)gc;
+	
 	espace = 0;
 	new_line = 0;
 	i = 0;
@@ -30,12 +30,11 @@ void	echo(char **cmd, t_gc **gc)
 		write(1, "\n", 1);
 }
 
-void	handle_echo(char **cmd, t_gc **gc, t_data *list)
+void	handle_echo(char **cmd, t_data *list)
 {
 	int saved_stdout = -1; // Store original stdout
 
-	(void)gc;
-
+	
 	if (list->in_fd != 0)
 		close(list->in_fd);
 	
@@ -63,7 +62,7 @@ void	handle_echo(char **cmd, t_gc **gc, t_data *list)
 	while (cmd[i])
 		i++;
 	if (i >= 2)
-		echo(cmd + 1, gc);
+		echo(cmd + 1);
 	else 
 		write(1, "\n", 1);
 	// Restore stdout

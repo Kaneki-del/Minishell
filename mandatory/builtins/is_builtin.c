@@ -17,7 +17,6 @@ int check_builtin_commands(char **commands) {
         {
       return 1;
     }
-  } else
-    return 0;
+  } 
   return 0;
 }
