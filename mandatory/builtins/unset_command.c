@@ -46,11 +46,11 @@ int	unset_key(char **cmd, t_env **env_list)
 	}
 	return status;
 }
-int	handle_unset(char **cmd, t_env **env_list)
+int	handle_unset(char **cmd, t_env **env_list, t_data *current)
 {
 	int	i;
 
-	
+	clean_fd(current);
 	i = 0;
 	while (cmd[i])
 		i++;

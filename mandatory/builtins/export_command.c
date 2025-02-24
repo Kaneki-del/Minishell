@@ -69,6 +69,8 @@ void	print_export(t_container *content)
 {
 	t_env	*smallest;
 
+	int saved_stdout = rideraction_builtins(content->data); // Store original stdout
+
 	if (!content->env_list)
 		return ;
 	t_env *temp = copy_list(content); // Start from the head
@@ -86,5 +88,10 @@ void	print_export(t_container *content)
 		// Delete the smallest node from the list
 		delete_node(&temp, smallest->key);
 			// Ensure temp is updated after deletion
+	}
+	if (saved_stdout != -1)
+	{
+		dup2(saved_stdout, 1);
+		close(saved_stdout);
 	}
 }

@@ -116,9 +116,11 @@ int	add_export(char **cmd, t_container *content)
 	int		status;
 	t_env	*temp;
 
+
 	i = 0;
 	status = 0;
 	temp = NULL;
+	clean_fd(content->data);
 	while (cmd[i])
 	{
 		splited_equal = get_befor(cmd[i], &content->g_collector);

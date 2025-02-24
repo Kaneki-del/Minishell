@@ -30,32 +30,10 @@ void	echo(char **cmd)
 		write(1, "\n", 1);
 }
 
+
 void	handle_echo(char **cmd, t_data *list)
 {
-	int saved_stdout = -1; // Store original stdout
-
-	
-	if (list->in_fd != 0)
-		close(list->in_fd);
-	
-	if (list->out_fd != 0)
-	{
-		// Save stdout before redirection
-		saved_stdout = dup(1);
-		if (saved_stdout < 0)
-		{
-			perror("error saving stdout");
-			exit(10);
-		}
-
-		// Redirect stdout to out_fd
-		if (dup2(list->out_fd, 1) < 0)
-		{
-			perror("error in dup2");
-			exit(10);
-		}
-		close(list->out_fd);
-	}
+	int saved_stdout = rideraction_builtins(list); // Store original stdout
 
 	// Execute echo
 	int i = 0;

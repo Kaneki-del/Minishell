@@ -28,7 +28,6 @@ void	update_original_pwd(t_env **env_list)
 	old = check_if_there("PWD", env_list);
 	if (old != NULL)
 	{
-		// free(old->value);
 		old->value = strdup(buffer);
 	}
 }
@@ -53,7 +52,7 @@ void	updte_old_pwd_hiden(t_container *content)
 		// free(temp->value);
 		temp->value = strdup(buffer);
 	}
-	else
+	else 
 		lstadd_back_env(&content->env_list, lstnew_env(".OLDPWD", strdup(buffer), &content->g_collector));
 }
 
@@ -65,8 +64,7 @@ int	handle_cd(char **new_path, t_container *content)
 	temp = NULL;
 	if (new_path && new_path[0])
 	{
-		// update the old pwd to the get_cd
-		// and if there .OLDPWD UPDATE it else add it back
+		
 		if (chdir(new_path[0]) == -1)
 		{
 			perror("chdir failed");
@@ -77,9 +75,7 @@ int	handle_cd(char **new_path, t_container *content)
 	{
 		temp = check_if_there("HOME", &content->env_list);
 		if (chdir(check_if_there("HOME", &content->env_list)->value) == -1)
-		{
 			return (ft_error("bash: cd: HOME not set", NULL, 2, &content->g_collector), 1);
-		}
 	}
 	update_original_pwd(&content->env_list);
 	update_old_pwd(&content->env_list);
