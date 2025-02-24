@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/24 11:03:55 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:53:55 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 		full_cmd_path = ft_strjoin(path_list[i], "/", gc);
 		full_cmd_path = ft_strjoin(full_cmd_path, cmd_name, gc);
 		if (!full_cmd_path)
-		{
 			return (NULL);
-		}
 		if (access(full_cmd_path, X_OK) == 0)
 			return (full_cmd_path);
 		i++;

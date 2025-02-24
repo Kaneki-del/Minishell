@@ -1,46 +1,6 @@
 #include "../../includes/minishell.h"
-#include <stdlib.h>
-// TODO: remove the allocs and donint with an garbage collecter
-char	*ft_strdop(const char *s1)
-{
-	char	*s2;
-	char	*original;
-	size_t	s1_lent;
 
-	s1_lent = ft_strlen(s1);
-	s2 = (char *)malloc(s1_lent + 1);
-	if (s2 == NULL)
-		return (NULL);
-	original = s2;
-	while (*s1)
-		*(s2++) = *(s1++);
-	*s2 = '\0';
-	return (original);
-}
-char	*ft_sobstr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	char	*str;
 
-	if (!s)
-		return (NULL);
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	if (start >= ft_strlen(s))
-		return (ft_strdop(""));
-	i = 0;
-	str = (char *)malloc(len + 1);
-	if (str == NULL)
-		return (NULL);
-	while (i < len)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-#include <string.h>
 
 t_env	*lstnew_env(char *key, char *value, t_gc **g_env_collector)
 {

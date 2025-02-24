@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/24 11:16:54 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:53:30 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	**env_to_array(t_container *content)
 	temp = NULL;
 	count = 0;
 	temp = content->env_list;
+	if (!temp)
+		return NULL;
 	while (temp)
 	{
 		count++;
@@ -101,22 +103,26 @@ void	executing(t_data *current, t_container *content)
 	char	*cmd_path;
 	char	**list_char;
 
+	//check what the bash do if no env list
 	if (!content->env_list)
-		exit(127);
+		exit(0);
 	if (!current->cmds || !current->cmds[0])
-	{
-		print_error("Empty command");
-		exit(127);
-	}
+		exit(0);
 	cmd_path = find_executable_path(current, content);
+	//bash: sd: command not found
+	if (!cmd_path || ft_strcmp(current->cmds[0] , "\0") == 0)
+	{
+		ft_error_exec_two("bash: ", current->cmds[0], ": command not found", 2);
+		exit(127);
+	}	
 	list_char = env_to_array(content);
+
 	if (current->cmds)
 	{
 		if (execve(cmd_path, current->cmds, list_char) == -1)
 		{
-			print_error(current->cmds[0]);
+			perror("i am here execve failed");
 			exit(127);
 		}
 	}
-	exit(127);
 }
