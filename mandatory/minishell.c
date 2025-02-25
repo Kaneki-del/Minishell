@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 17:56:06 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:15:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void init_content(t_container *content)
     content->g_collector = NULL;
 }
 
-int main(int ac, char **av, char **env) {
+int main(int ac, char **av, char **env)
+{
   (void)ac;
   (void)av;
 
@@ -75,7 +76,7 @@ int main(int ac, char **av, char **env) {
     if (content.line[0] != '\0')
       add_history(content.line);
     // this function contains all paring cases
-    if (parsing_case(&content) == 0)
+    if (parsing_case(&content) == 0) // shoud move the clear_bin here
       continue;
     ft_printf(&content.data);
     content.status = execute_package(&content);
