@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/24 10:32:37 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:37:17 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int main(int ac, char **av, char **env) {
     // this function contains all paring cases
     if (parsing_case(&content) == 0)
       continue;
-    // ft_printf(&content.data);
+    ft_printf(&content.data);
     content.status = execute_package(&content);
       
     free(content.line);

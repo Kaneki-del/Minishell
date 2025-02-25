@@ -33,8 +33,9 @@ char *expand(t_container *content, char *command, int *i)
 
     pair = NULL;
     key = NULL;
-    if (command[(*i)] == '$' && check_in_qoutation(command[(*i)]) != '\'' && \
-    (command[(*i) + 1] == '_' || command[(*i) + 1] == '?' || ft_isalpha(command[(*i) + 1])))
+    // if (command[(*i)] == '\'' || command[(*i)] == '"')
+    //     check_in_qoutation(command[(*i)]);
+    if (command[(*i)] == '$' && check_in_qoutation(command[(*i)]) != '\'' && (command[(*i) + 1] == '_' || command[(*i) + 1] == '?' || ft_isalpha(command[(*i) + 1])))
     {
         (*i)++;
         if (command[(*i)] == '?')
@@ -46,7 +47,7 @@ char *expand(t_container *content, char *command, int *i)
         key = gc(start - (*i) + 1, &content->g_collector);
         ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
         pair = check_if_there(key, &content->env_list);
-        (*i) = start;
+        (*i) = start - 1;
         if (!pair)
             return (NULL);
         return (pair->value);
@@ -81,18 +82,15 @@ char *check_env_var(t_container *content, char *command)
     new_command = NULL;
     while (command[i])
     {
-        check_in_qoutation(command[i]);
         curent_part  = expand(content, command, &i);
         if (curent_part)
         {
             new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
-            continue ;
         }
         curent_part = expand_telda(command, &i, &content->env_list);
         if (curent_part)
         {
             new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
-            continue ;
         }
         new_command = ft_strchr_join(new_command, command[i], &content->g_collector);
         i++;

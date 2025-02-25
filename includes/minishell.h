@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/24 17:34:45 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:44:28 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_gc **g_collector);
 char	*ft_itoa(int n, t_gc **g_collector);
+char **check_echo_options(char **cmd, t_gc **g_collector);
 
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);

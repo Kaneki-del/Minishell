@@ -8,7 +8,6 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
   *dir_files = NULL;
   while (token && token->token_type != T_PIPE)
   {
-    printf("(%s)", token->value);
     // get input and output directions as a string and files type
     get_dir_files(dir_files, token, g_collector);
     // get only command and there options as a single string
@@ -71,6 +70,7 @@ int parser(t_container *content)
 	if (only_command)
     	only_command = check_env_var(content, only_command);
     cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
+    cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
     dir_files = filer_qoutations(dir_files, &content->g_collector);
     // split redirections and command (with options) and pass them to creat a
     // new node (general structer) than add the node at the end of list

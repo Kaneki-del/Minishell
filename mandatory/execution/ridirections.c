@@ -14,6 +14,8 @@ int	open_file(char *file, int in_or_out)
 	{
 		ft_putstr_fd("bash: no such file or directory: ", 2);
 		ft_putstr_fd(file, 2);
+		ft_putstr_fd("\n", 2);
+		return (0);
 	}
 	return (ret);
 }
