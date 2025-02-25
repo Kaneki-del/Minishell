@@ -4,6 +4,12 @@ int	open_file(char *file, int in_or_out)
 {
 	int	ret;
 	printf("the file name = |%s|\n", file);
+	if (access(file, R_OK) == -1 || access(file, W_OK) == -1)
+	{
+	//bash: rr: Permission denied		
+		ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+		return -1;
+	}
 	if (in_or_out == 0)
 		ret = open(file, O_RDONLY, 0644);
 	if (in_or_out == 1)
@@ -12,9 +18,9 @@ int	open_file(char *file, int in_or_out)
 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (ret == -1)
 	{
-		ft_putstr_fd("bash: no such file or directory: ", 2);
-		ft_putstr_fd(file, 2);
-		ft_putstr_fd("\n", 2);
+		// bash: s: No such file or directory
+		ft_error_exec_two("bash: ", file, ": No such file or directory", 2);
+		return -1;
 	}
 	return (ret);
 }
