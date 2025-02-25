@@ -1,26 +1,45 @@
 #include "../../includes/minishell.h"
-#include <sys/unistd.h>
 
 int	open_file(char *file, int in_or_out)
 {
+
 	int	ret;
-	if (access(file, F_OK) == -1)
-	{	
+	ret = 0;
+	if (!file || file[0] == '\0') 
+	{
 		ft_error_exec_two("bash: ", file, ": No such file or directory", 2);
 		return -1;
 	}
-	if (access(file, R_OK) == -1 || access(file, W_OK) == -1)
-	{
-	//bash: rr: Permission denied		
-		ft_error_exec_two("bash: ", file, ": Permission denied", 2);
-		return -1;
-	}
 	if (in_or_out == 0)
+	{
 		ret = open(file, O_RDONLY, 0644);
-	if (in_or_out == 1)
+		if (ret == -1)
+		{
+			if (access(file, F_OK) == -1)
+				ft_error_exec_two("bash: ", file, ": No such file or directory", 2);
+			else if (access(file, R_OK) == -1)
+				ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+		}
+	}
+	else if (in_or_out == 1)
+	{
 		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (in_or_out == 2)
+		if (ret == -1)
+		{
+			ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+			return -1;
+		}	
+
+	}
+	else if (in_or_out == 2)
+	{
 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (ret == -1)
+		{
+			ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+			return -1;
+		}	
+	}
 	return (ret);
 }
 
