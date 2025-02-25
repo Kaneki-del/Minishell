@@ -18,7 +18,6 @@ int	execute_package(t_container *content)
 {
 	int	list_size;
 	int	exit_code;
-
 	exit_code = 0;
 	if (!content->data)
 		return 0; 
@@ -26,12 +25,12 @@ int	execute_package(t_container *content)
 	intial(&content->data);
 	if (list_size == 1)
 	{
-		get_fds(content->data);
+		if ( get_fds(content->data) != 0)
+			return 1;
+		
 		exit_code = single_command(content);
 	}
 	else if (list_size >= 2)
-	{
 		exit_code = run_multiple(content);
-	}
 	return (exit_code);
 }

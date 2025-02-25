@@ -9,7 +9,7 @@ int	single_command(t_container *content)
 		return 0;
 	status = 0;
 	if (check_builtin_commands(current->cmds))
-		return (built_in(content));
+		return (built_in(current, content));
 	pid = fork();
 	if (pid < 0)
 		exit(1);

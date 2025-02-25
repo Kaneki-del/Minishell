@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/24 22:44:28 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:55:23 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
 int single_command(t_container *content);
 int ft_lstsize(t_data *lst);
-void get_fds(t_data *list);
+int get_fds(t_data *list);
 int run_multiple(t_container *content);
 int execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);
@@ -129,12 +129,12 @@ void print_error(char *cmd_input);
 t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int	built_in(t_container *content);
+int	built_in(t_data *current, t_container *content); 
 t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector);
 void	print_env_list(t_env *env_list, t_data *list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-void print_export(t_container *content);
+void	print_export(t_data *current ,t_container *content);
 int add_export(char **cmd, t_container *content);
 void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);

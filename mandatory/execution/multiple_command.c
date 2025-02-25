@@ -10,11 +10,16 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 		exit(1);
 	if (pid == 0)
 	{
+		
+		if (get_fds(current) != 0)
+			exit(1);
 		close(p_fd[0]); // Close unused read end
 		if (current->out_fd == 0)
 			current->out_fd = p_fd[1];
 		else
 			close(p_fd[1]); // Close write end if already set
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
@@ -32,6 +37,7 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 			close(current->in_fd);
 		if (current->out_fd != 0)
 			close(current->out_fd);
+		
 		executing(current , content);
 	}
 	close(p_fd[1]);
@@ -45,6 +51,8 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 		exit(1);
 	if (pid == 0)
 	{
+		if (get_fds(current) != 0)
+			exit(1);
 		close(p_fd[0]); // Close unused read end
 		if (current->out_fd == 0)
 			current->out_fd = p_fd[1];
@@ -54,6 +62,8 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 			current->in_fd = in;
 		else
 			close(in); // Close previous pipe input
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (dup2(current->in_fd, 0) < 0)
 		{
 			perror("dup2 in_fd");
@@ -79,10 +89,14 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 		exit(1);
 	if (pid == 0)
 	{
+		if (get_fds(current) != 0)
+			exit(1);
 		if (current->in_fd == 0)
 			current->in_fd = p_fd[0];
 		else
 			close(p_fd[0]); // Close read end if already set
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
@@ -113,7 +127,6 @@ static int	handle_pipes(t_container *content)
 	current = content->data;
 	if (pipe(p_fd) == -1)
 		exit(1);
-	get_fds(current);
 	execute_first(current, p_fd, content);
 	current = current->next;
 	while (current != NULL && current->next != NULL)
@@ -121,13 +134,10 @@ static int	handle_pipes(t_container *content)
 		int t = p_fd[0]; // Save previous pipe read end
 		if (pipe(p_fd) == -1)
 			exit(1);
-		get_fds(current);
 		execut(content, current, p_fd, t);
 		close(t); // Close previous read end in parent
 		current = current->next;
 	}
-
-	get_fds(current);
 	return (execute_last(content, current, p_fd));
 }
 
