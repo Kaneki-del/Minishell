@@ -69,6 +69,8 @@ int parser(t_container *content)
     // only_command = filer_qoutations(only_command);
 	if (only_command)
     	only_command = check_env_var(content, only_command);
+	if (dir_files)
+		dir_files = check_env_var(content, dir_files);
     cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
     dir_files = filer_qoutations(dir_files, &content->g_collector);
