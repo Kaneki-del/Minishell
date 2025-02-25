@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/24 21:37:17 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:35:58 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void init_content(t_container *content)
     content->g_collector = NULL;
 }
 
-int main(int ac, char **av, char **env) {
+int main(int ac, char **av, char **env)
+{
   (void)ac;
   (void)av;
 
@@ -75,11 +76,10 @@ int main(int ac, char **av, char **env) {
     if (content.line[0] != '\0')
       add_history(content.line);
     // this function contains all paring cases
-    if (parsing_case(&content) == 0)
+    if (parsing_case(&content) == 0) // shoud move the clear_bin here
       continue;
     ft_printf(&content.data);
     content.status = execute_package(&content);
-      
     free(content.line);
     clear_bin(&content.g_collector);
   }

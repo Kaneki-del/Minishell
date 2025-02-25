@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/24 22:44:28 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:52:34 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,13 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
 char *filer_qoutations(char *command_line,  t_gc **g_collector);
 char **filterd(char **cmds,t_gc **g_collector);
 int tokener(t_container *content);
-char *check_env_var(t_container *content, char *command);
+char *check_env_var(t_container *content, char *command, int *flag);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_gc **g_collector);
 char	*ft_itoa(int n, t_gc **g_collector);
 char **check_echo_options(char **cmd, t_gc **g_collector);
+int	ft_isalnum(int c);
 
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);

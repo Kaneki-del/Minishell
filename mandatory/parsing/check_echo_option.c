@@ -58,6 +58,8 @@ char **check_echo_options(char **cmd, t_gc **g_collector)
 
     i = 1;
     new_cmd = NULL;
+    if (!cmd)
+        return (NULL);
     if (ft_strcmp(cmd[0], "echo") != 0)
         return (cmd);
     while (cmd[i])
