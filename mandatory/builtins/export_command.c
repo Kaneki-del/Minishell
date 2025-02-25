@@ -65,18 +65,18 @@ void	delete_node(t_env **list_env, char *key)
 	// Unlink the node and free it
 	prev->next = temp->next;
 }
-void	print_export(t_container *content)
+void	print_export(t_data *current ,t_container *content)
 {
 	t_env	*smallest;
 
-	int saved_stdout = rideraction_builtins(content->data); // Store original stdout
+	int saved_stdout = rideraction_builtins(current); // Store original stdout
 
 	if (!content->env_list)
 		return ;
 	t_env *temp = copy_list(content); // Start from the head
-	smallest = NULL;
 	while (temp)
 	{
+		smallest = NULL;
 		smallest = find_smallest(temp); // Find the smallest element in the list
 		if (!smallest)                  // Safety check
 			return ;

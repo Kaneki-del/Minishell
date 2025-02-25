@@ -15,6 +15,8 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 			current->out_fd = p_fd[1];
 		else
 			close(p_fd[1]); // Close write end if already set
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
@@ -32,6 +34,7 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 			close(current->in_fd);
 		if (current->out_fd != 0)
 			close(current->out_fd);
+		
 		executing(current , content);
 	}
 	close(p_fd[1]);
@@ -54,6 +57,8 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 			current->in_fd = in;
 		else
 			close(in); // Close previous pipe input
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (dup2(current->in_fd, 0) < 0)
 		{
 			perror("dup2 in_fd");
@@ -83,6 +88,8 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 			current->in_fd = p_fd[0];
 		else
 			close(p_fd[0]); // Close read end if already set
+		if (check_builtin_commands(current->cmds))
+			exit(built_in(current ,content));
 		if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
