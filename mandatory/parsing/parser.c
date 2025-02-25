@@ -56,6 +56,7 @@ int parser(t_container *content)
   char *dir_files;
   char *only_command;
   char **cmd_optios;
+  char **dirs;
   int flag;
 
   dir_files = NULL;
@@ -75,7 +76,7 @@ int parser(t_container *content)
     	only_command = check_env_var(content, only_command, &flag);
 	}
 	if (dir_files)
-		dir_files = check_env_var(content, dir_files, &flag);
+	dir_files = check_env_var(content, dir_files, &flag);
 	if (flag == 0)
 	{
 		clear_bin(&content->g_collector);
@@ -83,10 +84,11 @@ int parser(t_container *content)
 	}
     cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
-    dir_files = filer_qoutations(dir_files, &content->g_collector);
+    // dir_files = filer_qoutations(dir_files, &content->g_collector);
+    dirs = filterd(ft_split(dir_files, ' ', &content->g_collector), &content->g_collector);
     // split redirections and command (with options) and pass them to creat a
     // new node (general structer) than add the node at the end of list
-    add_data_back(&content->data, new_data_node(cmd_optios, ft_split(dir_files, ' ', &content->g_collector), &content->g_collector));
+    add_data_back(&content->data, new_data_node(cmd_optios, dirs, &content->g_collector));
   }
   return (1);
 }
