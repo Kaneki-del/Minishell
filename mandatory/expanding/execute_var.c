@@ -63,6 +63,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
 
     pair = NULL;
     key = NULL;
+    start = 0;
     if (command[(*i)] == '$' && command[(*i) + 1] != ' ')
     {
         if ((command[(*i) + 1] == '\'' || command[(*i) + 1] == '\'') && !check_double(command, (*i), check_in(command[(*i)])))
@@ -73,11 +74,10 @@ char *expand(t_container *content, char *command, int *i, int *flag)
             (*i)++;
         else if (command[(*i)] == '?')
             return (exit_status(content, i));
-        else if (ft_isalpha(command[(*i)]))
+        if (ft_isalpha(command[(*i)]))
         {
             start = (*i);
-            while (command[start] && command[start] != ' ' && command[start] != '$' && \
-            command[start] != '"' && command[start] != '\'')
+            while (command[start] && command[start] != ' ' && command[start] != '$' && command[start] != '"' && command[start] != '\'' && command[start] != '\\')
                 start++;
             key = gc(start - (*i) + 1, &content->g_collector);
             ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft_utils0.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 23:17:21 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/20 19:45:56 by sait-nac         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 size_t	ft_strlen(const char *s)
@@ -64,7 +52,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc)
+char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector)
 {
 	size_t	total_len;
 	char	*result;
@@ -72,11 +60,11 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
-		return (ft_strdup(s2, gc));
+		return (ft_strdup(s2, g_collector));
 	if (!s2)
-		return (ft_strdup(s1, gc));
+		return (ft_strdup(s1, g_collector));
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	result = (char *)malloc(total_len);
+	result = gc(total_len, g_collector);
 	if (!result)
 		return (NULL);
 	ft_strlcpy(result, s1, total_len);

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 18:15:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:36:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,22 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
-    content->g_collector = NULL;
 }
 
 int main(int ac, char **av, char **env)
 {
   (void)ac;
   (void)av;
-
+  
   t_container content;
   content.g_env_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
   while (1) {
-    
+
     //remember to remove it from here
-	init_content(&content);
+    content.g_collector = NULL;
+	  init_content(&content);
     content.line = readline("\033[2;34mshell$> \033[0m");
     if (!content.line)
       exit(EXIT_SUCCESS);
@@ -78,10 +78,7 @@ int main(int ac, char **av, char **env)
     // this function contains all paring cases
     if (parsing_case(&content) == 0) // shoud move the clear_bin here
       continue;
-    ft_printf(&content.data);
     content.status = execute_package(&content);
-   
-      
     free(content.line);
     clear_bin(&content.g_collector);
   }

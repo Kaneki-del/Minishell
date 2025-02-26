@@ -71,19 +71,19 @@ void	do_mode(char **key_value, t_env **node, t_gc **gc, int a)
 			(*node)->value = strdup(value);
 	}
 }
-char **get_befor(const char *cmd, t_gc **gc) 
+char **get_befor(const char *cmd, t_gc **g_collector) 
 {
   int i;
   
   i = 0;
-  char **to_return = (char **)malloc(sizeof(char *) * 3);
+  char **to_return = (char **)gc(sizeof(char *) * 3, g_collector);
   while (cmd[i] != '=' && cmd[i])
     i++;
-  to_return[0] = ft_substr(cmd, 0, i, gc);
+  to_return[0] = ft_substr(cmd, 0, i, g_collector);
   if (cmd[i] == '=') 
   {
     i++;
-    to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), gc);
+    to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), g_collector);
   } 
   else
     to_return[1] = NULL;
