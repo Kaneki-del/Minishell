@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/25 18:15:32 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/02/26 19:49:26 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ typedef struct s_gc {
   void *adress;
   struct s_gc *next;
 } t_gc;
-
+typedef struct s_file_info
+{
+    int fd;
+    char *filename;
+} t_file_info;
 //the env  list struct
 typedef struct s_env {
   char *key;
@@ -94,7 +98,7 @@ void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
 int single_command(t_container *content);
 int ft_lstsize(t_data *lst);
-int get_fds(t_data *list);
+int	get_fds(t_data *list, t_gc **g_collector);
 int run_multiple(t_container *content);
 int execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);

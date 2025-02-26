@@ -9,13 +9,10 @@ void	update_old_pwd(t_env **env_list)
 	old_pwd = NULL;
 	old_pwd = check_if_there("OLDPWD", env_list);
 	if (old_pwd != NULL)
-	{
-		// free(old_pwd->value);
 		old_pwd->value = check_if_there(".OLDPWD", env_list)->value;
-	}
 }
 // function that creat or update the hiden old pwd
-void	update_original_pwd(t_env **env_list)
+void	update_original_pwd(t_env **env_list, t_gc *env_gc)
 {
 	t_env	*old;
 	char	buffer[PATH_MAX];
@@ -27,10 +24,7 @@ void	update_original_pwd(t_env **env_list)
 	}
 	old = check_if_there("PWD", env_list);
 	if (old != NULL)
-	{
-		// free(old->value);
-		old->value = strdup(buffer);
-	}
+		old->value = ft_strdup(buffer, &env_gc);
 }
 
 // create a stored pwd
@@ -49,12 +43,9 @@ void	updte_old_pwd_hiden(t_env **env_list, t_gc *env_gc)
 	temp = NULL;
 	temp = check_if_there(".OLDPWD", env_list);
 	if (temp != NULL)
-	{
-		// free(temp->value);
-		temp->value = strdup(buffer);
-	}
+		temp->value = ft_strdup(buffer, &env_gc);
 	else
-		lstadd_back_env(env_list, lstnew_env(".OLDPWD", strdup(buffer), &env_gc));
+		lstadd_back_env(env_list, lstnew_env(".OLDPWD", ft_strdup(buffer, &env_gc), &env_gc));
 }
 
 int	handle_cd(char **new_path, t_container *content)
@@ -81,7 +72,7 @@ int	handle_cd(char **new_path, t_container *content)
 		else 
 			return (ft_error_exec_two("bash: cd", ": HOME", " not set",  2), 1);
 	}
-	update_original_pwd(&content->env_list);
+	update_original_pwd(&content->env_list, content->g_env_collector);
 	update_old_pwd(&content->env_list);
 	return (0);
 }

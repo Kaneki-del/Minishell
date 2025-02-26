@@ -46,17 +46,17 @@ int	built_in(t_data *current, t_container *content)
 		print_env_list(content->env_list, content->data);
 		return (0);
 	}
-	else if (ft_strcmp(content->data->cmds[0], "export") == 0)
+	else if (ft_strcmp(current->cmds[0], "export") == 0)
 		return handle_export(current, content);
-	else if (ft_strcmp(content->data->cmds[0], "unset") == 0)
+	else if (ft_strcmp(current->cmds[0], "unset") == 0)
 		return (handle_unset(current->cmds, &content->env_list, current));
-	else if (ft_strcmp(content->data->cmds[0], "echo") == 0)
+	else if (ft_strcmp(current->cmds[0], "echo") == 0)
 		return (handle_echo(current->cmds, current), 0);
-	else if (ft_strcmp(content->data->cmds[0], "pwd") == 0)
+	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
 		return  (handle_pwd(&content->env_list, current), 0);
-	else if (ft_strcmp(content->data->cmds[0], "cd") == 0)
-		return handle_cd(content->data->cmds + 1, content);
-	else if (ft_strcmp(content->data->cmds[0], "exit") == 0)
+	else if (ft_strcmp(current->cmds[0], "cd") == 0)
+		return handle_cd(current->cmds + 1, content);
+	else if (ft_strcmp(current->cmds[0], "exit") == 0)
 		return handle_exit(content->data->cmds + 1, content);
 	return (1);
 }
