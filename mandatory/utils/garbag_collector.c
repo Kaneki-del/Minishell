@@ -29,6 +29,8 @@ void clear_bin(t_gc **garbage_list)
         next = current->next;
         free(current->adress);
         free(current);
+        // current->adress = NULL;
+        current = NULL;
         current = next;
     }
     garbage_list = NULL;

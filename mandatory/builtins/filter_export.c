@@ -50,9 +50,8 @@ t_env	*check_if_there(const char *key, t_env **env_list)
 	}
 	return (NULL);
 }
-#include <string.h>
 
-void	do_mode(char **key_value, t_env **node, t_gc **gc, int a)
+void	do_mode(char **key_value, t_env **node, t_gc **g_env_collector, int a)
 {
 	char	*key;
 	char	*value;
@@ -62,32 +61,31 @@ void	do_mode(char **key_value, t_env **node, t_gc **gc, int a)
 	key = key_value[0];
 	value = key_value[1];
 	if (a == 1)
-		(*node)->value = ft_strjoin((*node)->value, value, gc);
+		(*node)->value = ft_strjoin((*node)->value, value, g_env_collector);
 	else
 	{
-		free((*node)->value);
-		(*node)->value = NULL;
 		if (value)
-			(*node)->value = strdup(value);
+			(*node)->value = ft_strdup(value, g_env_collector);
 	}
 }
-char **get_befor(const char *cmd, t_gc **gc) 
+char **get_befor(const char *cmd, t_gc **g_collector) 
 {
   int i;
   
   i = 0;
-  char **to_return = (char **)malloc(sizeof(char *) * 3);
+  char **to_return;
+  to_return = (char **)gc((sizeof(char *) * 3), g_collector);
   while (cmd[i] != '=' && cmd[i])
     i++;
-  to_return[0] = ft_substr(cmd, 0, i, gc);
+  to_return[0] = ft_substr(cmd, 0, i, g_collector);
   if (cmd[i] == '=') 
   {
     i++;
-    to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), gc);
+    to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), g_collector);
   } 
   else
     to_return[1] = NULL;
-  to_return[3] = 0;
+  to_return[2] = 0;
   return to_return;
 }
 void valid_key(char **key_value, t_container *content)

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/24 20:53:30 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:07:13 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,25 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[dst_lent + i] = '\0';
 	return (dst_lent + src_lent);
 }
-char	*ft_str_join(char const *s1, char const *s2, t_gc **gc)
-{
-	size_t	total_len;
-	char	*result;
+// char	*ft_str_join(char const *s1, char const *s2, t_gc **gc)
+// {
+// 	size_t	total_len;
+// 	char	*result;
 
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2, gc));
-	if (!s2)
-		return (ft_strdup(s1, gc));
-	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	result = (char *)malloc(total_len);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, total_len);
-	ft_strlcat(result, s2, total_len);
-	return (result);
-}
+// 	if (!s1 && !s2)
+// 		return (NULL);
+// 	if (!s1)
+// 		return (ft_strdup(s2, gc));
+// 	if (!s2)
+// 		return (ft_strdup(s1, gc));
+// 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+// 	result = (char *)malloc(total_len);
+// 	if (!result)
+// 		return (NULL);
+// 	ft_strlcpy(result, s1, total_len);
+// 	ft_strlcat(result, s2, total_len);
+// 	return (result);
+// }
 
 char	**env_to_array(t_container *content)
 {
@@ -82,8 +82,8 @@ char	**env_to_array(t_container *content)
 	i = 0;
 	while (temp)
 	{
-		tem = ft_str_join(temp->key, "=", &content->g_collector);
-		env_array[i] = ft_str_join(tem, temp->value, &content->g_collector);
+		tem = ft_strjoin(temp->key, "=", &content->g_collector);
+		env_array[i] = ft_strjoin(tem, temp->value, &content->g_collector);
 		i++;
 		temp = temp->next;
 	}

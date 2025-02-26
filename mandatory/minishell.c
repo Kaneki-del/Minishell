@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 17:56:06 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:15:24 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void ft_print2d(char **str)
     printf("%s ", str[i]);
     i++;  
   }
+}
+
+void f()
+{
+  system("leaks minishell");
 }
 void ft_printf(t_data **data)
 {
@@ -54,15 +59,17 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
-    content->g_collector = NULL;
+    
 }
 
 int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
 
+  atexit(f);
   t_container content;
   content.g_env_collector = NULL;
+  content.g_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
   while (1) {
@@ -78,11 +85,11 @@ int main(int ac, char **av, char **env) {
     if (parsing_case(&content) == 0)
       continue;
     ft_printf(&content.data);
-    content.status = execute_package(&content);
-   
-      
+    content.status = execute_package(&content); 
     free(content.line);
     clear_bin(&content.g_collector);
+    content.g_collector = NULL;
   }
+   clear_bin(&content.g_env_collector);
   return (0);
 }
