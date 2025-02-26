@@ -95,7 +95,6 @@ t_env	*get_env_list(char **env, t_container *content)
 	{
 		temp = ft_split_equal_to(env[i], &content->g_collector);
 		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1], &content->g_env_collector) );
-		free(temp);
 		i++;
 	}
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
