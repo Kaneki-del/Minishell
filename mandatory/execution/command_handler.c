@@ -25,7 +25,7 @@ int	execute_package(t_container *content)
 	intial(&content->data);
 	if (list_size == 1)
 	{
-		if ( get_fds(content->data) != 0)
+		if ( get_fds(content->data, &content->g_collector) != 0)
 			return 1;
 		
 		exit_code = single_command(content);
