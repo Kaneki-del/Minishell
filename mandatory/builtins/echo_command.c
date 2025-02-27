@@ -5,14 +5,14 @@ void	echo(char **cmd)
 {
 	int		i;
 	int		new_line;
-	t_env	*temp;
+	
 	int		espace;
 
 	
 	espace = 0;
 	new_line = 0;
 	i = 0;
-	temp = NULL;
+
 	if (ft_strcmp(cmd[i], "-n") == 0)
 	{
 		i++;

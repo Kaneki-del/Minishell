@@ -53,12 +53,10 @@ t_env	*check_if_there(const char *key, t_env **env_list)
 
 void	do_mode(char **key_value, t_env **node, t_gc **g_env_collector, int a)
 {
-	char	*key;
+	
 	char	*value;
 
-	key = NULL;
 	value = NULL;
-	key = key_value[0];
 	value = key_value[1];
 	if (a == 1)
 		(*node)->value = ft_strjoin((*node)->value, value, g_env_collector);
@@ -112,12 +110,12 @@ int	add_export(char **cmd, t_container *content)
 	int		i;
 	char	**splited_equal;
 	int		status;
-	t_env	*temp;
+	
 
 
 	i = 0;
 	status = 0;
-	temp = NULL;
+
 	clean_fd(content->data);
 	while (cmd[i])
 	{

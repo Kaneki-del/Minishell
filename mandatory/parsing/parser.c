@@ -42,7 +42,7 @@ int token_checker(t_container *content)
       return (0);
     if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, &content->g_collector) == 0)
       return (0);
-      iter = iter->next;
+    iter = iter->next;
   }
   if (iter->next == NULL && (iter->token_type == T_PIPE || iter->token_type == T_REDIRECTE_IN || \
   iter->token_type == T_REDIRECTE_OUT || iter->token_type == T_REDIRECTE_APPEND || iter->token_type == T_REDIRECTE_HEREDOC))

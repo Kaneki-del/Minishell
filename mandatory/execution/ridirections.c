@@ -6,14 +6,13 @@
 //TO_DO: handling expanding and ading the unlink to it so the file is not showd
 char *get_file(t_gc **g_collector)
 {
-	char *num;
+
 	char *file_name;
 	int i;
 
 	i = 0;
 	while(1)
 	{
-		num = ft_itoa(i, g_collector);
 		file_name = ft_strjoin ("/tmp/.her_doc" , ft_itoa(i, g_collector), g_collector);
 		if (access(file_name, F_OK) == -1)
 			return file_name;
