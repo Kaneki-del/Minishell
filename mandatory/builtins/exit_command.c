@@ -23,12 +23,14 @@ int chek_args_number(char **args)
     return count;
 }
 
-int handle_exit(char **args, t_container *content)
+int handle_exit(t_data *current, t_container *content)
 {
-   
+    
+    char **args;
     ssize_t number;
     int exit_code;
 
+    args = current->cmds + 1;
     exit_code = 0;
     if (args[0])
     {
@@ -37,6 +39,7 @@ int handle_exit(char **args, t_container *content)
         {
             ft_putstr_fd("exit\n", 2);
             ft_error_exec_two("bash: exit: ", args[0], ": numeric argument required", 2);
+            clean_fds(current);
             clear_bin(&content->g_collector);
             clear_bin(&content->g_env_collector);
             exit(255); 
@@ -51,14 +54,17 @@ int handle_exit(char **args, t_container *content)
         exit_code = number % 256;
         if (exit_code < 0)
             exit_code += 256; // Normalize negative numbers
+        clean_fds(current);
         clear_bin(&content->g_collector);
         clear_bin(&content->g_env_collector);
         exit(exit_code);
     }
     else
     {
+        clean_fds(current);
         clear_bin(&content->g_collector);
         clear_bin(&content->g_env_collector);
+        
         exit(0);
     }
 }

@@ -4,35 +4,33 @@
 #include <unistd.h>
 
 //TO_DO: handling expanding and ading the unlink to it so the file is not showd
-t_file_info *get_file(t_gc **g_collector)
+char *get_file(t_gc **g_collector)
 {
-	char *temp;
+	char *num;
 	char *file_name;
-	t_file_info *file_info;
-	file_info = (t_file_info *)gc(sizeof(t_file_info), g_collector);
+	int i;
+
+	i = 0;
 	while(1)
 	{
-		temp = gc(1, g_collector);
-		file_name = ft_strjoin ("/tmp/" , ft_itoa((unsigned long)temp, g_collector), g_collector);
-		printf("the name of the file is =  %s\n", file_name);
+		num = ft_itoa(i, g_collector);
+		file_name = ft_strjoin ("/tmp/.her_doc" , ft_itoa(i, g_collector), g_collector);
 		if (access(file_name, F_OK) == -1)
-			break;
+			return file_name;
+		i++;
 	}
-	file_info->filename = file_name;
-	file_info->fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	return file_info;
 }
 
-char *her_doc(char *limiter, t_gc **g_collector)
+int her_doc(char *limiter, t_gc **g_collector)
 {
 	int fd;
 	char *line;
 	char *file_name;
-
-	t_file_info *file_info;
-	file_info = get_file(g_collector);
-	fd = file_info->fd;
-	file_name = file_info->filename;
+	int fd2;
+	file_name = get_file(g_collector);
+	fd = open_file(file_name, 1);
+	fd2 = open_file(file_name, 0);
+	unlink(file_name);
 	while(1)
 	{
 		line = readline("> ");
@@ -48,15 +46,13 @@ char *her_doc(char *limiter, t_gc **g_collector)
 		}
 		else 
 		{
-			write(fd, line,  ft_strlen(line ));
+			write(fd, line,  ft_strlen(line));
 			write(fd, "\n", 1);
 			free(line);
 		}
 	}
 	close(fd);
-	return file_name;
-
-
+	return fd2;
 }
 int	open_file(char *file, int in_or_out)
 {
@@ -105,7 +101,6 @@ int	get_fds(t_data *list, t_gc **g_collector)
 {
 	char	**full_cmd;
 	int		i;
-	char *file_name;
 	full_cmd = list->directions;
 	i = 0;
 	if (!full_cmd)
@@ -149,8 +144,7 @@ int	get_fds(t_data *list, t_gc **g_collector)
 			i++;
 			if (list->in_fd != 0)
 				close(list->in_fd);
-			file_name = her_doc(full_cmd[i], g_collector);
-			list->in_fd = open_file(file_name, 0);
+			list->in_fd = her_doc(full_cmd[i], g_collector);
 				if (list->in_fd == -1)
 					return 1;
 		}
