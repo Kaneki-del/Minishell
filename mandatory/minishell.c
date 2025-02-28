@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/28 12:09:29 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:15:46 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void ft_print2d(char **str)
   }
 }
 
-/* void f() */
-/* { */
-/*   system(" minishell"); */
-/* } */
+void f()
+{
+  system("lsof -c minishell");
+}
 void ft_printf(t_data **data)
 {
   t_data *iter;
@@ -65,7 +65,7 @@ int main(int ac, char **av, char **env) {
   (void)ac;
   (void)av;
 
-  /* atexit(f); */
+  atexit(f);
   t_container content;
   content.g_env_collector = NULL;
   content.g_collector = NULL;
