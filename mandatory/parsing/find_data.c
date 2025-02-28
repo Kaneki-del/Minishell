@@ -8,16 +8,20 @@ void get_dir_files(char **dir_files, t_token *token, t_gc **g_collector)
        token->token_type == T_REDIRECTE_HEREDOC) &&
       token->token_type != T_PIPE) {
     *dir_files = ft_strjoin(*dir_files, token->value, g_collector);
-    *dir_files = ft_strjoin(*dir_files, " ", g_collector);
+    if (token->next != NULL)
+      *dir_files = ft_strjoin(*dir_files, " ", g_collector);
     *dir_files = ft_strjoin(*dir_files, token->next->value, g_collector);
-    *dir_files = ft_strjoin(*dir_files, " ", g_collector);
+    if (token->next->next != NULL)
+      *dir_files = ft_strjoin(*dir_files, " ", g_collector);
   } else if ((token->token_type == T_REDIRECTE_OUT ||
               token->token_type == T_REDIRECTE_APPEND) &&
              token->token_type != T_PIPE) {
     *dir_files = ft_strjoin(*dir_files, token->value, g_collector);
-    *dir_files = ft_strjoin(*dir_files, " ", g_collector);
+    if (token->next != NULL)
+      *dir_files = ft_strjoin(*dir_files, " ", g_collector);
     *dir_files = ft_strjoin(*dir_files, token->next->value, g_collector);
-    *dir_files = ft_strjoin(*dir_files, " ", g_collector);
+    if (token->next->next != NULL)
+      *dir_files = ft_strjoin(*dir_files, " ", g_collector);
   }
 }
 
@@ -40,6 +44,7 @@ void get_command(char **only_command, t_token *token, t_gc **g_collector)
   else if (token->token_type == T_WORD &&
            (input_check == 0 || output_check == 0)) {
     *only_command = ft_strjoin(*only_command, token->value, g_collector);
-    *only_command = ft_strjoin(*only_command, " ", g_collector);
+    if (token && token->next && token->next->token_type != T_PIPE)
+      *only_command = ft_strjoin(*only_command, " ", g_collector);
   }
 }
