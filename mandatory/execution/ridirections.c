@@ -6,7 +6,6 @@
 //TO_DO: handling expanding and ading the unlink to it so the file is not showd
 char *get_file(t_gc **g_collector)
 {
-
 	char *file_name;
 	int i;
 
@@ -26,6 +25,11 @@ int her_doc(char *limiter, t_gc **g_collector)
 	char *line;
 	char *file_name;
 	int fd2;
+	// TODO:
+	// check if the herdocs exedded 16 herdoc to 
+	// check if the limiter has any single or double cotes to see if they expand or note (flag)
+	// if yes remove the "" or '' to the limmiter
+	// inside the lop if the line need to expand expandit and safi
 	file_name = get_file(g_collector);
 	fd = open_file(file_name, 1);
 	fd2 = open_file(file_name, 0);
@@ -34,10 +38,7 @@ int her_doc(char *limiter, t_gc **g_collector)
 	{
 		line = readline("> ");
 		if (line == NULL)
-		{
-			printf ("EOF detected");
 			break;
-		}
 		else if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -58,6 +59,7 @@ int	open_file(char *file, int in_or_out)
 
 	int	ret;
 	ret = 0;
+	
 	if (!file || file[0] == '\0') 
 	{
 		ft_error_exec_two("bash: ", file, ": No such file or directory", 2);
@@ -100,6 +102,8 @@ int	get_fds(t_data *list, t_gc **g_collector)
 {
 	char	**full_cmd;
 	int		i;
+	//bash: maximum here-document count exceeded
+
 	full_cmd = list->directions;
 	i = 0;
 	if (!full_cmd)
