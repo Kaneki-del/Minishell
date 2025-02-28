@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft_utils0.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 23:17:21 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/26 16:08:04 by sait-nac         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 size_t	ft_strlen(const char *s)
@@ -76,7 +64,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector)
 	if (!s2)
 		return (ft_strdup(s1, g_collector));
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	result = (char *)gc(total_len, g_collector);
+	result = gc(total_len, g_collector);
 	if (!result)
 		return (NULL);
 	ft_strlcpy(result, s1, total_len);

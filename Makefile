@@ -13,7 +13,7 @@ FILS = $(wildcard $(M)/$(U)/*.c) \
 		$(wildcard $(M)/$(ED)/*.c)\
 		$(wildcard $(M)/*.c) 
 
-CFLAGS =  -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror -g
 REDLINE = -lreadline -lncurses
 OBJS = 	$(FILS:.c=.o)
 

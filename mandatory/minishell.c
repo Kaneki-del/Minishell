@@ -74,9 +74,10 @@ int main(int ac, char **av, char **env)
   content.env_list = get_env_list(env, &content);
   content.status = 0;
   while (1) {
-    
+
     //remember to remove it from here
-	init_content(&content);
+    content.g_collector = NULL;
+	  init_content(&content);
     content.line = readline("\033[2;34mshell$> \033[0m");
     if (!content.line)
       exit(EXIT_SUCCESS);
