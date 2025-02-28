@@ -137,6 +137,7 @@ static int	handle_pipes(t_container *content)
 		execut(content, current, p_fd, t);
 		close(t); // Close previous read end in parent
 		current = current->next;
+		close(p_fd[1]);
 	}
 	return (execute_last(content, current, p_fd));
 }

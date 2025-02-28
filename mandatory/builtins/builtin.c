@@ -57,6 +57,6 @@ int	built_in(t_data *current, t_container *content)
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)
 		return handle_cd(current->cmds + 1, content);
 	else if (ft_strcmp(current->cmds[0], "exit") == 0)
-		return handle_exit(content->data->cmds + 1, content);
+		return handle_exit(current, content);
 	return (1);
 }

@@ -6,11 +6,12 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/26 19:50:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:15:22 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
 #include <string.h>
 
 char	*get_env_path(t_container *content)
@@ -72,8 +73,15 @@ char	*find_executable_path(t_data *current, t_container *content)
 	char	*path_value;
 	char	*cmd_v;
 	
-	if (ft_strchr(current->cmds[0], '/') != NULL)
+	if (ft_strchr(current->cmds[0], '/') != NULL){
 		cmd_v = try_direct_access(current, content);
+		//bash: /ls: No such file or directory
+		if (!cmd_v)
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": No such file or directory", 2);
+			exit(127);	
+		}
+	}
 	else
 	{
 	path_value = get_env_path(content);

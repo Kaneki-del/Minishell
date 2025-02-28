@@ -54,7 +54,7 @@ char **check_echo_options(char **cmd, t_gc **g_collector)
 {
     int i;
     int j;
-    char *new_cmd;
+   
 
     i = 1;
     new_cmd = NULL;

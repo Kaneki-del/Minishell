@@ -151,7 +151,7 @@ void handle_pwd(t_env **env_list, t_data *current);
 int handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
 int	ft_atoi(const char *str);
-int handle_exit(char **args, t_container *content);
+int handle_exit(t_data *current, t_container *content);
 void clean_fds(t_data *list);
 void ft_error_exec(char *msg, char *dis, char *left, int fd);
 int rideraction_builtins(t_data *current);

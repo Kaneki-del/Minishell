@@ -29,7 +29,7 @@ void ft_print2d(char **str)
 
 void f()
 {
-  system("leaks minishell");
+  system("lsof -c minishell");
 }
 void ft_printf(t_data **data)
 {

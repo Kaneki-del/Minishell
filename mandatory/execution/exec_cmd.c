@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/26 16:07:13 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:16:20 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	executing(t_data *current, t_container *content)
 	{
 		if (execve(cmd_path, current->cmds, list_char) == -1)
 		{
-			perror("i am here execve failed");
+			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
 			exit(127);
 		}
 	}
