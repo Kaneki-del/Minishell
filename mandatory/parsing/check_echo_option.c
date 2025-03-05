@@ -22,7 +22,7 @@ char **remove_repeated(char **cmd, t_gc **g_collector)
     j = 1;
     second_check = 0;
     check = 0;
-    new_cmds = gc(sizeof(char *) * get_cmds_length(cmd), g_collector);
+    new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), g_collector);
     if (!new_cmds)
         return (NULL);
     new_cmds[0] = cmd[0];

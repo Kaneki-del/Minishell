@@ -68,6 +68,7 @@ void	delete_node(t_env **list_env, char *key)
 void	print_export(t_data *current ,t_container *content)
 {
 	t_env	*smallest;
+	size_t 	i;
 
 	int saved_stdout = rideraction_builtins(current); // Store original stdout
 
@@ -82,7 +83,24 @@ void	print_export(t_data *current ,t_container *content)
 			return ;
 		// Print the key and value of the smallest element
 		if (smallest->key && smallest->value)
-			printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
+		{
+			if (check_is_in_qoutes(smallest->value))
+			{
+				i = 1;
+				ft_putstr_fd("declare -x ", 1);
+				ft_putstr_fd(smallest->key, 1);
+				ft_putstr_fd("=", 1);
+				ft_putstr_fd("\"", 1);
+				while (smallest->value[i] && i < ft_strlen(smallest->value) - 1)
+				{
+					write(1,&smallest->value[i],1);
+					i++;
+				}
+				ft_putstr_fd("\"\n", 1);
+			}
+			else
+				printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
+		}
 		else if (!smallest->value)
 			printf("declare -x %s\n", smallest->key);
 		// Delete the smallest node from the list

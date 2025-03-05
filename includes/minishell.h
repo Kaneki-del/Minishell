@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/26 19:49:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:39:48 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,7 @@ typedef struct s_gc {
   void *adress;
   struct s_gc *next;
 } t_gc;
-typedef struct s_file_info
-{
-    int fd;
-    char *filename;
-} t_file_info;
+
 //the env  list struct
 typedef struct s_env {
   char *key;
@@ -83,6 +79,7 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
+  int is_expandable;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -119,6 +116,8 @@ int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_gc **g_collector)
 char	*ft_itoa(int n, t_gc **g_collector);
 char **check_echo_options(char **cmd, t_gc **g_collector);
 int	ft_isalnum(int c);
+int check_is_in_qoutes(char *str);
+size_t	word_counter(const char *s, char c);
 
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);

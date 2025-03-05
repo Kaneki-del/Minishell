@@ -26,7 +26,6 @@ int her_doc(char *limiter, t_gc **g_collector)
 	char *file_name;
 	int fd2;
 	// TODO:
-	// check if the herdocs exedded 16 herdoc to 
 	// check if the limiter has any single or double cotes to see if they expand or note (flag)
 	// if yes remove the "" or '' to the limmiter
 	// inside the lop if the line need to expand expandit and safi
@@ -46,6 +45,8 @@ int her_doc(char *limiter, t_gc **g_collector)
 		}
 		else 
 		{
+			if (!check_is_in_qoutes(limiter))
+				// line = check_env_var();
 			write(fd, line,  ft_strlen(line));
 			write(fd, "\n", 1);
 			free(line);

@@ -48,3 +48,10 @@ char **filterd(char **cmds,t_gc **g_collector)
   }
   return (cmds);
 }
+
+int check_is_in_qoutes(char *str)
+{
+  if ((str[0] == '"' || str[0] == '\'') && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
+    return (1);
+  return (0);
+}

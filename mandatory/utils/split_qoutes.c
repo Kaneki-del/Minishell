@@ -6,21 +6,15 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 11:59:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:31:22 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-
-
-
-#include "../../includes/minishell.h"
-
 // shoud take a looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooook
 
-static size_t words_count(const char *s, char c) // this" name s"
+size_t words_count(const char *s, char c) // this" name s"
 {
     size_t count = 0;
     int in_quote = 0;

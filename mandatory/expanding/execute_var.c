@@ -90,6 +90,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
     pair = NULL;
     key = NULL;
     start = (*i);
+    content->is_expandable = 1;
     while (command[start] && ft_isalnum(command[start]))
         start++;
     key = gc(start - (*i) + 1, &content->g_collector);
@@ -113,7 +114,7 @@ char *check_env_var(t_container *content, char *command, int *flag)
 {
     int i;
     char *new_command;
-    char *curent_part;
+    char *curent_part;  
     int is_in;
     char qoute;
 

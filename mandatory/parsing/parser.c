@@ -60,36 +60,53 @@ int parser(t_container *content)
 
   dir_files = NULL;
   only_command = NULL;
+  cmd_optios = NULL;
   iter = content->tokens;
   flag = 1;
   while (iter)
   {
-
     // loop until |
     iter = init_data(iter, &dir_files, &only_command, &content->g_collector);
     // filter beside or secounded qoutes
     // only_command = filer_qoutations(only_command);
-    if (only_command)
+    if (check_is_in_qoutes(only_command) && word_counter(only_command, ' ') >  1)
     {
-      flag = 2;
-      only_command = check_env_var(content, only_command, &flag);
+        cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
+        add_data_back(&content->data, new_data_node(cmd_optios, filterd(ft_split(dir_files, ' ', &content->g_collector), &content->g_collector), &content->g_collector));
     }
-    if (dir_files)
+    else
     {
-      flag = 1;
-      dir_files = check_env_var(content, dir_files, &flag);
+      if (only_command)
+      {
+        flag = 2;
+        only_command = check_env_var(content, only_command, &flag);
+      }
+      if (dir_files)
+      {
+        flag = 1;
+        dir_files = check_env_var(content, dir_files, &flag);
+      }
+      if (flag == 0)
+      {
+        clear_bin(&content->g_collector);
+        return (0);
+      }
+      if (only_command && ft_strncmp(only_command, "export ", 7) == 0)
+      {
+        cmd_optios = ft_split(only_command, ' ', &content->g_collector);
+      }
+      else
+      {
+        // this is not working at qoutations cases
+        only_command = filer_qoutations(only_command, &content->g_collector);
+        cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
+      }
+      cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
+      // dir_files = filer_qoutations(dir_files, &content->g_collector);
+      // split redirections and command (with options) and pass them to creat a
+      // new node (general structer) than add the node at the end of list
+      add_data_back(&content->data, new_data_node(cmd_optios, filterd(ft_split(dir_files, ' ', &content->g_collector), &content->g_collector), &content->g_collector));
     }
-    if (flag == 0)
-    {
-      clear_bin(&content->g_collector);
-      return (0);
-    }
-    cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
-    cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
-    // dir_files = filer_qoutations(dir_files, &content->g_collector);
-    // split redirections and command (with options) and pass them to creat a
-    // new node (general structer) than add the node at the end of list
-    add_data_back(&content->data, new_data_node(cmd_optios, filterd(ft_split(dir_files, ' ', &content->g_collector), &content->g_collector), &content->g_collector));
   }
   return (1);
 }
