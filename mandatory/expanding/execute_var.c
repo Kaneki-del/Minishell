@@ -159,6 +159,7 @@ char *check_env_var(t_container *content, char *command, int *flag)
                         new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
                 }
             }
+            continue;
         }
         else if(qoute != '"' && qoute != '\'' && command[i] == '~')
         {
