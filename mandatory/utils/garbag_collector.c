@@ -8,11 +8,11 @@ t_gc *gc_node(t_gc **garbage_list) {
         return (NULL);
     last_node = *garbage_list;
     if (last_node == NULL)
-        return (*garbage_list = calloc(sizeof(char), sizeof(t_gc)));
+        return (*garbage_list = ft_calloc(sizeof(char), sizeof(t_gc)));
     while (last_node && last_node->next)
         last_node = last_node->next;
 
-    return (last_node->next = calloc(sizeof(char), sizeof(t_gc)));
+    return (last_node->next = ft_calloc(sizeof(char), sizeof(t_gc)));
 }
 
 void clear_bin(t_gc **garbage_list)
@@ -37,12 +37,11 @@ void clear_bin(t_gc **garbage_list)
 }
 void *gc(size_t size, t_gc **garbage_list)
 {
-
     t_gc *new_garbage_node;
     void *allocated;
 
     new_garbage_node = NULL;
-    allocated = calloc(sizeof(char), size);
+    allocated = ft_calloc(sizeof(char), size);
     if (allocated == NULL)
     {
         clear_bin(garbage_list);

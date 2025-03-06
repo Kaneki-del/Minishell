@@ -72,12 +72,12 @@ int parser(t_container *content)
     if (only_command)
     {
       flag = 2;
-      only_command = check_env_var(content, only_command, &flag);
+      only_command = check_env_var(content, only_command, &flag, 0);
     }
     if (dir_files)
     {
       flag = 1;
-      dir_files = check_env_var(content, dir_files, &flag);
+      dir_files = check_env_var(content, dir_files, &flag, 0);
     }
     if (flag == 0)
     {

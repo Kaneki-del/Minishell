@@ -41,9 +41,12 @@ char **filterd(char **cmds,t_gc **g_collector)
     return (NULL);
   while (cmds[i] != NULL)
   {
-    cmds[i] = filer_qoutations(cmds[i], g_collector);
-    if (!cmds[i])
-      return (NULL);
+    if (ft_strncmp(cmds[i - i], "<<", 3) != 0)
+    {
+      cmds[i] = filer_qoutations(cmds[i], g_collector);
+      if (!cmds[i])
+        return (NULL);
+    }
     i++;
   }
   return (cmds);
@@ -51,7 +54,7 @@ char **filterd(char **cmds,t_gc **g_collector)
 
 int check_is_in_qoutes(char *str)
 {
-  if ((str[0] == '"' || str[0] == '\'') && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
+  if (str && (str[0] == '"' || str[0] == '\'') && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
     return (1);
   return (0);
 }
