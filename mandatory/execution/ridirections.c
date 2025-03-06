@@ -1,60 +1,8 @@
 #include "../../includes/minishell.h"
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 
 //TO_DO: handling expanding and ading the unlink to it so the file is not showd
-char *get_file(t_gc **g_collector)
-{
-	char *file_name;
-	int i;
 
-	i = 0;
-	while(1)
-	{
-		file_name = ft_strjoin ("/tmp/.her_doc" , ft_itoa(i, g_collector), g_collector);
-		if (access(file_name, F_OK) == -1)
-			return file_name;
-		i++;
-	}
-}
-
-int her_doc(char *limiter, t_gc **g_collector)
-{
-	int fd;
-	char *line;
-	char *file_name;
-	int fd2;
-	// TODO:
-	// check if the limiter has any single or double cotes to see if they expand or note (flag)
-	// if yes remove the "" or '' to the limmiter
-	// inside the lop if the line need to expand expandit and safi
-	file_name = get_file(g_collector);
-	fd = open_file(file_name, 1);
-	fd2 = open_file(file_name, 0);
-	unlink(file_name);
-	while(1)
-	{
-		line = readline("> ");
-		if (line == NULL)
-			break;
-		else if (ft_strcmp(line, limiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		else 
-		{
-			if (!check_is_in_qoutes(limiter))
-				// line = check_env_var();
-			write(fd, line,  ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
-	}
-	close(fd);
-	return fd2;
-}
 int	open_file(char *file, int in_or_out)
 {
 
@@ -99,7 +47,7 @@ int	open_file(char *file, int in_or_out)
 	return (ret);
 }
 
-int	get_fds(t_data *list, t_gc **g_collector)
+int	get_fds(t_data *list, t_container *content)
 {
 	char	**full_cmd;
 	int		i;
@@ -148,7 +96,7 @@ int	get_fds(t_data *list, t_gc **g_collector)
 			i++;
 			if (list->in_fd != 0)
 				close(list->in_fd);
-			list->in_fd = her_doc(full_cmd[i], g_collector);
+			list->in_fd = her_doc(full_cmd[i], content);
 				if (list->in_fd == -1)
 					return 1;
 		}

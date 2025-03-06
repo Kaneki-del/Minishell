@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/28 21:19:03 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:44:28 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-
+void	ctrl_c(int sig)
+{
+	printf("\n");
+	sig_var = sig;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 void ft_print2d(char **str)
 {
   int i;
@@ -27,10 +34,10 @@ void ft_print2d(char **str)
   }
 }
 
-void f()
-{
-  system("lsof -c minishell");
-}
+// void f()
+// {
+//   system("lsof -c minishell");
+// }
 void ft_printf(t_data **data)
 {
   t_data *iter;
@@ -67,6 +74,7 @@ int main(int ac, char **av, char **env)
   (void)ac;
   (void)av;
 
+  // atexit(f);
   t_container content;
   content.g_env_collector = NULL;
   content.g_collector = NULL;
@@ -75,9 +83,14 @@ int main(int ac, char **av, char **env)
   while (1) {
 
     //remember to remove it from here
-    content.g_collector = NULL;
-	  init_content(&content);
-    content.line = readline("shell$> ");
+    if (ac != 1 || !isatty(0))
+		return (1);
+	rl_catch_signals = 0;
+  signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ctrl_c);
+	init_content(&content);
+  
+    content.line = readline("mshell$> ");
     if (!content.line)
       exit(EXIT_SUCCESS);
     if (content.line[0] != '\0')

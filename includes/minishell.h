@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/05 22:39:48 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:01:25 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
-
+#include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+int sig_var;
 
 typedef enum s_type_token {
   T_WORD,
@@ -95,7 +97,7 @@ void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
 int single_command(t_container *content);
 int ft_lstsize(t_data *lst);
-int	get_fds(t_data *list, t_gc **g_collector);
+int	get_fds(t_data *list, t_container *content);
 int run_multiple(t_container *content);
 int execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);
@@ -156,4 +158,5 @@ void ft_error_exec(char *msg, char *dis, char *left, int fd);
 int rideraction_builtins(t_data *current);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
+int her_doc(char *limiter, t_container *content);
 #endif

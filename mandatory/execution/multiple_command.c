@@ -11,7 +11,7 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 	if (pid == 0)
 	{
 		
-		if (get_fds(current, &content->g_collector) != 0)
+		if (get_fds(current, content) != 0)
 			exit(1);
 		close(p_fd[0]); // Close unused read end
 		if (current->out_fd == 0)
@@ -51,7 +51,7 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 		exit(1);
 	if (pid == 0)
 	{
-		if (get_fds(current, &content->g_collector) != 0)
+		if (get_fds(current,  content) != 0)
 			exit(1);
 		close(p_fd[0]); // Close unused read end
 		if (current->out_fd == 0)
@@ -89,7 +89,7 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 		exit(1);
 	if (pid == 0)
 	{
-		if (get_fds(current, &content->g_collector) != 0)
+		if (get_fds(current, content) != 0)
 			exit(1);
 		if (current->in_fd == 0)
 			current->in_fd = p_fd[0];
