@@ -6,21 +6,23 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/27 10:42:45 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:25:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
-
+#include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+int sig_var;
 
 typedef enum s_type_token {
   T_WORD,
