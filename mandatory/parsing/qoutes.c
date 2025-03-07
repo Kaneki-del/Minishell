@@ -31,6 +31,29 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
   return (words_between);
 }
 
+char *filter_one_sides(char *command_line,  t_gc **g_collector)
+{
+  size_t i;
+  int j;
+  char *words_between;
+
+  j = 0;
+  i = 1;
+  if (!command_line)
+    return (NULL);
+  if (!check_is_in_qoutes(command_line))
+    return (command_line);
+  words_between = gc(ft_strlen(command_line) + 1, g_collector);
+  if (!words_between)
+    return (NULL); // shoud handle
+  while (command_line[i] && i < ft_strlen(command_line) - 1)
+  {
+    words_between[j++] = command_line[i++];
+  }
+  words_between[j] = '\0';  
+  return (words_between);
+}
+
 char **filterd(char **cmds,t_gc **g_collector)
 {
   int i;

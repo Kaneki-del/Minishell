@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/06 17:35:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:18:44 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ char **check_echo_options(char **cmd, t_gc **g_collector);
 int	ft_isalnum(int c);
 int check_is_in_qoutes(char *str);
 void	*ft_calloc(size_t count, size_t size);
+char *filter_one_sides(char *command_line,  t_gc **g_collector);
 
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);

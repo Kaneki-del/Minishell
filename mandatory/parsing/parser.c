@@ -85,14 +85,12 @@ int parser(t_container *content)
       return (0);
     }
     if (only_command && ft_strncmp(only_command, "export ", 7) == 0)
-    {
-      cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
-      cmd_optios[1] = filer_qoutations(only_command + 7, &content->g_collector);
-      cmd_optios[2] = NULL;
-    }
+      cmd_optios = ft_split(only_command, ' ', &content->g_collector);
     else
     {
       // this is not working at qoutations cases
+      if (flag == 5)
+        only_command = filter_one_sides(only_command, &content->g_collector);
       cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     }
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);

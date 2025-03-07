@@ -104,6 +104,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
         }
         return (ft_strdup("\0", &content->g_collector));
     }
+    *(flag) = 5;
     return (pair->value);
 }
 
