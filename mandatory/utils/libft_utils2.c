@@ -50,6 +50,7 @@ char	*ft_itoa(int n, t_gc **g_collector)
 
 	num = n;
 	len_digit = digit_len(num);
+	p = NULL;
 	p = gc(len_digit + 1, g_collector);
 	if (!p)
 		return (NULL);

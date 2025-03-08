@@ -68,6 +68,7 @@ int tokener(t_container *content)
     i = -1;
     if (!content->line)
       return (0);
+    word = NULL;
     while (content->line[++i]) {
         if (ft_strchr(" \n\t", content->line[i]))
             continue ;

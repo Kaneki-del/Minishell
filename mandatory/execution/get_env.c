@@ -26,8 +26,7 @@ char **ft_split_equal_to(const char *s, t_gc **g_collector)
 
   if (s == NULL)
     return NULL;
-  str =
-      gc(sizeof(char *) * 3, g_collector); // Two substrings + NULL terminator
+  str = gc(sizeof(char *) * 3, g_collector); // Two substrings + NULL terminator
   if (str == NULL)
     return NULL;
   len = ft_strlen(s);

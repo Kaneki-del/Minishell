@@ -127,7 +127,6 @@ int parser(t_container *content)
       only_command = filter_one_sides(only_command, &content->g_collector);
       cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     }
-  
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
     // dir_files = filer_qoutations(dir_files, &content->g_collector);
     // split redirections and command (with options) and pass them to creat a

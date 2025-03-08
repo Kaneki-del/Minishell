@@ -161,7 +161,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 qoute = '\0';
             }
         }
-        if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && command[i + 1] != '\0')
+        if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\'' || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
         {
             if (here_doc_flag)
             {
@@ -190,7 +190,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                         (*flag) = 3;
                     if (command[i] == '?')
                         new_command = ft_strjoin(new_command, exit_status(content, &i), &content->g_collector);
-                    else if (ft_isdigit(command[i]) || !ft_isalpha(command[i]))
+                    else if (((ft_isdigit(command[i]) || !ft_isalpha(command[i])) && (command[i] != '"' && command[i] != '\'')))
                         i++;
                     else if (ft_isalnum(command[i]))
                     {

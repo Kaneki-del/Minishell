@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/06 16:28:06 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/08 02:01:58 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ int main(int ac, char **av, char **env)
     //remember to remove it from here
     if (ac != 1 || !isatty(0))
 		return (1);
-	rl_catch_signals = 0;
-  signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ctrl_c);
-	init_content(&content);
+    rl_catch_signals = 0;
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, ctrl_c);
+    init_content(&content);
   
     content.line = readline("mshell$> ");
     if (!content.line)
@@ -97,7 +97,12 @@ int main(int ac, char **av, char **env)
       add_history(content.line);
     // this function contains all paring cases
     if (parsing_case(&content) == 0) // shoud move the clear_bin here
+    {
+      free(content.line);
+      content.g_collector = NULL;
       continue;
+    }
+    
     // ft_printf(&content.data);
     content.status = execute_package(&content); 
     free(content.line);
