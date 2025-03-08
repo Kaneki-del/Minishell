@@ -286,7 +286,7 @@ bash-3.2$ export a=" a     a     a   " b="   b     b       b   "
 bash-3.2$ $a$b
 bash: a: command not found
 bash-3.2$ "$a$b"
-bash:  a     a     a      b     b       b   : command not found
+bash:  a     a     a      b     b   b   : command not found
 
 
 Mini$hell$: $_

@@ -78,6 +78,29 @@ int check_double(char *command, int i, char qoute)
     return (1);
 }
 
+char *add_qoutations(char *command, t_gc **g_collector)
+{
+  int i;
+  int j;
+  char *res;
+
+  i = 0;
+  j = 1;
+  if (check_is_in_qoutes(command))
+      return (command);
+  res = gc(ft_strlen(command) + 3, g_collector);
+  res[0] = '"';
+  while (command[i])
+  {
+    res[j] = command[i];
+    i++;
+    j++;
+  }
+  res[j] = '"';
+  res[j + 1] = '\0';
+  return (res);
+}
+
 char *expand(t_container *content, char *command, int *i, int *flag)
 {
     t_env *pair;
@@ -105,7 +128,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
         return (ft_strdup("\0", &content->g_collector));
     }
     *(flag) = 5;
-    return (pair->value);
+    return (add_qoutations(pair->value, &content->g_collector));
 }
 
 // the first this is the epandable string shoud starts with $ and end with special character 

@@ -50,24 +50,14 @@ int token_checker(t_container *content)
   return (1);
 }
 
-char *add_qoutations(char *command)
+size_t	ft_strlen_2d(char **s)
 {
-  int i;
-  char *res;
+	size_t	i;
 
-  i = 1;
-  if (check_is_in_qoutes(command))
-      return (command);
-  res = malloc(ft_strlen(command) + 3);
-  res[0] = '"';
-  while (command[i])
-  {
-    res[i] = command[i];
-    i++;
-  }
-  command[i] = '"';
-  command[i + 1] = '\0';
-  return (res);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
 int parser(t_container *content)
@@ -120,12 +110,23 @@ int parser(t_container *content)
     if (only_command && ft_strncmp(only_command, "export ", 7) == 0 && flag == 5)
     {
         // only_command = add_qoutations(only_command);
+
         cmd_optios = ft_split(only_command, ' ', &content->g_collector);
-        cmd_optios[1] = ft_strdup(only_command + 7, &content->g_collector);
-        cmd_optios[2] = NULL;
+        if(ft_strlen_2d(cmd_optios) < 3)
+        {
+          cmd_optios[1] = filer_qoutations(ft_strdup(only_command + 7, &content->g_collector),  &content->g_collector);
+          cmd_optios[2] = NULL;
+        }
+        else
+        {
+          cmd_optios = filterd(cmd_optios, &content->g_collector);
+        }
     }
     else
+    {
+      only_command = filter_one_sides(only_command, &content->g_collector);
       cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
+    }
   
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
     // dir_files = filer_qoutations(dir_files, &content->g_collector);
