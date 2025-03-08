@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/26 16:07:13 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:37:41 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,10 @@ void	executing(t_data *current, t_container *content)
 		exit(127);
 	}	
 	list_char = env_to_array(content);
-
 	if (current->cmds)
 	{
+		// signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
 		if (execve(cmd_path, current->cmds, list_char) == -1)
 		{
 			perror("i am here execve failed");

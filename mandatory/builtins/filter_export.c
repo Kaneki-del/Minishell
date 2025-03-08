@@ -104,7 +104,7 @@ void valid_key(char **key_value, t_container *content)
 	if (temp != NULL)
 		do_mode(key_value, &temp, &content->g_env_collector, a);
 	else
-		lstadd_back_env(&content->env_list, lstnew_env(key_value[0], key_value[1], &content->g_env_collector));
+		lstadd_back_env(&content->env_list, lstnew_env(key_value[0], key_value[1], &content->g_env_collector, 0));
 			
 }
 

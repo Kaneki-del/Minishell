@@ -45,7 +45,7 @@ void	updte_old_pwd_hiden(t_env **env_list, t_gc *env_gc)
 	if (temp != NULL)
 		temp->value = ft_strdup(buffer, &env_gc);
 	else
-		lstadd_back_env(env_list, lstnew_env(".OLDPWD", ft_strdup(buffer, &env_gc), &env_gc));
+		lstadd_back_env(env_list, lstnew_env(".OLDPWD", ft_strdup(buffer, &env_gc), &env_gc, 1));
 }
 
 int	handle_cd(char **new_path, t_container *content)

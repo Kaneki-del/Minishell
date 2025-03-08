@@ -11,7 +11,7 @@ void	print_env_list(t_env *env_list, t_data *list)
 	// Traverse the list and print each node's key and value
 	while (current != NULL)
 	{
-		if (current->key && current->value)
+		if (current->key && current->value && current->print_flag == 0)
 			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}

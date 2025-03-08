@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/07 16:43:44 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:40:47 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_gc {
 typedef struct s_env {
   char *key;
   char *value;
+  int print_flag;
   struct s_env *next;
 } t_env;
 
@@ -86,7 +87,6 @@ typedef struct s_container
   int status;
   char *line;
   struct termios termios_value;
-
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -138,7 +138,7 @@ t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
 int	built_in(t_data *current, t_container *content); 
-t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector);
+t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector, int set);
 void	print_env_list(t_env *env_list, t_data *list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);

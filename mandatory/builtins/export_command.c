@@ -10,12 +10,12 @@ t_env	*copy_list(t_container *content)
 
 	if (!content->env_list)
 		return (NULL);
-	new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector);
+	new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector, 0);
 	current_old = content->env_list->next;
 	current_new = new_head;
 	while (current_old)
 	{
-		new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector);
+		new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector, 0);
 		current_new->next = new_node;
 		current_new = new_node;
 		current_old = current_old->next;

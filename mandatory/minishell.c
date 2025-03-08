@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 14:15:09 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:38:16 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int g_sig;
 void	ctrl_c(int sig)
 {
   //this is for the ishew with the overlaping if prompt in in program insid program
-  if (waitpid(-1, &sig, WNOHANG) == 0)
-      return ;
+  // if (waitpid(-1, &sig, WNOHANG) == 0)
+  //     return ;
 	printf("\n");
 	g_sig = sig;
 	rl_on_new_line();
@@ -71,37 +71,30 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
-    
 }
 int main(int ac, char **av, char **env) {
 
   (void)av;
-
-  // atexit(f);
+  
   t_container content;
+  tcgetattr(STDERR_FILENO, &content.termios_value);
   content.g_env_collector = NULL;
   content.g_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
-  // tcgetattr(STDERR_FILENO, &content.termios_value);
 	 rl_catch_signals = 0;
+  
   while (1) {
-    // dprintf(2, "SIG: %d\n", sig_var);
     signal(SIGQUIT, SIG_IGN);
 	  signal(SIGINT, ctrl_c);
-  //  sig_var = 0;
-    //remember to remove it from here
     if (ac != 1 || !isatty(0))
 		  return (1);
 	  init_content(&content);
-
-    
     content.line = readline("mshell$> ");
     if (!content.line){
       printf("exit\n");
       clear_bin(&content.g_collector);
       exit(0);
-     
     }
     if (content.line[0] != '\0')
       add_history(content.line);
@@ -110,7 +103,6 @@ int main(int ac, char **av, char **env) {
       continue;
     // ft_printf(&content.data);
     content.status = execute_package(&content);
-    
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;
