@@ -76,16 +76,19 @@ char **get_befor(const char *cmd, t_gc **g_collector)
   while (cmd[i] != '=' && cmd[i])
     i++;
   to_return[0] = ft_substr(cmd, 0, i, g_collector);
+  
   if (cmd[i] == '=') 
   {
     i++;
     to_return[1] = ft_substr(cmd , i , ft_strlen(cmd + i), g_collector);
+	
   } 
   else
     to_return[1] = NULL;
   to_return[2] = 0;
   return to_return;
 }
+
 void valid_key(char **key_value, t_container *content)
 {
 	int	a;
@@ -112,7 +115,6 @@ int	add_export(char **cmd, t_container *content)
 	int		status;
 	
 
-
 	i = 0;
 	status = 0;
 
@@ -120,10 +122,10 @@ int	add_export(char **cmd, t_container *content)
 	while (cmd[i])
 	{
 		splited_equal = get_befor(cmd[i], &content->g_collector);
-		if (filter_key(splited_equal[0], splited_equal[1]) == 0)
+		if (filter_key(splited_equal[0], splited_equal[1]) == 0 && splited_equal[0])
 			valid_key(splited_equal, content);
 		else{
-			ft_error_exec("bash: export:", splited_equal[0], ": not a valid identifier", 2),
+			ft_error_exec("bash: export:", cmd[i], ": not a valid identifier", 2),
 			status = 1;
 		}
 		i++;

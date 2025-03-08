@@ -6,16 +6,21 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/06 14:16:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:15:09 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
+int g_sig;
+
 void	ctrl_c(int sig)
 {
+  //this is for the ishew with the overlaping if prompt in in program insid program
+  if (waitpid(-1, &sig, WNOHANG) == 0)
+      return ;
 	printf("\n");
-	sig_var = sig;
+	g_sig = sig;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -69,7 +74,7 @@ void init_content(t_container *content)
     
 }
 int main(int ac, char **av, char **env) {
-  (void)ac;
+
   (void)av;
 
   // atexit(f);
@@ -78,26 +83,34 @@ int main(int ac, char **av, char **env) {
   content.g_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
+  // tcgetattr(STDERR_FILENO, &content.termios_value);
+	 rl_catch_signals = 0;
   while (1) {
-    
+    // dprintf(2, "SIG: %d\n", sig_var);
+    signal(SIGQUIT, SIG_IGN);
+	  signal(SIGINT, ctrl_c);
+  //  sig_var = 0;
     //remember to remove it from here
     if (ac != 1 || !isatty(0))
-		return (1);
-	rl_catch_signals = 0;
-  signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ctrl_c);
-	init_content(&content);
-  
+		  return (1);
+	  init_content(&content);
+
+    
     content.line = readline("mshell$> ");
-    if (!content.line)
-      exit(EXIT_SUCCESS);
+    if (!content.line){
+      printf("exit\n");
+      clear_bin(&content.g_collector);
+      exit(0);
+     
+    }
     if (content.line[0] != '\0')
       add_history(content.line);
     // this function contains all paring cases
     if (parsing_case(&content) == 0)
       continue;
-    ft_printf(&content.data);
-    content.status = execute_package(&content); 
+    // ft_printf(&content.data);
+    content.status = execute_package(&content);
+    
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

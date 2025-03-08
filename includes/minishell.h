@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/06 14:25:33 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:43:44 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <termios.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 
@@ -22,7 +23,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int sig_var;
+
 
 typedef enum s_type_token {
   T_WORD,
@@ -57,23 +58,22 @@ typedef struct s_data {
   t_type_token dir_input_type;
   t_type_token dir_output_type;
   struct s_data *next;
+
 } t_data;
 
 typedef struct s_gc {
   void *adress;
   struct s_gc *next;
 } t_gc;
-typedef struct s_file_info
-{
-    int fd;
-    char *filename;
-} t_file_info;
+
 //the env  list struct
 typedef struct s_env {
   char *key;
   char *value;
   struct s_env *next;
 } t_env;
+
+
 
 // that struct contains most used variables
 typedef struct s_container
@@ -85,6 +85,8 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
+  struct termios termios_value;
+
 } t_container;
 
 char *ft_strrchr(const char *s, int c);

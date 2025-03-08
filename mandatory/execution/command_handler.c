@@ -32,5 +32,6 @@ int	execute_package(t_container *content)
 	}
 	else if (list_size >= 2)
 		exit_code = run_multiple(content);
+	// tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value); 
 	return (exit_code);
 }
