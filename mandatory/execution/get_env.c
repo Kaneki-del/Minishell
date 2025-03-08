@@ -70,7 +70,7 @@ void	lstadd_back_env(t_env **lst, t_env *new_t)
 		ptr->next = new_t;
 	}
 }
-void	clean_pwd(t_env **env_list)
+void	clean_old_pwd(t_env **env_list)
 {
 	t_env	*current;
 
@@ -96,6 +96,24 @@ char **get_backup_env(t_container *content)
 	new_env[4] = NULL;
 	return new_env;
 }
+//function take the env and search for the PWD if found update and if note set new one using getcwd
+
+void get_pwd(t_env **env_list, t_container *content)
+{
+	char *pwd;
+	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+	{
+		printf("shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
+	}
+	else 
+		if (check_if_there("PWD", env_list) != NULL)
+			check_if_there("PWD", env_list)->value = ft_strdup(pwd, &content->g_env_collector);
+		else 
+			lstadd_back_env(env_list, lstnew_env("PWD", pwd, &content->g_env_collector, 0));
+
+}
+
 // function to copy a local of the env in a linked list
 t_env	*get_env_list(char **env, t_container *content)
 {
@@ -122,6 +140,7 @@ t_env	*get_env_list(char **env, t_container *content)
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
 		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL, &content->g_env_collector, 0));
 	else
-		clean_pwd(&returned_env);
+		clean_old_pwd(&returned_env);
+	get_pwd(&returned_env, content);
 	return (returned_env);
 }
