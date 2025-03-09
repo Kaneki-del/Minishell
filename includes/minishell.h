@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/08 23:11:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:39:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <termios.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 
@@ -22,7 +23,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int sig_var;
+
 
 typedef enum s_type_token {
   T_WORD,
@@ -57,6 +58,7 @@ typedef struct s_data {
   t_type_token dir_input_type;
   t_type_token dir_output_type;
   struct s_data *next;
+
 } t_data;
 
 typedef struct s_gc {
@@ -68,8 +70,11 @@ typedef struct s_gc {
 typedef struct s_env {
   char *key;
   char *value;
+  int print_flag;
   struct s_env *next;
 } t_env;
+
+
 
 // that struct contains most used variables
 typedef struct s_container
@@ -81,7 +86,6 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
-  int is_expandable;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -138,7 +142,7 @@ t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
 int	built_in(t_data *current, t_container *content); 
-t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector);
+t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector, int set);
 void	print_env_list(t_env *env_list, t_data *list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);

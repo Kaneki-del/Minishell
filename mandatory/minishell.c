@@ -3,19 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/09 16:22:53 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:44:35 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
+int g_sig;
+
 void	ctrl_c(int sig)
 {
+  //this is for the ishew with the overlaping if prompt in in program insid program
+  // if (waitpid(-1, &sig, WNOHANG) == 0)
+  //     return ;
 	printf("\n");
-	sig_var = sig;
+	g_sig = sig;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -66,24 +71,27 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
+    content->save_path = NULL;
     content->line = NULL;
     content->is_expandable = 0;
 }
 
 int main(int ac, char **av, char **env)
 {
-  (void)ac;
-  (void)av;
 
-  // atexit(f);
+  (void)av;
+  
   t_container content;
+  tcgetattr(STDERR_FILENO, &content.termios_value);
   content.g_env_collector = NULL;
   content.g_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
+	 rl_catch_signals = 0;
+  
   while (1) {
-
-    //remember to remove it from here
+signal(SIGQUIT, SIG_IGN);
+	  signal(SIGINT, ctrl_c);
     if (ac != 1 || !isatty(0))
 		return (1);
     rl_catch_signals = 0;
@@ -92,8 +100,11 @@ int main(int ac, char **av, char **env)
     init_content(&content);
   
     content.line = readline("mshell$> ");
-    if (!content.line)
-      exit(EXIT_SUCCESS);
+    if (!content.line){
+      printf("exit\n");
+      clear_bin(&content.g_collector);
+      exit(0);
+    }
     if (content.line[0] != '\0')
       add_history(content.line);
     // this function contains all paring cases
@@ -103,8 +114,14 @@ int main(int ac, char **av, char **env)
       content.g_collector = NULL;
       continue;
     }
-    // ft_printf(&content.data);
-    content.status = execute_package(&content); 
+    // // ft_printf(&content.data);
+    content.status = execute_package(&content);
+    // if (WIFEXITED(content.status))
+		//   content.status = WEXITSTATUS(content.status);
+	  // else if (WIFSIGNALED(content.status)
+		//   && WTERMSIG(content.status) != SIGHUP)
+		//       content.status = 128 + content.status;
+    // printf("the exit state =%d\n", content.status);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

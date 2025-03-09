@@ -42,8 +42,15 @@ static void	intial(t_data **list, t_container *content)
 		current = current->next;
 	}
 }
+static void	ctrl_cmd(int sig)
+{
+	if (sig == SIGQUIT)
+		write(1, "Quit\n", 5);
+}
 int	execute_package(t_container *content)
 {
+	signal(SIGINT, ctrl_cmd);
+	signal(SIGQUIT, ctrl_cmd);
 	int	list_size;
 	int	exit_code;
 	exit_code = 0;
@@ -59,5 +66,7 @@ int	execute_package(t_container *content)
 	}
 	else if (list_size >= 2)
 		exit_code = run_multiple(content);
+	tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value);
+	// tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value); 
 	return (exit_code);
 }

@@ -15,8 +15,7 @@ int	single_command(t_container *content)
 	status = 0;
 	if (check_builtin_commands(current->cmds))
 		return (built_in(current, content));
-	// signal(SIGINT, ctrl_cmd);
-	// signal(SIGQUIT, ctrl_cmd);
+	
 	pid = fork();
 	if (pid < 0)
 		exit(1);
