@@ -100,16 +100,22 @@ char **get_backup_env(t_container *content)
 void get_pwd(t_env **env_list, t_container *content)
 {
 	char *pwd;
+	t_env *cpwd;
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
-	{
 		printf("shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-	}
-	else 
+	else
+	{ 
 		if (check_if_there("PWD", env_list) != NULL)
 			check_if_there("PWD", env_list)->value = ft_strdup(pwd, &content->g_env_collector);
 		else 
 			lstadd_back_env(env_list, lstnew_env("PWD", pwd, &content->g_env_collector, 0));
+		cpwd = check_if_there("PWD", env_list);
+		if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD", env_list) != NULL)
+			check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value, &content->g_env_collector);
+		else  if (cpwd != NULL && cpwd->value != NULL)
+			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, &content->g_env_collector, 1));
+	}
 
 }
 

@@ -2,37 +2,49 @@
 #include <string.h>
 
 // updte the old pwd if the cd run succesfully
-void update_old_pwd(t_container *content)
-{
-	t_env	*old_pwd;
-	char *pwd;
+// void update_old_pwd(t_container *content)
+// {
+// 	t_env	*old_pwd;
+// 	char *pwd;
 
-	old_pwd = NULL;
-	pwd = getcwd(NULL, 0);
-	if (pwd)
-	{
-		old_pwd = check_if_there("OLDPWD", &content->env_list);
-		if (old_pwd != NULL)
-			old_pwd->value = ft_strdup(pwd, &content->g_env_collector);
-		else
-			lstadd_back_env(&content->env_list, lstnew_env("OLDPWD", pwd, &content->g_env_collector, 1));
-	}
-}
+// 	old_pwd = NULL;
+// 	pwd = getcwd(NULL, 0);
+// 	if (pwd)
+// 	{
+// 		old_pwd = check_if_there("OLDPWD", &content->env_list);
+// 		if (old_pwd != NULL)
+// 			old_pwd->value = ft_strdup(pwd, &content->g_env_collector);
+// 		else
+// 			lstadd_back_env(&content->env_list, lstnew_env("OLDPWD", pwd, &content->g_env_collector, 1));
+// 	}
+// }
 // function that creat or update the hiden old pwd
 void	update_original_pwd(t_container *content, char *path)
 {
 	t_env *old_pwd;
 	t_env *pwd;
+	t_env *cpwd;
 	old_pwd = check_if_there("OLDPWD", &content->env_list);
 	if (old_pwd)
-		old_pwd->value = ft_strdup(content->save_path, &content->g_env_collector);
+	{
+		if (content->save_path != NULL)
+			old_pwd->value = ft_strdup(content->save_path, &content->g_env_collector);
+		else
+			old_pwd->value = ft_strdup("", &content->g_env_collector);
+	}
 	else
 		lstadd_back_env(&content->env_list, lstnew_env("OLDPWD", content->save_path, &content->g_env_collector, 1));
 	pwd = check_if_there("PWD", &content->env_list);
-	if (pwd)
+	if (pwd && path)
 		pwd->value = ft_strdup(path, &content->g_env_collector);
-	else 
+	else if (path)
 		lstadd_back_env(&content->env_list, lstnew_env("PWD", path, &content->g_env_collector, 1));
+	cpwd = check_if_there("CPWD", &content->env_list);
+	if (check_if_there("PWD", &content->env_list) != NULL && check_if_there("PWD", &content->env_list)->value != NULL)
+	{
+		if (cpwd)
+			cpwd->value = check_if_there("PWD", &content->env_list)->value;
+	}
 }
 
 // create a stored pwd
@@ -70,7 +82,8 @@ void update_pwd(t_container *content, char *new_path)
 
 	if (current_pwd == NULL)
 	{
-		current_pwd = check_if_there("PWD", &content->env_list)->value;
+		if (check_if_there("CPWD", &content->env_list) != NULL)
+			current_pwd = check_if_there("CPWD", &content->env_list)->value;
 		if (!ft_strcmp(new_path, ".."))
 			current_pwd = join_chdir(current_pwd, "/..", content);
 		if (!ft_strcmp(new_path, "."))
@@ -81,13 +94,13 @@ void update_pwd(t_container *content, char *new_path)
 int	handle_cd(char **new_path, t_container *content)
 {
 	t_env	*temp;
-	char *tmp;
+	t_env *tmp;
 	char *old_pwd;
 	
 	old_pwd = getcwd(NULL, 0);
-	tmp = check_if_there("PWD", &content->env_list)->value;
-	if (tmp != NULL)
-		content->save_path = tmp;
+	tmp = check_if_there("PWD", &content->env_list);
+	if (tmp != NULL && tmp->value != NULL)
+		content->save_path = tmp->value;
 	else
 		content->save_path = old_pwd;
 	if (new_path &&new_path[0])
