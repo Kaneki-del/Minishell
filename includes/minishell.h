@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/09 17:39:37 by sait-nac         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -86,6 +76,12 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
+
+  int is_expandable;
+
+  struct termios termios_value;
+  char *save_path;
+
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
