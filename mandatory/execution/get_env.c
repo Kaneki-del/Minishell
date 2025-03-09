@@ -135,8 +135,9 @@ t_env	*get_env_list(char **env, t_container *content)
 		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1], &content->g_env_collector, 0));
 		i++;
 	}
-	if (check_if_there("PATH", &returned_env) != NULL && flag != 0)
-			 check_if_there("PATH", &returned_env)->print_flag = 1;
+	if (check_if_there("PATH", &returned_env) != NULL && flag == 1)
+			check_if_there("PATH", &returned_env)->print_flag = 1;
+
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
 		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL, &content->g_env_collector, 0));
 	else

@@ -100,12 +100,14 @@ void valid_key(char **key_value, t_container *content)
 				key_value[0][ft_strlen(key_value[0]) - 1] = '\0';
 				a = 1;
 			}
-	temp = check_if_there(key_value[0], &content->env_list);
-	if (temp != NULL)
-		do_mode(key_value, &temp, &content->g_env_collector, a);
-	else
-		lstadd_back_env(&content->env_list, lstnew_env(key_value[0], key_value[1], &content->g_env_collector, 0));
-			
+	temp = check_if_there(key_value[0], &content->env_list);\
+	if (key_value[0] && ft_strcmp(key_value[0] , "_"))
+	{
+		if (temp != NULL)
+			do_mode(key_value, &temp, &content->g_env_collector, a);
+		else
+			lstadd_back_env(&content->env_list, lstnew_env(key_value[0], key_value[1], &content->g_env_collector, 0));
+	}		
 }
 
 int	add_export(char **cmd, t_container *content)
