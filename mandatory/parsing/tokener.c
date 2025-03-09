@@ -55,7 +55,10 @@ int skeep_special_char(t_container *content, int *start)
             (*start)++;
     }
     if (is_in == 1)
+    {
+        content->status = 1;
         return (ft_error("bash: syntax error near unexpected token", &qoute, 2, &content->g_collector), 0);
+    }
     return (1);
 }
 

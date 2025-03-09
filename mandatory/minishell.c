@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 02:01:58 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/09 16:22:53 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
+    content->line = NULL;
     content->is_expandable = 0;
 }
 
@@ -102,12 +103,12 @@ int main(int ac, char **av, char **env)
       content.g_collector = NULL;
       continue;
     }
-    
     // ft_printf(&content.data);
     content.status = execute_package(&content); 
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;
+    content.line = NULL;
   }
    clear_bin(&content.g_env_collector);
   return (0);

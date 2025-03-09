@@ -44,8 +44,15 @@ char double_qoutes(char c)
 
 char *exit_status(t_container *content, int *i)
 {
+    char *res;
+
+    if (!content)
+        return (NULL);
     (*i)++;
-    return (ft_itoa(content->status, &content->g_collector));
+    res = ft_itoa(content->status, &content->g_collector);
+    if (!res)
+        return (NULL);
+    return (res);
 }
 
 
@@ -136,16 +143,18 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
 {
     int i;
     char *new_command;
-    char *curent_part;  
+    char *curent_part;
+    char *exitd;
     int is_in;
     char qoute;
 
+    if (!command)
+        return (NULL);
     i = 0;
     is_in = 0;
     new_command = NULL;
     curent_part = NULL;
-    if (!command)
-        return (NULL);
+    exitd = NULL;
     while (command[i])
     {
         if (command[i] == '\'' || command[i] == '"')
@@ -161,15 +170,20 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 qoute = '\0';
             }
         }
-        if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\'' || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
+        if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\''  || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
         {
             if (here_doc_flag)
             {
                 if (ft_isalnum(command[i + 1]) || command[i + 1] == '?')
                 {
-                    i++;
+                    while (command[i] == '$')
+                        i++;
                     if (command[i] == '?')
-                        new_command = ft_strjoin(new_command, exit_status(content, &i), &content->g_collector);
+                    {
+                        i++;
+                        new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
+                        continue;
+                    }
                     else if (ft_isalnum(command[i]))
                     {
                         curent_part = expand(content, command, &i, flag);
@@ -181,7 +195,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
             }
             else
             {
-                if (command[i] && qoute == '"' && command[i + 1] == '\'')
+                if (command[i] && qoute == '"' && command[i + 1] == '\'' )
                     ;
                 else
                 {
@@ -189,8 +203,12 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                     if (!ft_isalpha(command[i]) || qoute == '"')
                         (*flag) = 3;
                     if (command[i] == '?')
-                        new_command = ft_strjoin(new_command, exit_status(content, &i), &content->g_collector);
-                    else if (((ft_isdigit(command[i]) || !ft_isalpha(command[i])) && (command[i] != '"' && command[i] != '\'')))
+                    {
+                        i++;
+                        new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
+                        continue;
+                    }
+                    else if (((ft_isdigit(command[i]) || !ft_isalpha(command[i])) && (command[i] != '"' && command[i] != '\'' )))
                         i++;
                     else if (ft_isalnum(command[i]))
                     {
@@ -206,8 +224,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
         else if(qoute != '"' && qoute != '\'' && command[i] == '~')
         {
                 curent_part = expand_telda(command, &i, &content->env_list);
-                if (curent_part)
-                    new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
+                new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
         }
         new_command = ft_strchr_join(new_command, command[i], &content->g_collector);
         i++;

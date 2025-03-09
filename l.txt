@@ -29,13 +29,13 @@ echo 2 > out1 >> out2   ✅
  echo bonjour > $test # with test not defined   ✅
  file_name_in_current_dir 
  cd ../../../../../.. ; pwd  ✅
- ctrl-C . 130 sur bin(ex : sleep 10)&line vide ////
- ctrl-\ .131 sur bin ////
+ ctrl-C . 130 sur bin(ex : sleep 10)&line vide 
+ ctrl-\ .131 sur bin 
  echo "bip | bip"  ✅
  echo "bip | bip ; coyotte > < "   ✅
  cat | cat | cat | ls # check outputs order  ✅
 cat | cat | caaat | ls  ///works at 11.34   ✅ (the command correct not in sort order)
-  $bla # with bla not defined      X
+  $bla # with bla not defined      ✅
  export var ="cat Makefile | grep >"  ✅(the message item not print inside the form message)
  export "test=ici"=coucou   ✅
  c$var Makefile # with var=at    ✅
@@ -83,7 +83,7 @@ cat | cat | caaat | ls  ///works at 11.34   ✅ (the command correct not in sort
  # write something the press ctrl+c  
  # write something then press ctrl+d  
  # write something then press ctrl+\  
- echo $?
+ echo $? 
  l^Ds   
  echo |  ✅
  | echo  ✅
@@ -91,22 +91,22 @@ cat | cat | caaat | ls  ///works at 11.34   ✅ (the command correct not in sort
  cat < >  ✅
  cat < <   ✅
  cat > >  ✅ 
- > a ls > b < Makefile  
- echo > a Hello World!   
- > a echo Hello World!  
- cat < Makefile | grep gcc > output   
- exit 0 | exit 1
- exit 1 | exit 0
+ > a ls > b < Makefile  ✅
+ echo > a Hello World!   ✅
+ > a echo Hello World!  ✅
+ cat < Makefile | grep gcc > output   ✅
+ exit 0 | exit 1 ✅
+ exit 1 | exit 0 ✅
 
-ls > file > file1  
-ls > f7 < nofile > f3 > f4  
+ls > file > file1  ✅
+ls > f7 < nofile > f3 > f4  ✅
 
 echo bonjour > $tes   ✅ 
 
 ////////////////////////////////
 export SHLVL=999   
-minishell  
-export == it should be empty like that SHLVL=""   ?????
+minishell  ✅
+export == it should be empty like that SHLVL=""   ????? 
 and in negative number should be 0 and then start from 0    
 
 Mini$hell$: cd ..
@@ -116,9 +116,9 @@ PWD=/Users/sfellahi/Desktop/DEATH/1/2/3/4
 OLDPWD=/Users/sfellahi/Desktop/DEATH /* add .. at the end of PWD when you inside deleted directory */
  echo -n -n -n -n  ✅
  echo -nnnnnn n- hello  ✅ 
- ls | > filenotfound | wc -l     it should not printf command not found just 0
- ls | << filenotfound | wc -l   
- ls | $notvar  | wc -l     it should not printf command not found just 0
+ ls | > filenotfound | wc -l   ✅  it should not printf command not found just 0
+ ls | << filenotfound | wc -l   ✅
+ ls | $notvar  | wc -l     ✅ it should not printf command not found just 0
 
 
 //////////////////////////
