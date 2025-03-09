@@ -135,6 +135,8 @@ char *expand(t_container *content, char *command, int *i, int *flag)
         return (ft_strdup("\0", &content->g_collector));
     }
     *(flag) = 5;
+    if (!pair->value)
+        return (NULL);
     return (add_qoutations(pair->value, &content->g_collector));
 }
 

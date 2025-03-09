@@ -155,7 +155,7 @@ Mini$hell$: export
 Mini$hell$: echo $$$"CUSER" 
 $"CUSER" 
 
-Mini$hell$: exit "88 55 98"  
+Mini$hell$: exit "88 55 98"  ✅
 
 Mini$hell$: mkdir ttt  
 Mini$hell$: ttt/  
@@ -179,15 +179,14 @@ command not found: Bad address
 
 Mini$hell$: export a="ls -la < Makefile"   ✅
 Mini$hell$: $a   ✅
-ls: <: No such file or directory  
+ls: <: No such file or directory  ✅
 -rw-r--r--  1 sfellahi  candidate  2584 Sep  3 14:04 Makefile  
-
 
 
 ls > saad <<< ls   ASK ILYASSSSSSSSSS
 
-bash-3.2$ ./minishell_saad   
-bash: ./minishell_saad: is a directory -> use stat function to check if it a directory  
+bash-3.2$ ./minishell_saad   ✅
+bash: ./minishell_saad: is a directory -> use stat function to check if it a directory  ✅
 
 env -i ./minishell -> SHLVL should  be shown only once command should work  
 
@@ -207,16 +206,16 @@ Mini$hell$: << $HOME
 > $HOME  
 
 
-<<ha  
+<<ha  ✅
 
-cat<home  
-<< <  
+cat<home  ✅
+<< <  ✅
 <<<  
 
-export this=" "'HOME'""   
+export this=" "'HOME'""   ✅
 Mini$hell$: echo $this   ✅
   'HOME'   
-bash-3.2$ exit "q"  
+bash-3.2$ exit "q"  ✅
 
 
 
