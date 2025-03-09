@@ -109,8 +109,6 @@ int	add_export(char **cmd, t_container *content)
 	int		i;
 	char	**splited_equal;
 	int		status;
-	
-
 
 	i = 0;
 	status = 0;

@@ -29,25 +29,44 @@ int token_checker(t_container *content)
     return (0);
   iter = content->tokens;
   if (iter->token_type == T_PIPE)
-        return (ft_error("bash: syntax error near unexpected token", "|", 2, &content->g_collector), 0);
+  {
+      content->status = 258;
+      return (ft_error("bash: syntax error near unexpected token", "|", 2, &content->g_collector), 0);
+  }
   while (iter && iter->next)
   {
     if (iter->token_type == T_PIPE && iter->next->token_type == T_PIPE)
+    {
+      content->status = 258;
       return (ft_error("bash: syntax error near unexpected token", iter->next->value, 2, &content->g_collector), 0);
-    if (redirection_pipe_check (iter, T_REDIRECTE_IN, &content->g_collector) == 0)
+    }
+    if (redirection_pipe_check (iter, T_REDIRECTE_IN, content) == 0)
       return (0);
-    if (redirection_pipe_check (iter, T_REDIRECTE_OUT, &content->g_collector) == 0)
+    if (redirection_pipe_check (iter, T_REDIRECTE_OUT, content) == 0)
       return (0);
-    if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, &content->g_collector) == 0)
+    if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, content) == 0)
       return (0);
-    if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, &content->g_collector) == 0)
+    if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, content) == 0)
       return (0);
     iter = iter->next;
   }
   if (iter->next == NULL && (iter->token_type == T_PIPE || iter->token_type == T_REDIRECTE_IN || \
   iter->token_type == T_REDIRECTE_OUT || iter->token_type == T_REDIRECTE_APPEND || iter->token_type == T_REDIRECTE_HEREDOC))
+  {
+      content->status = 258;
       return (ft_error("bash: syntax error near unexpected token", "newline", 2, &content->g_collector), 0);
+  }
   return (1);
+}
+
+size_t	ft_strlen_2d(char **s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
 int parser(t_container *content)
@@ -58,6 +77,8 @@ int parser(t_container *content)
   char **cmd_optios;
   int flag;
 
+  if (!content)
+    return (0);
   dir_files = NULL;
   only_command = NULL;
   cmd_optios = NULL;
@@ -84,15 +105,37 @@ int parser(t_container *content)
       clear_bin(&content->g_collector);
       return (0);
     }
-    if (only_command && ft_strncmp(only_command, "export ", 7) == 0)
+    // if (only_command && ft_strncmp(only_command, "export ", 7) == 0 )
+    // {
+    //     cmd_optios = ft_split(only_command, ' ', &content->g_collector);
+    // }
+    // else
+    // {
+    //   // this is not working at qoutations cases
+    //   if (flag == 5)
+    //     only_command = filter_one_sides(only_command, &content->g_collector);
+    //   cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
+    // }
+    // printf("(%d)\n", flag);
+    // printf("(%s)\n", only_command);
+    if (only_command && ft_strncmp(only_command, "export ", 7) == 0 && flag == 5)
     {
-      cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
-      cmd_optios[1] = filer_qoutations(only_command + 7, &content->g_collector);
-      cmd_optios[2] = NULL;
+        // only_command = add_qoutations(only_command);
+        cmd_optios = ft_split(only_command, ' ', &content->g_collector);
+        if(ft_strlen_2d(cmd_optios) < 3)
+        {
+          cmd_optios[1] = filer_qoutations(ft_strdup(only_command + 7, &content->g_collector),  &content->g_collector); 
+          cmd_optios[2] = NULL;
+        }
+        else
+        {
+          cmd_optios = filterd(cmd_optios, &content->g_collector);
+        }
     }
     else
     {
-      // this is not working at qoutations cases
+      if (flag == 5)
+        only_command = filter_one_sides(only_command, &content->g_collector);
       cmd_optios = filterd(ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
     }
     cmd_optios = check_echo_options(cmd_optios, &content->g_collector);
