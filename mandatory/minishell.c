@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 23:01:14 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/09 16:59:58 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void init_content(t_container *content)
 {
 	  content->tokens = NULL;
     content->data = NULL;
+    content->save_path = NULL;
 }
 int main(int ac, char **av, char **env) {
 

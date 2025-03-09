@@ -3,17 +3,19 @@
 void	handle_pwd(t_env **env_list, t_data *current)
 {
 	t_env *temp;
-    int saved_stdout = rideraction_builtins(current);
-	char buffer[PATH_MAX];
+	char *pwd;
 
-	if (getcwd(buffer, sizeof(buffer)) == NULL)
+	pwd = getcwd(NULL, 0);
+    int saved_stdout = rideraction_builtins(current);
+
+	if (pwd == NULL)
 	{
 		temp = check_if_there("PWD", env_list);
 		if (temp)
 			printf("%s\n", temp->value);
 	}
 	else
-		printf("%s\n", buffer);
+		printf("%s\n", pwd);
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);
