@@ -44,10 +44,13 @@ int her_doc(char *limiter, t_container *content)
 		else 
 		{
 			if (check_is_in_qoutes(limiter) == 0)
-				line = check_env_var(content, line, &flag, 1);
-			write(fd, line,  ft_strlen(line));
-			write(fd, "\n", 1); 
-			line = NULL; // free line lead to a segfult
+				line = filer_qoutations(check_env_var(content, line, &flag, 1), &content->g_collector);
+			if (line)
+			{
+				write(fd, line,  ft_strlen(line));
+				write(fd, "\n", 1); 
+				line = NULL; // free line lead to a segfult
+			}
 		}
 	}
 	close(fd);

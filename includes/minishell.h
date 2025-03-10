@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
+/*   Updated: 2025/03/10 01:51:09 by kben-tou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -122,7 +132,7 @@ int check_is_in_qoutes(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char *filter_one_sides(char *command_line,  t_gc **g_collector);
 size_t words_count(const char *s, char c);
-
+int	ft_isascii(int c);
 void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
