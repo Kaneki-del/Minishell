@@ -119,31 +119,3 @@ void	print_export(t_data *current ,t_container *content)
 		close(saved_stdout);
 	}
 }
-// void	print_export(t_data *current ,t_container *content)
-// {
-// 	t_env	*smallest;
-
-// 	int saved_stdout = rideraction_builtins(current); // Store original stdout
-
-// 	if (!content->env_list)
-// 		return ;
-// 	t_env *temp = copy_list(content); // Start from the head
-// 	while (temp)
-// 	{
-// 		smallest = NULL;
-// 		smallest = find_smallest(temp); // Find the smallest element in the list
-// 		if (!smallest)                  // Safety check
-// 			return ;
-// 		if (smallest->key && smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
-// 			printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
-// 		else if (!smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
-// 			printf("declare -x %s\n", smallest->key);
-// 		// Delete the smallest node from the list
-// 		delete_node(&temp, smallest->key);
-// 	}
-// 	if (saved_stdout != -1)
-// 	{
-// 		dup2(saved_stdout, 1);
-// 		close(saved_stdout);
-// 	}
-// }

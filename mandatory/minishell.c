@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/09 17:44:35 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:43:04 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,6 @@ signal(SIGQUIT, SIG_IGN);
     }
     // // ft_printf(&content.data);
     content.status = execute_package(&content);
-    // if (WIFEXITED(content.status))
-		//   content.status = WEXITSTATUS(content.status);
-	  // else if (WIFSIGNALED(content.status)
-		//   && WTERMSIG(content.status) != SIGHUP)
-		//       content.status = 128 + content.status;
-    // printf("the exit state =%d\n", content.status);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

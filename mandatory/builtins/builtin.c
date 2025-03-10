@@ -22,7 +22,6 @@ void	print_env_list(t_env *env_list, t_data *list)
 	}
 	
 }
-
 int	handle_export(t_data *current ,t_container *content)
 {
 	int	i;

@@ -15,7 +15,6 @@ void	handle_pwd(t_env **env_list, t_data *current)
 			printf("%s\n", temp->value);
 		else 
 			printf("shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-
 	}
 	else
 		printf("%s\n", pwd);

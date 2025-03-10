@@ -114,7 +114,7 @@ void get_pwd(t_env **env_list, t_container *content)
 		if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD", env_list) != NULL)
 			check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value, &content->g_env_collector);
 		else  if (cpwd != NULL && cpwd->value != NULL)
-			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, &content->g_env_collector, 1));
+			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, &content->g_env_collector, 3));
 	}
 
 }

@@ -30,7 +30,6 @@ void	echo(char **cmd)
 		write(1, "\n", 1);
 }
 
-
 void	handle_echo(char **cmd, t_data *list)
 {
 	int saved_stdout = rideraction_builtins(list); // Store original stdout
