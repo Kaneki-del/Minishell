@@ -51,6 +51,11 @@ int her_doc(char *limiter, t_container *content)
 				write(fd, "\n", 1); 
 				line = NULL; // free line lead to a segfult
 			}
+			else 
+			{
+				write(fd, "\n", 1); 
+				line = NULL; // free line lead to a segfult
+			}
 		}
 	}
 	close(fd);

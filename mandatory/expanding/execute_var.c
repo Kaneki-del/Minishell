@@ -235,7 +235,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 }
             }
         }
-        else if(qoute != '"' && qoute != '\'' && command[i] == '~' && !inexpand_here)
+        else if(qoute != '"' && qoute != '\'' && command[i] == '~' && !inexpand_here && !here_doc_flag)
         {
             curent_part = expand_telda(command, &i, &content->env_list);
             if (curent_part)
