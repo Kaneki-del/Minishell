@@ -61,7 +61,7 @@ char *expand_telda(char *command, int *i, t_env **env_list)
     t_env *pair;
 
     pair = NULL;
-    if (command[(*i)] == '~' && ((command[(*i) + 1] == ' ' || command[(*i) + 1] == '\0' || command[(*i) + 1] == '/') && (command[(*i) - 1] == ' ' || command[0] == '~' || ft_strncmp(command, "export ", 7) == 0)))
+    if (command[(*i)] == '~' && ((command[(*i) + 1] == ' ' || command[(*i) + 1] == '\0' || command[(*i) + 1] == '/') && (command[(*i) - 1] == ' ' || command[0] == '~' || (ft_strncmp(command, "export ", 7) == 0 && command[(*i) - 1] == '='))))
     {
         (*i)++;
         pair = check_if_there("HOME", env_list);
@@ -119,7 +119,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
     key = NULL;
     start = (*i);
     content->is_expandable = 1;
-    while (command[start] && ft_isalnum(command[start]))
+    while (command[start] && (ft_isalnum(command[start]) || command[start] == '_'))
         start++;
     key = gc(start - (*i) + 1, &content->g_collector);
     ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
@@ -131,7 +131,15 @@ char *expand(t_container *content, char *command, int *i, int *flag)
         {
             ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
             (*flag) = 0;
+            content->status = 1;
         }
+        return (ft_strdup("\0", &content->g_collector));
+    }
+    if (pair && (*flag) == 1 && pair->value && (words_count(filer_qoutations(pair->value, &content->g_collector), ' ') > 1))
+    {
+        ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
+        (*flag) = 0;
+        content->status = 1;
         return (ft_strdup("\0", &content->g_collector));
     }
     *(flag) = 5;
@@ -146,9 +154,9 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
     int i;
     char *new_command;
     char *curent_part;
-    char *exitd;
     int is_in;
     char qoute;
+    int inexpand_here;
 
     if (!command)
         return (NULL);
@@ -156,7 +164,7 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
     is_in = 0;
     new_command = NULL;
     curent_part = NULL;
-    exitd = NULL;
+    inexpand_here = 0;
     while (command[i])
     {
         if (command[i] == '\'' || command[i] == '"')
@@ -172,6 +180,8 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 qoute = '\0';
             }
         }
+        if (command[i] == '<' && command[i + 1] == '<' && !is_in)
+            inexpand_here = 1;
         if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\''  || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
         {
             if (here_doc_flag)
@@ -190,14 +200,16 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                     {
                         curent_part = expand(content, command, &i, flag);
                         if (curent_part)
+                        {
                             new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
-                        continue;
+                            continue;
+                        }
                     }
                 }
             }
             else
             {
-                if (command[i] && qoute == '"' && command[i + 1] == '\'' )
+                if ((command[i] && qoute == '"' && command[i + 1] == '\'') || (inexpand_here && command[i + 1] != '\''  && command[i + 1] != '"' ))
                     ;
                 else
                 {
@@ -210,9 +222,9 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                         new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
                         continue;
                     }
-                    else if (((ft_isdigit(command[i]) || !ft_isalpha(command[i])) && (command[i] != '"' && command[i] != '\'' )))
+                    else if (((ft_isdigit(command[i]) || (!ft_isalpha(command[i]) && command[i] != '_')) && (command[i] != '"' && command[i] != '\'' )))
                         i++;
-                    else if (ft_isalnum(command[i]))
+                    else if (ft_isalnum(command[i]) || command[i] == '_')
                     {
                         curent_part = expand(content, command, &i, flag);
                         if (curent_part)
@@ -223,10 +235,14 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 }
             }
         }
-        else if(qoute != '"' && qoute != '\'' && command[i] == '~')
+        else if(qoute != '"' && qoute != '\'' && command[i] == '~' && !inexpand_here)
         {
-                curent_part = expand_telda(command, &i, &content->env_list);
+            curent_part = expand_telda(command, &i, &content->env_list);
+            if (curent_part)
+            {
                 new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
+                continue;
+            }
         }
         new_command = ft_strchr_join(new_command, command[i], &content->g_collector);
         i++;

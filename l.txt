@@ -162,18 +162,18 @@ Mini$hell$: ttt/
 is a directory: ttt/  
 
 
-Mini$hell$: cd .. ❌
-Mini$hell$: env | grep PWD ❌
+Mini$hell$: cd .. 
+Mini$hell$: env | grep PWD 
 // pwd and oldpwd should not be added  
 
 
 
 //////////////////////////////////////////////////////
-Mini$hell$: cat << . << .. << ...  
+Mini$hell$: cat << . << .. << ... ✅ 
 
 
-Mini$hell$: export a=" " ❌ ✅
-Mini$hell$: $a ❌ ✅
+Mini$hell$: export a=" " ✅
+Mini$hell$: $a ✅
 command not found: Bad address   
 
 
@@ -183,7 +183,7 @@ ls: <: No such file or directory  ✅
 -rw-r--r--  1 sfellahi  candidate  2584 Sep  3 14:04 Makefile  
 
 
-ls > saad <<< ls   ASK ILYASSSSSSSSSS
+ls > saad <<< ls   ASK ILYASSSSSSSSSS  ❌
 
 bash-3.2$ ./minishell_saad   ✅
 bash: ./minishell_saad: is a directory -> use stat function to check if it a directory  ✅
@@ -195,12 +195,12 @@ unset PATH
     --> bash : minishell -> run minishell  
     -> minishell: minishell -> command not found  
 
-   ls > cat > ik | ls | cat | caat | ls  
+   ls > cat > ik | ls | cat | caat | ls  ✅
 
 Mini$hell$: echo $"$HOME"  ✅
 $/Users/sfellahi  
 
-Mini$hell$: << $HOME  
+Mini$hell$: << $HOME  ✅
 > os  
 > skos  
 > $HOME  
@@ -220,12 +220,12 @@ bash-3.2$ exit "q"  ✅
 
 
 Mini$hell$: unset SECURITYSESSIONID USER MallocNanoZone COMMAND_MODE PATH HOME SHELL LaunchInstanceID __CF_USER_TEXT_ENCODING XPC_SERVICE_NAME SSH_AUTH_SOCK XPC_FLAGS LOGNAME TMPDIR ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWD ZSH PAGER LESS LSCOLORS LS_COLORS HOMEBREW_CACHE HOMEBREW_TEMP TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGS VSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM _
-Mini$hell$: env  
-Mini$hell$: export th ygq gqwe giqweb iujqwbek q  
-Mini$hell$: echo $th  
+Mini$hell$: env  ✅
+Mini$hell$: export th ygq gqwe giqweb iujqwbek q  ✅
+Mini$hell$: echo $th  ✅
 
-Mini$hell$: export this=" "'HOME'""  
-Mini$hell$: echo $this  
+Mini$hell$: export this=" "'HOME'""  ✅
+Mini$hell$: echo $this  ✅
 'HOME'  
 
 bash-3.2$ echo 'hello \\n' 
@@ -239,178 +239,174 @@ cat Makefile feefe > outfile | cat outfile
 /////////////////////////////////////
 
 
-Mini$hell$: < sfdf cat | wc -l  
+Mini$hell$: < sfdf cat | wc -l  ✅
 minishell: <: command not found  
        0 
 
 
-exit "4    5    7"  
+exit "4    5    7"  ✅
 
-exit 44 hh 44  
-
-
-
-echo hell''o"'' '" "'''"''""  
-exit ksdhfk khk hfkdh kdhkh kdfkdh  
-exit 3 33 333 44 4 5 55  
-
-
-ls > a > b >b >> r 
-
-ls > a >> b < dsfkdskf < dkfdklf > c | cat  
-
-ls > a > b >b >> r  
-
-ls >>b  
-
-ls > a > b >'b'
-
-ls > a > b >' b'
-
-ls > a > b > b  
-ls >'  '  
+exit 44 hh 44  ✅
 
 
 
-export a b c -d | wc   
+echo hell''o"'' '" "'''"''""  ✅
+exit ksdhfk khk hfkdh kdhkh kdfkdh  ✅
+exit 3 33 333 44 4 5 55  ✅
 
 
-export a=' ' 
-Mini$hell$: $a 
+ls > a > b >b >> r ✅
+
+ls > a >> b < dsfkdskf < dkfdklf > c | cat  ✅
+
+ls > a > b >b >> r  ✅
+
+ls >>b  ✅
+
+ls > a > b >'b' ✅
+
+ls > a > b >' b'✅
+
+ls > a > b > b  ✅
+ls >'  '  ✅
 
 
-<< $""  
+
+export a b c -d | wc   ✅
+
+
+export a=' ' ✅
+Mini$hell$: $a ✅
+
+
+<< $""  ✅
  
-bash-3.2$ export a=" a     a     a   " b="   b     b       b   "
-bash-3.2$ $a$b
-bash: a: command not found
-bash-3.2$ "$a$b"
-bash:  a     a     a      b     b   b   : command not found
+bash-3.2$ export a=" a     a     a   " b="   b     b       b   "✅
+bash-3.2$ $a$b✅
+bash: a: command not found✅
+bash-3.2$ "$a$b"✅
+bash:  a     a     a      b     b   b   : command not found✅
 
 
-Mini$hell$: $_
+Mini$hell$: $_ b✅
 
-Mini$hell$: 88
-command not found: 88
-Mini$hell$: echo $?
+Mini$hell$: 88b✅
+command not found: 88b✅
+Mini$hell$: echo $?b✅
 0
 
-Mini$hell$: t9abi  
-command not found: t9abi  
-Mini$hell$: ./t9abi  
-Minishell: ./t9abi: Permission denied  
-Mini$hell$: env | grep PATH  
-PATH=/Users/sfellahi/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/Users/sfellahi/.brew/bin:.  
+Mini$hell$: t9abi  ✅
+command not found: t9abi  ✅
+Mini$hell$: ./t9abi  ✅
+Minishell: ./t9abi: Permission denied ✅ 
+Mini$hell$: env | grep PATH  ✅
+PATH=/Users/sfellahi/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/Users/sfellahi/.brew/bin:.  ✅
 
-Mini$hell$: grep ff  
+Mini$hell$: grep ff  ✅
 signals  
 
 
 
 
-Mini$hell$: export t="ff    fff"  
-Mini$hell$: > $t   
+Mini$hell$: export t="ff    fff"  ✅
+Mini$hell$: > $t   ✅
 
 
-Mini$hell$: "    ls "   
+Mini$hell$: "    ls "   ✅
 
 
-Mini$hell$: ls -al "gggg     " 
+Mini$hell$: ls -al "gggg     " ✅
 
-xport ana+="1337"
+xport ana+="1337" ✅
 
- ""
+ "" ✅
 Error: Failed to parse commands
 
 declare -x aa="a  b"  
 declare -x saad="a  b"  
-Mini$hell$: export $saad  
+Mini$hell$: export $saad  ❌ 
 
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*\
 
 
 
-Mini$hell$: << "" 
+Mini$hell$: << "" ✅
 
 
-Mini$hell$: export a=""ls -la"" 
+Mini$hell$: export a=""ls -la"" ✅
 minishell: export: `-la': not a valid identifier 
 
-echo ll >  test  
+echo ll >  test  ✅
 
 
 
-echo -nnnnnn ff  
+echo -nnnnnn ff  ✅
 
 
 
-cat < Makefile    
+cat < Makefile    ✅
 
 
- < Makefile  cat  | wc -l  
+ < Makefile  cat  | wc -l  ✅
 
- Mini$hell$: ./mini   exprect  No such file or directory   (exit code ra b7al b7al )
-
-
-exit ggggg  (minishel wast minishell khaso yakhraj 4ir mn wahda )  
-
-exit eeeeeeee  
-
-cat < Makefile | wc -l  
-
-cat < Makefile Makefile < Makefile | wc -l > test  
+ Mini$hell$: ./mini   exprect  No such file or directory   (exit code ra b7al b7al ) ✅
 
 
-Mini$hell$: cat << $USER  
+exit ggggg  (minishel wast minishell khaso yakhraj 4ir mn wahda )  ✅
+
+exit eeeeeeee  ✅
+
+cat < Makefile | wc -l  ✅
+
+cat < Makefile Makefile < Makefile | wc -l > test  ✅
+
+
+Mini$hell$: cat << $USER  ✅
 > $uuuuu  
 > $USER  
 $uuuuu  
 Mini$hell$:   
 
 
- cat <<           |      <<  ll  
+ cat <<           |      <<  ll  ✅
 
 
-cat Makefile >> | cat   
+cat Makefile >> | cat   ✅
 
- << l > |  cat  
+ << l > |  cat  ✅
 
- ls > oooout | echo hello | grep e > allo  
-
-
-ls | fsdfdfsdf < dfdfdfd | ls | < dfdfdfdf | lssdfadsfsdfsdfsdf | ls  
-
-ls < nofile > f3 > f4 | wc -l  
+ ls > oooout | echo hello | grep e > allo  ✅
 
 
+ls | fsdfdfsdf < dfdfdfd | ls | < dfdfdfdf | lssdfadsfsdfsdfsdf | ls  ✅
 
-Mini$hell$: export zzz="export z=ls"  
-Mini$hell$: $zzz  
+ls < nofile > f3 > f4 | wc -l  ✅
 
 
 
+Mini$hell$: export zzz="export z=ls"  ✅
+Mini$hell$: $zzz  ✅
 
 
- cat test >>                '' | wc  
 
 
- Mini$hell$: unset HOME  
-Mini$hell$: cd   
+
+ cat test >>                '' | wc  ✅
+
+
+ Mini$hell$: unset HOME  ✅
+Mini$hell$: cd   ✅
  
 
-Mini$hell$: cat | ks
+Mini$hell$: cat | ks ✅
 
 
-Mini$hell$: cat < Makefile | << k | ls
+Mini$hell$: cat < Makefile | << k | ls ❌ 
 > erjgerkg
 > $USER
 > k
 Mini$hell$: 
 
-
-
-
-
- << l << l | << 
+ << l << l | << ✅
  
