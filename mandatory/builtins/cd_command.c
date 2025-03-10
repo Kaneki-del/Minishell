@@ -1,24 +1,6 @@
 #include "../../includes/minishell.h"
 #include <string.h>
 
-// updte the old pwd if the cd run succesfully
-// void update_old_pwd(t_container *content)
-// {
-// 	t_env	*old_pwd;
-// 	char *pwd;
-
-// 	old_pwd = NULL;
-// 	pwd = getcwd(NULL, 0);
-// 	if (pwd)
-// 	{
-// 		old_pwd = check_if_there("OLDPWD", &content->env_list);
-// 		if (old_pwd != NULL)
-// 			old_pwd->value = ft_strdup(pwd, &content->g_env_collector);
-// 		else
-// 			lstadd_back_env(&content->env_list, lstnew_env("OLDPWD", pwd, &content->g_env_collector, 1));
-// 	}
-// }
-// function that creat or update the hiden old pwd
 void	update_original_pwd(t_container *content, char *path)
 {
 	t_env *old_pwd;
@@ -47,26 +29,6 @@ void	update_original_pwd(t_container *content, char *path)
 	}
 }
 
-// create a stored pwd
-
-// void	updte_old_pwd(t_env **env_list, t_gc *env_gc)
-// {
-// 	char	buffer[PATH_MAX];
-// 	t_env	*temp;
-
-// 	// get the current path
-// 	if (getcwd(buffer, sizeof(buffer)) == NULL)
-// 	{
-// 		perror("getcwd failed");
-// 		return ;
-// 	}
-// 	temp = NULL;
-// 	temp = check_if_there(".OLDPWD", env_list);
-// 	if (temp != NULL)
-// 		temp->value = ft_strdup(buffer, &env_gc);
-// 	else
-// 		lstadd_back_env(env_list, lstnew_env(".OLDPWD", ft_strdup(buffer, &env_gc), &env_gc, 1));
-// }
 char	*join_chdir(char *currpwd, char *path, t_container *content)
 {
 	ft_putstr_fd("cd: error retrieving current directory: ", 2);
