@@ -6,8 +6,8 @@ int	filter_unset(char *key)
 	int	i;
 
 	i = 0;
-	if (key[0] >= '0' && key[0] <= '9')
-		return ( 1);
+	if ((key[0] >= '0' && key[0] <= '9') || key[0] == '\0')
+		return (1);
 	while (key[i] && key[i])
 	{
 		if (!((key[i] >= 'a' && key[i] <= 'z') || (key[i] >= 'A'
@@ -25,24 +25,27 @@ int	unset_key(char **cmd, t_env **env_list)
 	t_env	*temp;
 	int status;
 
-
 	i = 0;
 	status = 0;
 	temp = NULL;
 	while (cmd[i])
 	{
+		if (!ft_strcmp(cmd[i], "_"))
+		{
+			i++;
+			continue;
+		}
 		if (filter_unset(cmd[i]) == 0)
 		{
 			temp = check_if_there(cmd[i], env_list);
-			if (temp != NULL)
+			if (temp != NULL && temp->print_flag == 0)
 				delete_node(env_list, temp->key);
 		}
 		else {
 			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2), 
 			status = 1;
 		}
-		i++;
-		
+		i++;	
 	}
 	return status;
 }
