@@ -61,7 +61,7 @@ char *expand_telda(char *command, int *i, t_env **env_list)
     t_env *pair;
 
     pair = NULL;
-    if (command[(*i)] == '~' && ((command[(*i) + 1] == ' ' || command[(*i) + 1] == '\0' || command[(*i) + 1] == '/') && (command[(*i) - 1] == ' ' || command[0] == '~' || (ft_strncmp(command, "export ", 7) == 0 && command[(*i) - 1] == '='))))
+    if (command[(*i)] == '~' && ((command[(*i) + 1] == ' ' || command[(*i) + 1] == '\0' || command[(*i) + 1] == '/') && ((*i) == 0 || command[(*i) - 1] == ' ' || (ft_strncmp(command, "export ", 7) == 0 && command[(*i) - 1] == '='))))
     {
         (*i)++;
         pair = check_if_there("HOME", env_list);
