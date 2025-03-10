@@ -28,7 +28,6 @@ int chek_args_number(char **args)
 
 int handle_exit(t_data *current, t_container *content)
 {
-    
     char **args;
     ssize_t number;
     int exit_code;
