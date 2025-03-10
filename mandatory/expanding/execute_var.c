@@ -125,7 +125,7 @@ char *expand(t_container *content, char *command, int *i, int *flag)
     ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
     pair = check_if_there(key, &content->env_list);
     (*i) = start;
-    if (!pair)
+    if (!pair || pair->print_flag == 3)
     {
         if ((*flag) == 1)
         {
