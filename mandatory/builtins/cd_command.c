@@ -64,7 +64,7 @@ int	handle_cd(char **new_path, t_container *content)
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
 	else
-		content->save_path = old_pwd;
+		content->save_path = ft_strdup("", &content->g_collector);
 	if (new_path &&new_path[0])
 	{
 		if (chdir(new_path[0]) == -1)
