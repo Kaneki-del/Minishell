@@ -142,7 +142,7 @@ int parser(t_container *content)
         {
           if (cmd_optios[1][0] == '$')
           {
-            cmd_optios = normal_ft_split(only_command, ' ');
+            cmd_optios = normal_ft_split(only_command, ' ', &content->g_collector);
             cmd_optios = filterd(cmd_optios, &content->g_collector);
           }
           else
@@ -153,7 +153,7 @@ int parser(t_container *content)
         }
         else
         {
-            cmd_optios = filterd(normal_ft_split(only_command, ' '), &content->g_collector);
+            cmd_optios = filterd(normal_ft_split(only_command, ' ', &content->g_collector), &content->g_collector);
         }
     }
     else

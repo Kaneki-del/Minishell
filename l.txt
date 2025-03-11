@@ -133,7 +133,7 @@ command not found: Exec format error
 
 
 
-declare -x _="./minishell" dont print this freacking variable in export nigga
+declare -x _="./minishell" dont print this freacking variable in export nigga ✅
 
 
 Mini$hell$: echo $$$$USER   
