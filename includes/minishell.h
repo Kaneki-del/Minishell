@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 17:42:39 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:10:35 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,10 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
-
   int is_expandable;
-
   struct termios termios_value;
   char *save_path;
-
+  int fork_failed;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);

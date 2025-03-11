@@ -1,6 +1,15 @@
 
 #include "../../includes/minishell.h"
-
+void	handle_fork_failure(t_container *content)
+{
+	if (content->fork_failed == 0) // Print the error message only once
+	{
+		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
+		content->fork_failed = 1; // Set the flag to avoid multiple prints
+	}
+	clean_fds(content->data);
+	content->status = 1;
+}
 void	execute_first(t_data *current, int *p_fd, t_container *content)
 {
 	pid_t	pid;
@@ -8,15 +17,16 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
-		clean_fds(content->data);
-		content->status = 1;
+		close(p_fd[0]);
+		close(p_fd[1]);
+		handle_fork_failure(content);
+		return;
 	}
 	if (pid == 0)
 	{
 		if (get_fds(current, content) != 0)
 			exit(1);
-		close(p_fd[0]); // Close unused read end
+		close(p_fd[0]);
 		if (current->out_fd == 0)
 			current->out_fd = p_fd[1];
 		else
@@ -55,9 +65,13 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
-		clean_fds(content->data);
-		content->status = 1;
+		close(p_fd[0]);
+		close(p_fd[1]);
+		close(in);
+		handle_fork_failure(content);
+		if (content->fork_failed == 0)
+				content->fork_failed = 1;
+		return;
 	}
 	if (pid == 0)
 	{
@@ -100,8 +114,10 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
-		clean_fds(content->data);
+		close(p_fd[0]);
+		close(p_fd[1]);
+		handle_fork_failure(content);
+		return 1;
 	}
 	if (pid == 0)
 	{
@@ -110,7 +126,7 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 		if (current->in_fd == 0)
 			current->in_fd = p_fd[0];
 		else
-			close(p_fd[0]); // Close read end if already set
+			close(p_fd[0]); 
 		if (check_builtin_commands(current->cmds))
 		{	
 			(built_in(current ,content));
@@ -167,11 +183,13 @@ void	run_multiple(t_container *content)
 	int	exit_code;
 	int	id_last_command;
 
+	content->fork_failed = 0;
 	status = 0;
 	exit_code = 0;
 	id_last_command = handle_pipes(content);
 	waitpid(id_last_command, &content->status, 0);
-	update_status(content);
+	if (content->status != 1)
+		update_status(content);
 	while (wait(NULL) > 0)
 		;
 	

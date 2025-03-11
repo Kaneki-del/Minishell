@@ -62,7 +62,6 @@ void	execute_package(t_container *content)
 	{
 		if ( get_fds(content->data, content) != 0)
 			content->status = 1; 
-	
 		else 
 			single_command(content);
 	}
