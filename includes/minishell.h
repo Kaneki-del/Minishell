@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/10 01:51:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 00:57:21 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,5 @@ int rideraction_builtins(t_data *current);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
+
 #endif

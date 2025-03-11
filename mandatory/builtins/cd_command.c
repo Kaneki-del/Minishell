@@ -85,6 +85,5 @@ int	handle_cd(char **new_path, t_container *content)
 		else 
 			return (ft_error_exec_two("bash: cd", ": HOME", " not set",  2), 1);
 	}
-	// update_old_pwd(&content->env_list);
 	return (0);
 }

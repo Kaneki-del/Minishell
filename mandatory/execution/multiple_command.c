@@ -7,7 +7,10 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 
 	pid = fork();
 	if (pid < 0)
+	{
+		printf("BASH: fork: Resource temporarily unavailable\n");
 		exit(1);
+	}
 	if (pid == 0)
 	{
 		
@@ -48,7 +51,10 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 
 	pid = fork();
 	if (pid < 0)
+	{
+		printf("BASH: fork: Resource temporarily unavailable\n");
 		exit(1);
+	}
 	if (pid == 0)
 	{
 		if (get_fds(current,  content) != 0)
@@ -86,7 +92,10 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 
 	pid = fork();
 	if (pid < 0)
+	{
+		printf("BASH: fork: Resource temporarily unavailable\n");
 		exit(1);
+	}
 	if (pid == 0)
 	{
 		if (get_fds(current, content) != 0)

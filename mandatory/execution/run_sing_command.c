@@ -18,7 +18,10 @@ int	single_command(t_container *content)
 	
 	pid = fork();
 	if (pid < 0)
-		exit(1);
+	{
+		clean_fds(current);
+		
+	}
 	if (pid == 0)
 	{ // Child process
 		if (current->in_fd != 0)
