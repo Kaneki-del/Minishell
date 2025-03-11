@@ -11,7 +11,10 @@ int	single_command(t_container *content)
 	int		status;
 	t_data *current = content->data;
 	if (!current->cmds || !current->cmds[0])
-		return 0;
+	{
+		content->status = 0;
+		return;
+	}
 	status = 0;
 	if (check_builtin_commands(current->cmds))
 		return (built_in(current, content));
@@ -20,10 +23,9 @@ int	single_command(t_container *content)
 	if (pid < 0)
 	{
 		clean_fds(current);
-		
 	}
 	if (pid == 0)
-	{ // Child process
+	{
 		if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
@@ -46,16 +48,11 @@ int	single_command(t_container *content)
 		executing(current,content);
 	}
 	else
-	{ // Parent process
 		if (content->data->in_fd != 0)
 			close(content->data->in_fd);
 		if (content->data->out_fd != 0)
 			close(content->data->out_fd);
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-		{
-			return (WEXITSTATUS(status));
-		}
-	}
-	return (1);
+		waitpid(pid, &content->status, 0);
+		update_status(content);
+	
 }

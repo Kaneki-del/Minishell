@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 00:57:21 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:00:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int single_command(t_container *content);
 int ft_lstsize(t_data *lst);
 int	get_fds(t_data *list, t_container *content);
 int run_multiple(t_container *content);
-int execute_package(t_container *content);
+void	execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
@@ -145,7 +145,7 @@ void print_error(char *cmd_input);
 t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int	built_in(t_data *current, t_container *content); 
+void	built_in(t_data *current, t_container *content); 
 t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector, int set);
 void	print_env_list(t_env *env_list, t_data *list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
@@ -169,5 +169,5 @@ int rideraction_builtins(t_data *current);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
-
+void update_status(t_container *content);
 #endif

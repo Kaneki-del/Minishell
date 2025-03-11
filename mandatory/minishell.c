@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 01:17:29 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:12:48 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int main(int ac, char **av, char **env)
       content.g_collector = NULL;
       continue;
     }
-    content.status = execute_package(&content);
+    execute_package(&content);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

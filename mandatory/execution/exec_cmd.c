@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/09 17:43:08 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:58:11 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[dst_lent + i] = '\0';
 	return (dst_lent + src_lent);
 }
-// char	*ft_str_join(char const *s1, char const *s2, t_gc **gc)
-// {
-// 	size_t	total_len;
-// 	char	*result;
-
-// 	if (!s1 && !s2)
-// 		return (NULL);
-// 	if (!s1)
-// 		return (ft_strdup(s2, gc));
-// 	if (!s2)
-// 		return (ft_strdup(s1, gc));
-// 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-// 	result = (char *)malloc(total_len);
-// 	if (!result)
-// 		return (NULL);
-// 	ft_strlcpy(result, s1, total_len);
-// 	ft_strlcat(result, s2, total_len);
-// 	return (result);
-// }
 
 char	**env_to_array(t_container *content)
 {

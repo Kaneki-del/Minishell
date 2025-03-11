@@ -19,14 +19,14 @@ int	filter_unset(char *key)
 	return (0);
 }
 
-int	unset_key(char **cmd, t_env **env_list)
+void	unset_key(char **cmd, t_container *content)
 {
 	int		i;
 	t_env	*temp;
-	int status;
+	t_env **env_list;
 
+	env_list = &content->env_list;
 	i = 0;
-	status = 0;
 	temp = NULL;
 	while (cmd[i])
 	{
@@ -43,21 +43,20 @@ int	unset_key(char **cmd, t_env **env_list)
 		}
 		else {
 			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2), 
-			status = 1;
+			content->status = 1;
 		}
 		i++;	
 	}
-	return status;
 }
-int	handle_unset(char **cmd, t_env **env_list, t_data *current)
+void	handle_unset(char **cmd, t_container *content, t_data *current)
 {
 	int	i;
-
+	
 	clean_fd(current);
 	i = 0;
+	content->status = 0;
 	while (cmd[i])
 		i++;
 	if (i >= 2)
-		return unset_key(cmd + 1, env_list);
-	return 0;
+		unset_key(cmd + 1, content);
 }

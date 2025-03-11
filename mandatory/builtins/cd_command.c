@@ -53,7 +53,7 @@ void update_pwd(t_container *content, char *new_path)
 	}
 	update_original_pwd(content, current_pwd);
 }
-int	handle_cd(char **new_path, t_container *content)
+void	handle_cd(char **new_path, t_container *content)
 {
 	t_env	*temp;
 	t_env *tmp;
@@ -70,7 +70,7 @@ int	handle_cd(char **new_path, t_container *content)
 		if (chdir(new_path[0]) == -1)
 		{
 			perror(new_path[0]);
-			return (1);
+			content->status = 1;
 		}
 		else
 			update_pwd(content, new_path[0]);
@@ -78,12 +78,19 @@ int	handle_cd(char **new_path, t_container *content)
 	else
 	{
 		temp = check_if_there("HOME", &content->env_list);
-		if (temp != NULL){
-			if (chdir(temp->value) == -1)
-				return (0);
+		if (temp != NULL ){
+			if (!temp->value)
+				return;
+			else if (chdir(temp->value) == -1)
+			{
+				perror(new_path[0]);
+				content->status = 1;
+			}
 		}
-		else 
-			return (ft_error_exec_two("bash: cd", ": HOME", " not set",  2), 1);
+		else
+		{ 
+			ft_error_exec_two("bash: cd", ": HOME", " not set",  2);
+			content->status = 1;
+		}
 	}
-	return (0);
 }

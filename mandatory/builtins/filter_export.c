@@ -117,8 +117,6 @@ int	add_export(char **cmd, t_container *content)
 	
 
 	i = 0;
-	status = 0;
-
 	clean_fd(content->data);
 	while (cmd[i])
 	{
@@ -127,9 +125,8 @@ int	add_export(char **cmd, t_container *content)
 			valid_key(splited_equal, content);
 		else{
 			ft_error_exec("bash: export:", cmd[i], ": not a valid identifier", 2),
-			status = 1;
+			content->status = 1;
 		}
 		i++;
 	}
-	return (status);
 }

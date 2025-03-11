@@ -49,7 +49,7 @@ int handle_exit(t_data *current, t_container *content)
         if (chek_args_number(args + 1) > 0)
         {
             ft_putstr_fd("exit\nbash: exit: too many arguments\n", 2);
-            return 1;
+            content->status = 1;
         }
         // give the prompt again
         number = ft_atoi(args[0], current, content);

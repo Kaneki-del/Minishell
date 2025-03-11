@@ -10,7 +10,7 @@ t_env	*copy_list(t_container *content)
 
 	if (!content->env_list)
 		return (NULL);
-	if (content->env_list->print_flag == 1)
+	if (content->env_list->print_flag != 0)
 		new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector, 1);
 	else
 		new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector, 0);
@@ -18,7 +18,7 @@ t_env	*copy_list(t_container *content)
 	current_new = new_head;
 	while (current_old)
 	{
-		if (current_old->print_flag == 1)
+		if (current_old->print_flag != 0)
 			new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector, 1);
 		else
 			new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector, 0);
@@ -77,7 +77,6 @@ void	print_export(t_data *current ,t_container *content)
 	size_t 	i;
 
 	int saved_stdout = rideraction_builtins(current); // Store original stdout
-
 	if (!content->env_list)
 		return ;
 	t_env *temp = copy_list(content); // Start from the head
@@ -87,7 +86,6 @@ void	print_export(t_data *current ,t_container *content)
 		smallest = find_smallest(temp); // Find the smallest element in the list
 		if (!smallest)                  // Safety check
 			return ;
-		// Print the key and value of the smallest element
 		if (smallest->key && smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
 		{
 			if (check_is_in_qoutes(smallest->value))
@@ -109,13 +107,12 @@ void	print_export(t_data *current ,t_container *content)
 		}
 		else if (!smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
 			printf("declare -x %s\n", smallest->key);
-		// Delete the smallest node from the list
 		delete_node(&temp, smallest->key);
-			// Ensure temp is updated after deletion
 	}
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);
 		close(saved_stdout);
 	}
+	content->status = 0;
 }
