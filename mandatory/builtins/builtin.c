@@ -31,18 +31,17 @@ void	handle_export(t_data *current ,t_container *content)
 	if (i == 1)
 		print_export(current ,content);
 	else
-		add_export(content->data->cmds + 1, content));
+		add_export(content->data->cmds + 1, content);
 }
 // for the norms 
 void	built_in(t_data *current, t_container *content)
 {
-	content->status = 0;
 	if (ft_strcmp (content->data->cmds[0], "env") == 0)
-		print_env_list(content->env_list, content->data);
+		print_env_list(content, content->data);
 	else if (ft_strcmp(current->cmds[0], "export") == 0)
-		 handlez_export(current, content);
+		 handle_export(current, content);
 	else if (ft_strcmp(current->cmds[0], "unset") == 0)
-		handle_unset(current->cmds, &content->env_list, current);
+		handle_unset(current->cmds, content, current);
 	else if (ft_strcmp(current->cmds[0], "echo") == 0)
 		 handle_echo(current->cmds, current);
 	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
@@ -50,5 +49,5 @@ void	built_in(t_data *current, t_container *content)
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)
 		  handle_cd(current->cmds + 1, content);
 	else if (ft_strcmp(current->cmds[0], "exit") == 0)
-		return handle_exit(current, content);
+		 handle_exit(current, content);
 }

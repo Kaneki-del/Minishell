@@ -109,13 +109,11 @@ void valid_key(char **key_value, t_container *content)
 	}		
 }
 
-int	add_export(char **cmd, t_container *content)
+void	add_export(char **cmd, t_container *content)
 {
 	int		i;
 	char	**splited_equal;
-	int		status;
 	
-
 	i = 0;
 	clean_fd(content->data);
 	while (cmd[i])

@@ -5,7 +5,7 @@
 // 		write(1, "Quit\n", 5);
 // }
 
-int	single_command(t_container *content)
+void	single_command(t_container *content)
 {
 	pid_t	pid;
 	int		status;
@@ -17,12 +17,15 @@ int	single_command(t_container *content)
 	}
 	status = 0;
 	if (check_builtin_commands(current->cmds))
-		return (built_in(current, content));
-	
+	{
+		built_in(current, content);
+		return ;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
 		clean_fds(current);
+		content->status = 1;
 	}
 	if (pid == 0)
 	{
@@ -54,5 +57,4 @@ int	single_command(t_container *content)
 			close(content->data->out_fd);
 		waitpid(pid, &content->status, 0);
 		update_status(content);
-	
 }

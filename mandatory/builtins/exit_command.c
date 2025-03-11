@@ -26,7 +26,7 @@ int chek_args_number(char **args)
     return count;
 }
 
-int handle_exit(t_data *current, t_container *content)
+void handle_exit(t_data *current, t_container *content)
 {
     char **args;
     ssize_t number;

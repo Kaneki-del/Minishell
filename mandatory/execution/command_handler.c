@@ -36,7 +36,6 @@ static void	intial(t_data **list, t_container *content)
 			clear_bin(&content->g_env_collector);
 			exit(2);
 		}
-
 		current->in_fd = 0;
 		current->out_fd = 0;
 		current = current->next;
@@ -46,29 +45,28 @@ static void	ctrl_cmd(int sig)
 {
 	if (sig == SIGQUIT)
 		write(1, "Quit\n", 5);
+	else if (sig == SIGINT)
+		write(1, "\n", 3);
 }
 void	execute_package(t_container *content)
 {
 	signal(SIGINT, ctrl_cmd);
 	signal(SIGQUIT, ctrl_cmd);
 	int	list_size;
+	content->status = 0;
 	if (!content->data)
-	{
-		content->status = 0; 
 		return;
-	}
 	list_size = ft_lstsize(content->data);
 	intial(&content->data, content);
 	if (list_size == 1)
 	{
 		if ( get_fds(content->data, content) != 0)
-		{
 			content->status = 1; 
-			return;
-		}
-		content->status = single_command(content);
+	
+		else 
+			single_command(content);
 	}
-	else if (list_size >= 2)
-		content->status = run_multiple(content);
+	// else if (list_size >= 2)
+	// 	content->status = run_multiple(content);
 	tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value);
 }

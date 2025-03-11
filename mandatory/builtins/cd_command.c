@@ -78,13 +78,19 @@ void	handle_cd(char **new_path, t_container *content)
 	else
 	{
 		temp = check_if_there("HOME", &content->env_list);
-		if (temp != NULL ){
+		if (temp != NULL && temp->value != NULL)
+		{
 			if (!temp->value)
 				return;
 			else if (chdir(temp->value) == -1)
 			{
-				perror(new_path[0]);
-				content->status = 1;
+				if (!ft_strcmp(temp->value, "\0"))
+					return ;
+				else
+				{
+					ft_error_exec_two("bash: cd: ", temp->value, ": No such file or directory", 2);
+					content->status = 1;
+				}
 			}
 		}
 		else
