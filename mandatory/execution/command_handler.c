@@ -66,7 +66,7 @@ void	execute_package(t_container *content)
 		else 
 			single_command(content);
 	}
-	// else if (list_size >= 2)
-	// 	content->status = run_multiple(content);
+	else if (list_size >= 2)
+		run_multiple(content);
 	tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value);
 }

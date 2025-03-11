@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 17:09:12 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:42:39 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char *ft_chrjoin(char c, char b, t_gc **g_collector);
 void	single_command(t_container *content);
 int ft_lstsize(t_data *lst);
 int	get_fds(t_data *list, t_container *content);
-int run_multiple(t_container *content);
+void run_multiple(t_container *content);
 void	execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
