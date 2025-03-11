@@ -69,11 +69,26 @@ size_t	ft_strlen_2d(char **s)
 	return (i);
 }
 
+// static void ft_print2d(char **str)
+// {
+//   int i;
+
+//   i = 0;
+//   if (!str)
+//     return ;
+//   while (str[i])
+//   {
+//     printf("%s \n", str[i]);
+//     i++;  
+//   }
+// }
+
 int parser(t_container *content)
 {
   t_token *iter;
   char *dir_files;
   char *only_command;
+  char *old_command;
   char **cmd_optios;
   int flag;
 
@@ -93,6 +108,7 @@ int parser(t_container *content)
     if (only_command)
     {
       flag = 2;
+      old_command = only_command;
       only_command = check_env_var(content, only_command, &flag, 0);
     }
     if (dir_files)
@@ -118,18 +134,26 @@ int parser(t_container *content)
     // }
     // printf("(%d)\n", flag);
     // printf("(%s)\n", only_command);
-    if (only_command && ft_strncmp(only_command, "export ", 7) == 0 && flag == 5)
+    if (only_command && ft_strncmp(only_command, "export ", 7) == 0 && flag == 5) // export "hello sd" 5
     {
         // only_command = add_qoutations(only_command);
-        cmd_optios = ft_split(only_command, ' ', &content->g_collector);
+        cmd_optios = ft_split(old_command, ' ', &content->g_collector);
         if(ft_strlen_2d(cmd_optios) < 3)
         {
-          cmd_optios[1] = filer_qoutations(ft_strdup(only_command + 7, &content->g_collector),  &content->g_collector); 
-          cmd_optios[2] = NULL;
+          if (cmd_optios[1][0] == '$')
+          {
+            cmd_optios = normal_ft_split(only_command, ' ');
+            cmd_optios = filterd(cmd_optios, &content->g_collector);
+          }
+          else
+          {
+            cmd_optios[1] = filer_qoutations(ft_strdup(only_command + 7, &content->g_collector),  &content->g_collector); 
+            cmd_optios[2] = NULL;
+          }
         }
         else
         {
-          cmd_optios = filterd(cmd_optios, &content->g_collector);
+            cmd_optios = filterd(normal_ft_split(only_command, ' '), &content->g_collector);
         }
     }
     else

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/05 22:31:22 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 00:50:45 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // shoud take a looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooook
 
-size_t words_count(const char *s, char c) // this" name s"
+size_t words_count(const char *s, char c) // This name 's'
 {
     size_t count = 0;
     int in_quote = 0;
@@ -22,22 +22,18 @@ size_t words_count(const char *s, char c) // this" name s"
     size_t i = 0;
 
     while (s[i]) {
-        while (s[i] == c && !in_quote)
+        while ((s[i] == c || s[i] == '\t') && !in_quote) // Added '\t' check
             i++;
         if (!s[i])
             break;
         count++;
-        while (s[i] && (in_quote || s[i] != c))
-        {
-            if (s[i] == '\'' || s[i] == '"') 
-            {
-                if (!in_quote)
-                {
+        while (s[i] && (in_quote || (s[i] != c && s[i] != '\t'))) { // Added '\t' check
+            if (s[i] == '\'' || s[i] == '"') {
+                if (!in_quote) {
                     in_quote = 1;
                     quote = s[i];
                 }
-                else if (s[i] == quote) 
-                {
+                else if (s[i] == quote) {
                     in_quote = 0;
                     quote = 0;
                 }
@@ -55,16 +51,17 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
     int in_quote = 0;
     char quote = 0;
 
-    while (s[*i] == c)
+    while (s[*i] == c || s[*i] == '\t') // Added '\t' check
         (*i)++;
-    
+
     start = *i;
-    while (s[*i] && (in_quote || s[*i] != c)) {
+    while (s[*i] && (in_quote || (s[*i] != c && s[*i] != '\t'))) { // Added '\t' check
         if (s[*i] == '\'' || s[*i] == '"') {
             if (!in_quote) {
                 in_quote = 1;
                 quote = s[*i];
-            } else if (s[*i] == quote) {
+            }
+            else if (s[*i] == quote) {
                 in_quote = 0;
                 quote = 0;
             }
@@ -79,7 +76,7 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
     return (word);
 }
 
-char **ft_split(char const *s, char c,  t_gc **g_collector)
+char **ft_split(char const *s, char c, t_gc **g_collector)
 {
   char **p;
   size_t i;
@@ -103,6 +100,7 @@ char **ft_split(char const *s, char c,  t_gc **g_collector)
   p[j] = NULL;
   return (p);
 }
+
 
 
 // char **ft_split(char const *s, char c, t_gc **g_collector) {
