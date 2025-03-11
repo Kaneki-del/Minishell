@@ -8,12 +8,12 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 	pid = fork();
 	if (pid < 0)
 	{
-		printf("BASH: fork: Resource temporarily unavailable\n");
-		exit(1);
+		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
+		clean_fds(content->data);
+		content->status = 1;
 	}
 	if (pid == 0)
 	{
-		
 		if (get_fds(current, content) != 0)
 			exit(1);
 		close(p_fd[0]); // Close unused read end
@@ -55,8 +55,9 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 	pid = fork();
 	if (pid < 0)
 	{
-		printf("BASH: fork: Resource temporarily unavailable\n");
-		exit(1);
+		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
+		clean_fds(content->data);
+		content->status = 1;
 	}
 	if (pid == 0)
 	{
@@ -99,8 +100,8 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 	pid = fork();
 	if (pid < 0)
 	{
-		printf("BASH: fork: Resource temporarily unavailable\n");
-		exit(1);
+		ft_putstr_fd("BASH: fork: Resource temporarily unavailable\n", 2);
+		clean_fds(content->data);
 	}
 	if (pid == 0)
 	{
@@ -153,7 +154,7 @@ static int	handle_pipes(t_container *content)
 		if (pipe(p_fd) == -1)
 			exit(1);
 		execut(content, current, p_fd, t);
-		close(t); // Close previous read end in parent
+		close(t);
 		current = current->next;
 		close(p_fd[1]);
 	}
