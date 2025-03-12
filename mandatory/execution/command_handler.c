@@ -41,7 +41,7 @@ static void	intial(t_data **list, t_container *content)
 		current = current->next;
 	}
 }
-static void	ctrl_cmd(int sig)
+ void	ctrl_cmd(int sig)
 {
 	if (sig == SIGQUIT)
 		write(1, "Quit\n", 5);

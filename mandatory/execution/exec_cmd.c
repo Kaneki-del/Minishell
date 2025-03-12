@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/11 15:58:11 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:36:52 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	executing(t_data *current, t_container *content)
 	char	**list_char;
 
 	//check what the bash do if no env list
+	
 	if (!content->env_list)
 		exit(0);
 	if (!current->cmds || !current->cmds[0])

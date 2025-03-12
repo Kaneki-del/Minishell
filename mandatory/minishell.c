@@ -6,13 +6,13 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/12 01:29:24 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:15:30 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-
+int g_sig;
 
 void	ctrl_c(int sig)
 {

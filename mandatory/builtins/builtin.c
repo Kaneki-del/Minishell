@@ -1,12 +1,12 @@
 #include "../../includes/minishell.h"
 #include <stdio.h>
 
-
 void	print_env_list(t_container *content, t_data *list)
 {
 	t_env	*current;
-	int saved_stdout = rideraction_builtins(list); // Store original stdout
+	int		saved_stdout;
 
+	saved_stdout = rideraction_builtins(list); // Store original stdout
 	current = content->env_list;
 	while (current != NULL)
 	{
@@ -20,7 +20,8 @@ void	print_env_list(t_container *content, t_data *list)
 		close(saved_stdout);
 	}
 }
-void	handle_export(t_data *current ,t_container *content)
+
+void	handle_export(t_data *current, t_container *content)
 {
 	int	i;
 
@@ -28,25 +29,26 @@ void	handle_export(t_data *current ,t_container *content)
 	while (current->cmds[i])
 		i++;
 	if (i == 1)
-		print_export(current ,content);
+		print_export(current, content);
 	else
 		add_export(content->data->cmds + 1, content);
 }
-// for the norms 
+
+// for the norms
 void	built_in(t_data *current, t_container *content)
 {
-	if (ft_strcmp (content->data->cmds[0], "env") == 0)
+	if (ft_strcmp(content->data->cmds[0], "env") == 0)
 		print_env_list(content, content->data);
 	else if (ft_strcmp(current->cmds[0], "export") == 0)
-		 handle_export(current, content);
+		handle_export(current, content);
 	else if (ft_strcmp(current->cmds[0], "unset") == 0)
 		handle_unset(current->cmds, content, current);
 	else if (ft_strcmp(current->cmds[0], "echo") == 0)
-		 handle_echo(current->cmds, current);
+		handle_echo(current->cmds, current);
 	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
-		  handle_pwd(content, current), 0;
+		handle_pwd(content, current);
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)
-		  handle_cd(current->cmds + 1, content);
+		handle_cd(current->cmds + 1, content);
 	else if (ft_strcmp(current->cmds[0], "exit") == 0)
-		 handle_exit(current, content);
+		handle_exit(current, content);
 }

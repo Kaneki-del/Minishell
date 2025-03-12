@@ -1,11 +1,12 @@
 #include "../../includes/minishell.h"
-int rideraction_builtins(t_data *current)
-{
-	int saved_stdout = -1; // Store original stdout
 
+int	rideraction_builtins(t_data *current)
+{
+	int	saved_stdout;
+
+	saved_stdout = -1;
 	if (current->in_fd != 0)
 		close(current->in_fd);
-	
 	if (current->out_fd != 0)
 	{
 		saved_stdout = dup(1);
@@ -21,11 +22,12 @@ int rideraction_builtins(t_data *current)
 		}
 		close(current->out_fd);
 	}
-	return saved_stdout;
+	return (saved_stdout);
 }
-void clean_fd(t_data *list)
+
+void	clean_fd(t_data *list)
 {
-    if (list->in_fd != 0)
+	if (list->in_fd != 0)
 		close(list->in_fd);
 	if (list->out_fd != 0)
 		close(list->out_fd);
