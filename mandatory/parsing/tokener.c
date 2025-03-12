@@ -59,7 +59,7 @@ static int skeep_special_char(t_container *content, int *start)
     if (is_in == 1)
     {
         content->status = 258;
-        return (ft_error("bash: syntax error near unexpected token", &qoute, 2), 0);
+        return (ft_error("bash: syntax error near unexpected token", ft_chrjoin(qoute, '\0', &content->g_collector), 2), 0);
     }
     return (1);
 }
@@ -90,4 +90,32 @@ int tokener(t_container *content)
         }
     }
     return (1);
+}
+
+int token_checker(t_container *content)
+{
+	t_token *iter;
+
+	if (!content->tokens)
+		return (0);
+	iter = content->tokens;
+	if (check_is_pipe_first(iter, content, 1) == 0)
+		return (0);
+	while (iter && iter->next)
+	{
+		if (check_is_pipe_first(iter, content, 0) == 0)
+			return (0);
+		if (redirection_pipe_check (iter, T_REDIRECTE_IN, content) == 0)
+			return (0);
+		if (redirection_pipe_check (iter, T_REDIRECTE_OUT, content) == 0)
+			return (0);
+		if (redirection_pipe_check (iter, T_REDIRECTE_APPEND, content) == 0)
+			return (0);
+		if (redirection_pipe_check (iter, T_REDIRECTE_HEREDOC, content) == 0)
+			return (0);
+		iter = iter->next;
+	}
+	if (check_is_last_redirection(iter, content) == 0)
+		return (0);
+	return (1);
 }

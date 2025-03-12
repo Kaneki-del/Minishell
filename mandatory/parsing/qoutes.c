@@ -81,3 +81,26 @@ int check_is_in_qoutes(char *str)
     return (1);
   return (0);
 }
+
+char *add_qoutations(char *command, t_gc **g_collector)
+{
+  int i;
+  int j;
+  char *res;
+
+  i = 0;
+  j = 1;
+  if (check_is_in_qoutes(command))
+      return (command);
+  res = gc(ft_strlen(command) + 3, g_collector);
+  res[0] = '"';
+  while (command[i])
+  {
+    res[j] = command[i];
+    i++;
+    j++;
+  }
+  res[j] = '"';
+  res[j + 1] = '\0';
+  return (res);
+}

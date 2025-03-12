@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 16:31:50 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:23:08 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void init_content(t_container *content)
     content->line = NULL;
     content->is_expandable = 0;
 	content->flag = 0;
+	content->new_command = NULL;
 }
 
 int main(int ac, char **av, char **env)

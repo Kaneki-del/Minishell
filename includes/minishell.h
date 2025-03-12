@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/12 00:16:21 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:35:31 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_env {
 } t_env;
 
 
-
 // that struct contains most used variables
 typedef struct s_container
 {
@@ -88,6 +87,7 @@ typedef struct s_container
   int is_expandable;
   struct termios termios_value;
   char *save_path;
+  char *new_command;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -168,8 +168,16 @@ void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
 char	**normal_ft_split(char const *s, char c, t_gc **g_collector);
-char *expand(t_container *content, char *command, int *i, int add_quote);
 char *expand_here_doc_lines(t_container *content, char *command);
+char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, t_container *content);
+void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files);
+int token_checker(t_container *content);
+int check_is_last_redirection(t_token *iter, t_container *content);
+int check_is_pipe_first(t_token *iter, t_container *content, int flag);
+char *add_qoutations(char *command, t_gc **g_collector);
+char in_quotations(char *command, int *i, char qoute, int *is_in);
+int pair_check_cases(t_container *content, t_env *pair, char *key);
+char *expand(t_container *content, char *command, int *i);
 
 
 #endif
