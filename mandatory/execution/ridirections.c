@@ -51,7 +51,6 @@ int	get_fds(t_data *list, t_container *content)
 {
 	char	**full_cmd;
 	int		i;
-	//bash: maximum here-document count exceeded
 
 	full_cmd = list->directions;
 	i = 0;
