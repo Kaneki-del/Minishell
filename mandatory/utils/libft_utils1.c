@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/21 15:44:33 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:59:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 		len = s_len - start;
 	sub = gc(len + 1, g_collector);
 	if (!sub)
-		return (clear_bin(g_collector), NULL);
+		return (NULL);
 	while (i < len)
 	{
 		sub[i] = s[i + start];
@@ -80,7 +80,7 @@ char *ft_chrjoin(char c, char b,  t_gc **g_collector)
 
 	new = gc(3, g_collector);
 	if (!new)
-		return (clear_bin(g_collector), NULL);
+		return (NULL);
 	new[0] = c;
 	new[1] = b;
 	new[2] = '\0';

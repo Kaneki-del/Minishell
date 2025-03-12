@@ -108,12 +108,11 @@ char *add_qoutations(char *command, t_gc **g_collector)
   return (res);
 }
 
-char *expand(t_container *content, char *command, int *i, int *flag)
+char *expand(t_container *content, char *command, int *i, int add_quote)
 {
     t_env *pair;
     char *key;
     int start;
-    // char qoute;
 
     pair = NULL;
     key = NULL;
@@ -125,38 +124,40 @@ char *expand(t_container *content, char *command, int *i, int *flag)
     ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
     pair = check_if_there(key, &content->env_list);
     (*i) = start;
-    if (!pair || pair->print_flag == 3)
+    if (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3)
     {
-        if ((*flag) == 1)
+        if (content->flag == 1)
         {
             ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
-            (*flag) = 0;
+            content->flag = 0;
             content->status = 1;
         }
         return (ft_strdup("\0", &content->g_collector));
     }
-    if (pair && (*flag) == 1 && pair->value && (words_count(filer_qoutations(pair->value, &content->g_collector), ' ') > 1))
+    if (pair && content->flag == 1 && pair->value && (words_count(filer_qoutations(pair->value, &content->g_collector), ' ') > 1))
     {
         ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
-        (*flag) = 0;
+        content->flag = 0;
         content->status = 1;
         return (ft_strdup("\0", &content->g_collector));
     }
-    *(flag) = 5;
+    content->flag = 5;
     if (!pair->value)
         return (NULL);
-    return (add_qoutations(pair->value, &content->g_collector));
+    (void)add_quote;
+    // if (add_quote)
+    //     return (add_qoutations(pair->value, &content->g_collector));
+    return (pair->value);
 }
 
 // the first this is the epandable string shoud starts with $ and end with special character 
-char *check_env_var(t_container *content, char *command, int *flag, int here_doc_flag)
+char *check_env_var(t_container *content, char *command)
 {
     int i;
     char *new_command;
     char *curent_part;
     int is_in;
     char qoute;
-    int inexpand_here;
 
     if (!command)
         return (NULL);
@@ -164,7 +165,6 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
     is_in = 0;
     new_command = NULL;
     curent_part = NULL;
-    inexpand_here = 0;
     while (command[i])
     {
         if (command[i] == '\'' || command[i] == '"')
@@ -180,62 +180,34 @@ char *check_env_var(t_container *content, char *command, int *flag, int here_doc
                 qoute = '\0';
             }
         }
-        if (command[i] == '<' && command[i + 1] == '<' && !is_in)
-            inexpand_here = 1;
-        if (command[i] == '$' && (qoute != '\'' || here_doc_flag) && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\''  || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
+        if (command[i] == '$' && qoute != '\'' && command[i + 1] != qoute && (ft_isalnum(command[i + 1]) || command[i + 1] == '\''  || command[i + 1] == '"' || command[i + 1] == '?' || command[i + 1] == '_'))
         {
-            if (here_doc_flag)
-            {
-                if (ft_isalnum(command[i + 1]) || command[i + 1] == '?')
-                {
-                    while (command[i] == '$')
-                        i++;
-                    if (command[i] == '?')
-                    {
-                        i++;
-                        new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
-                        continue;
-                    }
-                    else if (ft_isalnum(command[i]))
-                    {
-                        curent_part = expand(content, command, &i, flag);
-                        if (curent_part)
-                        {
-                            new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
-                            continue;
-                        }
-                    }
-                }
-            }
+            if (command[i] && qoute == '"' && command[i + 1] == '\'')
+                ;
             else
             {
-                if ((command[i] && qoute == '"' && command[i + 1] == '\'') || (inexpand_here && command[i + 1] != '\''  && command[i + 1] != '"' ))
-                    ;
-                else
+                i++;
+                if (!ft_isalpha(command[i]) || qoute == '"')
+                    content->flag = 3;
+                if (command[i] == '?')
                 {
                     i++;
-                    if (!ft_isalpha(command[i]) || qoute == '"')
-                        (*flag) = 3;
-                    if (command[i] == '?')
-                    {
-                        i++;
-                        new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
-                        continue;
-                    }
-                    else if (((ft_isdigit(command[i]) || (!ft_isalpha(command[i]) && command[i] != '_')) && (command[i] != '"' && command[i] != '\'' )))
-                        i++;
-                    else if (ft_isalnum(command[i]) || command[i] == '_')
-                    {
-                        curent_part = expand(content, command, &i, flag);
-                        if (curent_part)
-                            new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
-                        continue;
-                    }
-
+                    new_command = ft_strjoin(new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
+                    continue;
                 }
+                else if (((ft_isdigit(command[i]) || (!ft_isalpha(command[i]) && command[i] != '_')) && (command[i] != '"' && command[i] != '\'' )))
+                    i++;
+                else if (ft_isalnum(command[i]) || command[i] == '_')
+                {
+                    curent_part = expand(content, command, &i, 1);
+                    if (curent_part)
+                        new_command = ft_strjoin(new_command, curent_part, &content->g_collector);
+                    continue;
+                }
+
             }
         }
-        else if(qoute != '"' && qoute != '\'' && command[i] == '~' && !inexpand_here && !here_doc_flag)
+        else if(qoute != '"' && qoute != '\'' && command[i] == '~')
         {
             curent_part = expand_telda(command, &i, &content->env_list);
             if (curent_part)

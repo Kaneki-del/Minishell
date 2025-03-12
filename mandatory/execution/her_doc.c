@@ -22,9 +22,7 @@ int her_doc(char *limiter, t_container *content)
 	char *line;
 	char *file_name;
 	int fd2;
-	int flag;
 
-	flag = 0;
 	file_name = get_file(&content->g_collector);
 	fd = open_file(file_name, 1);
 	fd2 = open_file(file_name, 0);
@@ -44,7 +42,7 @@ int her_doc(char *limiter, t_container *content)
 		else 
 		{
 			if (check_is_in_qoutes(limiter) == 0)
-				line = filer_qoutations(check_env_var(content, line, &flag, 1), &content->g_collector);
+				line = expand_here_doc_lines(content, line);
 			if (line)
 			{
 				write(fd, line,  ft_strlen(line));

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/10 22:41:29 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:31:50 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,58 +69,61 @@ void ft_printf(t_data **data)
 
 void init_content(t_container *content)
 {
-	  content->tokens = NULL;
+	content->tokens = NULL;
     content->data = NULL;
     content->save_path = NULL;
     content->line = NULL;
     content->is_expandable = 0;
+	content->flag = 0;
 }
 
 int main(int ac, char **av, char **env)
 {
 
-  (void)av;
-  
-  t_container content;
-  tcgetattr(STDERR_FILENO, &content.termios_value);
-  content.g_env_collector = NULL;
-  content.g_collector = NULL;
-  content.env_list = get_env_list(env, &content);
-  content.status = 0;
-	 rl_catch_signals = 0;
-  
-  while (1) {
-signal(SIGQUIT, SIG_IGN);
-	  signal(SIGINT, ctrl_c);
-    if (ac != 1 || !isatty(0))
-		return (1);
-    rl_catch_signals = 0;
-    signal(SIGQUIT, SIG_IGN);
-    signal(SIGINT, ctrl_c);
-    init_content(&content);
-  
-    content.line = readline("mshell$> ");
-    if (!content.line){
-      printf("exit\n");
-      clear_bin(&content.g_collector);
-      exit(0);
-    }
-    if (content.line[0] != '\0')
-      add_history(content.line);
-    // this function contains all paring cases
-    if (parsing_case(&content) == 0) // shoud move the clear_bin here
-    {
-      free(content.line);
-      content.g_collector = NULL;
-      continue;
-    }
-    // // ft_printf(&content.data);
-    content.status = execute_package(&content);
-    free(content.line);
-    clear_bin(&content.g_collector);
-    content.g_collector = NULL;
-    content.line = NULL;
-  }
-   clear_bin(&content.g_env_collector);
-  return (0);
+	(void)av;
+
+	t_container content;
+	tcgetattr(STDERR_FILENO, &content.termios_value);
+	content.g_env_collector = NULL;
+	content.g_collector = NULL;
+	content.env_list = get_env_list(env, &content);
+	content.status = 0;
+		rl_catch_signals = 0;
+
+	while (1) {
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, ctrl_c);
+		if (ac != 1 || !isatty(0))
+			return (1);
+		rl_catch_signals = 0;
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, ctrl_c);
+		init_content(&content);
+
+		content.line = readline("mshell$> ");
+		if (!content.line)
+		{
+			printf("exit\n");
+			clear_bin(&content.g_collector);
+			exit(0);
+		}
+		if (content.line[0] != '\0')
+		add_history(content.line);
+		// this function contains all paring cases
+		if (parsing_case(&content) == 0) // shoud move the clear_bin here
+		{
+			free(content.line);
+			clear_bin(&content.g_collector);
+			content.g_collector = NULL;
+			continue;
+		}
+		// ft_printf(&content.data);
+		content.status = execute_package(&content);
+		free(content.line);
+		clear_bin(&content.g_collector);
+		content.g_collector = NULL;
+		content.line = NULL;
+	}
+	clear_bin(&content.g_env_collector);
+	return (0);
 }

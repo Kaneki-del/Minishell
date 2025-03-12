@@ -15,7 +15,7 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
     return (NULL);
   words_between = gc(ft_strlen(command_line) + 1, g_collector);
   if (!words_between)
-    return (clear_bin(g_collector), NULL); // shoud handle
+    return (NULL); // shoud handle
   while (command_line[i])
   {
     if ((command_line[i] == '"' || command_line[i] == '\'') && !in_qoute) {
