@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 23:10:35 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/12 01:29:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_env {
 } t_env;
 
 
-
+int g_sig;
 // that struct contains most used variables
 typedef struct s_container
 {

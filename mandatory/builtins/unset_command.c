@@ -23,9 +23,7 @@ void	unset_key(char **cmd, t_container *content)
 {
 	int		i;
 	t_env	*temp;
-	t_env **env_list;
 
-	env_list = &content->env_list;
 	i = 0;
 	temp = NULL;
 	while (cmd[i])
@@ -37,9 +35,9 @@ void	unset_key(char **cmd, t_container *content)
 		}
 		if (filter_unset(cmd[i]) == 0)
 		{
-			temp = check_if_there(cmd[i], env_list);
+			temp = check_if_there(cmd[i], &content->env_list);
 			if (temp != NULL && temp->print_flag == 0)
-				delete_node(env_list, temp->key);
+				delete_node(&content->env_list, temp->key);
 		}
 		else {
 			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2), 

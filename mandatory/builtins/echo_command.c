@@ -8,7 +8,6 @@ void	echo(char **cmd)
 	
 	int		espace;
 
-	
 	espace = 0;
 	new_line = 0;
 	i = 0;

@@ -8,15 +8,12 @@ int rideraction_builtins(t_data *current)
 	
 	if (current->out_fd != 0)
 	{
-		// Save stdout before redirection
 		saved_stdout = dup(1);
 		if (saved_stdout < 0)
 		{
 			perror("error saving stdout");
 			exit(10);
 		}
-
-		// Redirect stdout to out_fd
 		if (dup2(current->out_fd, 1) < 0)
 		{
 			perror("error in dup2");

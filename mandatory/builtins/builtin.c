@@ -8,7 +8,6 @@ void	print_env_list(t_container *content, t_data *list)
 	int saved_stdout = rideraction_builtins(list); // Store original stdout
 
 	current = content->env_list;
-	// Traverse the list and print each node's key and value
 	while (current != NULL)
 	{
 		if (current->key && current->value && current->print_flag == 0)

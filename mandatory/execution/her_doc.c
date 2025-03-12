@@ -15,27 +15,46 @@ char *get_file(t_gc **g_collector)
 		i++;
 	}
 }
+void	ctrl_c_heredoc(int sig)
+{
+	close(0);
+	g_sig = sig;
+}
+int	hrdc_ctrlc(int fd, t_container *content)
+{
+	if (g_sig)
+	{
+		content->status = 1;
+		if (dup2(fd, 0) == -1)
+		{
+			close(fd);
+			return (1);
+		}
+		close(fd);
+		return (1);
 
+	}
+	return (0);
+}
 int her_doc(char *limiter, t_container *content)
 {
-	int fd;
+	int fd1;
 	char *line;
 	char *file_name;
 	int fd2;
 	int flag;
-	pid_t pid;
 
+	signal(SIGINT, ctrl_c_heredoc);
+	int fd = dup(0);
+	if (fd == -1)
+		return (ft_putstr_fd("error\n", 0), 1);
 	flag = 0;
 	file_name = get_file(&content->g_collector);
-	fd = open_file(file_name, 1);
+	fd1 = open_file(file_name, 1);
 	fd2 = open_file(file_name, 0);
 	unlink(file_name);
-	pid = fork();
-	if (pid == 0)
+	while(!g_sig)
 	{
-		
-		while(1)
-		{
 			line = readline("> ");
 			if (line == NULL)
 				break; 
@@ -55,10 +74,16 @@ int her_doc(char *limiter, t_container *content)
 					write(fd, "\n", 1); 
 					line = NULL; // free line lead to a segfult
 				}
+				else
+					write(fd, "\n", 1); 
 			}
-		}
-		exit(EXIT_SUCCESS);
 	}
-	close(fd);
+	if (hrdc_ctrlc(fd, content) == 0)
+	{
+		close(fd1);
+		close(fd2);
+		return (0);
+	}
+	close(fd1);
 	return fd2;
 }
