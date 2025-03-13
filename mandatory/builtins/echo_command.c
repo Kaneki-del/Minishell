@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	echo(char **cmd)
+static void	echo(char **cmd)
 {
 	int	i;
 	int	new_line;

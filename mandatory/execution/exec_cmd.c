@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/12 14:36:52 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 01:52:08 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,33 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[dst_lent + i] = '\0';
 	return (dst_lent + src_lent);
 }
-
-char	**env_to_array(t_container *content)
+int count_env(t_container *content)
 {
 	t_env	*temp;
-	int		count;
+	int count;
+	
+	count = 0;
+	temp = NULL;
+	temp = content->env_list;
+	if (!temp)
+		return count;
+	else
+	{
+		while (temp)
+		{
+			count++;
+			temp = temp->next;
+		}
+	}
+	return count;
+}
+char **fill_env_arr(int count, t_container *content)
+{
 	char	**env_array;
 	char	*tem;
 	int		i;
+	t_env	*temp;
 
-	temp = NULL;
-	count = 0;
-	temp = content->env_list;
-	if (!temp)
-		return NULL;
-	while (temp)
-	{
-		count++;
-		temp = temp->next;
-	}
 	env_array = gc((count + 1) * sizeof(char *), &content->g_collector);
 	if (!env_array)
 	{
@@ -69,6 +77,21 @@ char	**env_to_array(t_container *content)
 		temp = temp->next;
 	}
 	env_array[i] = NULL;
+	return env_array;
+}
+
+char	**env_to_array(t_container *content)
+{
+	
+	int		count;
+	char	**env_array;
+	
+
+	
+	count = count_env(content);
+	if (count == 0)
+		return NULL;
+	env_array = fill_env_arr(count, content);
 	return (env_array);
 }
 
@@ -83,8 +106,6 @@ void	executing(t_data *current, t_container *content)
 {
 	char	*cmd_path;
 	char	**list_char;
-
-	//check what the bash do if no env list
 	
 	if (!content->env_list)
 		exit(0);
@@ -100,8 +121,6 @@ void	executing(t_data *current, t_container *content)
 	list_char = env_to_array(content);
 	if (current->cmds)
 	{
-		// signal(SIGQUIT, SIG_DFL);
-		// signal(SIGINT, SIG_DFL);
 		if (execve(cmd_path, current->cmds, list_char) == -1)
 		{
 			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);

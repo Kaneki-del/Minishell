@@ -1,5 +1,5 @@
 #include "../../includes/minishell.h"
-int filter_args(char *arg)
+static int filter_args(char *arg)
 {
 	int i;
 	i = 0;
@@ -16,7 +16,7 @@ int filter_args(char *arg)
 	}
     return 0;
 }
-int chek_args_number(char **args)
+static int chek_args_number(char **args)
 {
     int count;
 
@@ -25,22 +25,13 @@ int chek_args_number(char **args)
         count++;
     return count;
 }
-
-void handle_exit(t_data *current, t_container *content)
+static void filter_exit(t_container *content, char **args)
 {
-    char **args;
-    ssize_t number;
-    int exit_code;
-
-    args = current->cmds + 1;
-    exit_code = 0;
-    if (args[0])
-    {
-        if (filter_args(args[0]) == 1)
+    if (filter_args(args[0]) == 1)
         {
             ft_putstr_fd("exit\n", 2);
             ft_error_exec_two("bash: exit: ", args[0], ": numeric argument required", 2);
-            clean_fds(current);
+            clean_fds(content->data);
             clear_bin(&content->g_collector);
             clear_bin(&content->g_env_collector);
             write(1, "exit\n", 5);
@@ -52,16 +43,33 @@ void handle_exit(t_data *current, t_container *content)
             content->status = 1;
             return;
         }
-        // give the prompt again
+}
+static void clean_exit(t_container *content, int exit_code)
+{
+    clean_fds(content->data);
+    clear_bin(&content->g_collector);
+    clear_bin(&content->g_env_collector);
+    write(1, "exit\n", 5);
+    exit(exit_code);
+
+}
+
+ void handle_exit(t_data *current, t_container *content)
+{
+    char **args;
+    ssize_t number;
+    int exit_code;
+
+    args = current->cmds + 1;
+    exit_code = 0;
+    if (args[0])
+    {
+        filter_exit(content, args);
         number = ft_atoi(args[0], current, content);
         exit_code = number % 256;
         if (exit_code < 0)
             exit_code += 256; // Normalize negative numbers
-        clean_fds(current);
-        clear_bin(&content->g_collector);
-        clear_bin(&content->g_env_collector);
-        write(1, "exit\n", 5);
-        exit(exit_code);
+        clean_exit(content, exit_code);
     }
     else
     {

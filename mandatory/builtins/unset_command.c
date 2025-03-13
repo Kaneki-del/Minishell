@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	filter_unset(char *key)
+static int	filter_unset(char *key)
 {
 	int	i;
 
@@ -19,7 +19,7 @@ int	filter_unset(char *key)
 	return (0);
 }
 
-void	unset_key(char **cmd, t_container *content)
+static void	unset_key(char **cmd, t_container *content)
 {
 	int		i;
 	t_env	*temp;
@@ -28,11 +28,6 @@ void	unset_key(char **cmd, t_container *content)
 	temp = NULL;
 	while (cmd[i])
 	{
-		if (!ft_strcmp(cmd[i], "_"))
-		{
-			i++;
-			continue;
-		}
 		if (filter_unset(cmd[i]) == 0)
 		{
 			temp = check_if_there(cmd[i], &content->env_list);

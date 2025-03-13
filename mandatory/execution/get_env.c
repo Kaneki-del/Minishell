@@ -1,7 +1,6 @@
 #include "../../includes/minishell.h"
 
 
-
 t_env	*lstnew_env(char *key, char *value, t_gc **g_env_collector, int set)
 {
 	t_env	*new_node;
@@ -32,22 +31,19 @@ char **ft_split_equal_to(const char *s, t_gc **g_collector)
     return NULL;
   len = ft_strlen(s);
   j = 0;
-  // Find the first '=' or end of string
   while (s[j] != '=' && s[j] != '\0')
     j++;
-
-  // If '=' is found, split key and value
   if (s[j] == '=') 
   {
-    str[0] = ft_substr(s, 0, j, g_collector);           // Copy key
-    str[1] = ft_substr(s, j + 1, len - j, g_collector); // Copy value
+    str[0] = ft_substr(s, 0, j, g_collector);           
+    str[1] = ft_substr(s, j + 1, len - j, g_collector); 
   } 
   else 
   {
-    str[0] = ft_strdup(s, g_collector); // No '=', just copy the entire string as key
-    str[1] = NULL;         // No value, set the second part to NULL
+    str[0] = ft_strdup(s, g_collector); 
+    str[1] = NULL;         
   }
-  str[2] = NULL; // Null-terminate the array
+  str[2] = NULL; 
   return str;
 }
 
@@ -116,10 +112,17 @@ void get_pwd(t_env **env_list, t_container *content)
 		else  if (cpwd != NULL && cpwd->value != NULL)
 			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, &content->g_env_collector, 3));
 	}
-
 }
 
-// function to copy a local of the env in a linked list
+void check_flags(t_env *returned_env, t_container *content, int flag)
+{
+	if (check_if_there("PATH", &returned_env) != NULL && flag == 1)
+		check_if_there("PATH", &returned_env)->print_flag = 1;
+	if (check_if_there("OLDPWD", &returned_env) == NULL)
+		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL, &content->g_env_collector, 0));
+	else
+		clean_old_pwd(&returned_env);
+}
 t_env	*get_env_list(char **env, t_container *content)
 {
 	int		i;
@@ -140,13 +143,7 @@ t_env	*get_env_list(char **env, t_container *content)
 		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1], &content->g_env_collector, 0));
 		i++;
 	}
-	if (check_if_there("PATH", &returned_env) != NULL && flag == 1)
-			check_if_there("PATH", &returned_env)->print_flag = 1;
-
-	if (check_if_there("OLDPWD", &returned_env) == NULL)
-		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL, &content->g_env_collector, 0));
-	else
-		clean_old_pwd(&returned_env);
+	check_flags(returned_env, content, flag);
 	get_pwd(&returned_env, content);
 	return (returned_env);
 }

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/12 14:40:27 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 02:10:53 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,7 @@ void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_container *content);
-char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
 char *find_executable_path(t_data *current, t_container *content);
-char *get_env_path(t_container *content);
 void ft_putstr_fd(char *s, int fd);
 int open_file(char *file, int in_or_out);
 void executing(t_data *current, t_container *content);
