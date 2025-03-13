@@ -1,35 +1,8 @@
 #include "../../includes/minishell.h"
-// static void	ctrl_cmd(int sig)
-// {
-// 	if (sig == SIGQUIT)
-// 		write(1, "Quit\n", 5);
-// }
 
-void	single_command(t_container *content)
+static void chidl_single(t_data *current, t_container *content)
 {
-	pid_t	pid;
-	int		status;
-	t_data *current = content->data;
-	if (!current->cmds || !current->cmds[0])
-	{
-		content->status = 0;
-		return;
-	}
-	status = 0;
-	if (check_builtin_commands(current->cmds))
-	{
-		built_in(current, content);
-		return ;
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		clean_fds(current);
-		content->status = 1;
-	}
-	if (pid == 0)
-	{
-		if (current->in_fd != 0)
+	if (current->in_fd != 0)
 		{
 			if (dup2(current->in_fd, 0) < 0)
 			{
@@ -49,12 +22,33 @@ void	single_command(t_container *content)
 			close(current->out_fd);
 		}
 		executing(current,content);
+}
+
+void	single_command(t_container *content)
+{
+	t_data *current; 
+	
+	current = content->data;
+	if (!current->cmds || !current->cmds[0])
+	{
+		content->status = 0;
+		return;
 	}
+	if (check_builtin_commands(current->cmds))
+	{
+		built_in(current, content);
+		return ;
+	}
+	content->pid = fork();
+	if (content->pid < 0)
+	{
+		clean_fd(current);
+		content->status = 1;
+	}
+	if (content->pid == 0)
+		chidl_single(current, content);
 	else
-		if (content->data->in_fd != 0)
-			close(content->data->in_fd);
-		if (content->data->out_fd != 0)
-			close(content->data->out_fd);
-		waitpid(pid, &content->status, 0);
+		clean_fd(current);
+		waitpid(content->pid, &content->status, 0);
 		update_status(content);
 }

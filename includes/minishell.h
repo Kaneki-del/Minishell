@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/13 02:10:53 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:48:21 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_container
   struct termios termios_value;
   char *save_path;
   int fork_failed;
+  pid_t	pid;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);

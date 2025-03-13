@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 01:52:08 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:17:47 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	executing(t_data *current, t_container *content)
 	if (!current->cmds || !current->cmds[0])
 		exit(0);
 	cmd_path = find_executable_path(current, content);
-	//bash: sd: command not found
 	if (!cmd_path || ft_strcmp(current->cmds[0] , "\0") == 0)
 	{
 		ft_error_exec_two("bash: ", current->cmds[0], ": command not found", 2);

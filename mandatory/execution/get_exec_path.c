@@ -6,13 +6,11 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 02:10:17 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:17:09 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
 static char	*get_env_path(t_container *content)
 {
@@ -59,10 +57,19 @@ static char	*try_direct_access(t_data *current, t_container *content)
 {
 	char	*cmd_v;
 
-	if (access(current->cmds[0], X_OK) == 0)
+	if (access(current->cmds[0], F_OK) == 0)
 	{
-		cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
-		return (cmd_v);
+		
+		if (access(current->cmds[0], X_OK) == 0)
+		{
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			return (cmd_v);
+		}
+		else
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": Permission denied", 2);
+			exit(126);
+		}
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/13 00:26:10 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 03:18:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int g_sig;
 void	ctrl_c(int sig)
 {
 	printf("\n");
+  
 	g_sig = sig;
+  
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
