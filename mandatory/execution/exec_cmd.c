@@ -6,12 +6,12 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 16:17:47 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:54:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
+#include <sys/stat.h>  
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	dst_lent;
@@ -101,7 +101,23 @@ void	print_error(char *cmd_input)
 	ft_putstr_fd(cmd_input, 2);
 	exit(127);
 }
-
+int is_directory( char *path)
+{
+    struct stat path_stat;
+    if (stat(path, &path_stat) != 0)
+        return 0; 
+    return S_ISDIR(path_stat.st_mode);
+}
+void exec_error(t_data *current)
+{
+	if (is_directory(current->cmds[0]))
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
+			exit(127);
+		}
+		else
+			exit(0);
+}
 void	executing(t_data *current, t_container *content)
 {
 	char	*cmd_path;
@@ -121,9 +137,6 @@ void	executing(t_data *current, t_container *content)
 	if (current->cmds)
 	{
 		if (execve(cmd_path, current->cmds, list_char) == -1)
-		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
-			exit(127);
-		}
+			exec_error(current);
 	}
 }
