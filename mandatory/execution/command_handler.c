@@ -45,8 +45,8 @@ static void	intial(t_data **list, t_container *content)
 {
 	if (sig == SIGQUIT)
 		write(1, "Quit\n", 5);
-	else if (sig == SIGINT)
-		write(1, "\n", 3);
+	// else if (sig == SIGINT)
+	// 	write(1, "\n", 3);
 }
 void	execute_package(t_container *content)
 {
