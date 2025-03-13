@@ -33,7 +33,7 @@ int her_doc(char *limiter, t_container *content)
 		line = readline("> ");
 		if (line == NULL)
 			break;
-		else if (ft_strcmp(line, filer_qoutations(limiter, &content->g_collector)) == 0)
+		if (ft_strcmp(line, filer_qoutations(limiter, &content->g_collector)) == 0)
 		{
 			free(line);
 			line = NULL;
@@ -41,7 +41,8 @@ int her_doc(char *limiter, t_container *content)
 		}
 		else 
 		{
-			if (check_is_in_qoutes(limiter) == 0)
+			
+			if (check_is_in_qoutes(limiter) == 0 && (limiter[0] != '"' && limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"' && limiter[ft_strlen(limiter) - 1] != '\''))
 				line = expand_here_doc_lines(content, line);
 			if (line)
 			{
