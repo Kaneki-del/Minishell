@@ -58,5 +58,5 @@ int her_doc(char *limiter, t_container *content)
 		}
 	}
 	close(fd);
-	return fd2;
+	return (fd2);
 }

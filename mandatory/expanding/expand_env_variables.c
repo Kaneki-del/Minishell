@@ -13,7 +13,7 @@ char *exit_status(t_container *content, int *i)
     return (res);
 }
 
-char *expand_telda(char *command, int *i, t_env **env_list)
+static char *expand_telda(char *command, int *i, t_env **env_list)
 {
     t_env *pair;
 
@@ -72,8 +72,8 @@ int finding_and_expanding(t_container *content, char *command, int *i, char qout
             ;
         else
         {
-            if (check_expanding_variables(content, command, i, qoute))
-                return (1);
+            check_expanding_variables(content, command, i, qoute);
+            return (1);
         }
     }
     else if(qoute != '"' && qoute != '\'' && command[(*i)] == '~')
@@ -98,6 +98,7 @@ char *check_env_var(t_container *content, char *command)
         return (NULL);
     i = 0;
     is_in = 0;
+    qoute = '\0';
     content->new_command = NULL;
     while (command[i])
     {
