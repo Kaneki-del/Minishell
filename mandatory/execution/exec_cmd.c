@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 17:54:37 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:40:27 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void exec_error(t_data *current)
 	if (is_directory(current->cmds[0]))
 		{
 			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
-			exit(127);
+			exit(126);
 		}
 		else
 			exit(0);

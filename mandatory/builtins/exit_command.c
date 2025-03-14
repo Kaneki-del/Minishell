@@ -25,7 +25,7 @@ static int chek_args_number(char **args)
         count++;
     return count;
 }
-static void filter_exit(t_container *content, char **args)
+static int filter_exit(t_container *content, char **args)
 {
     if (filter_args(args[0]) == 1)
         {
@@ -34,15 +34,15 @@ static void filter_exit(t_container *content, char **args)
             clean_fds(content->data);
             clear_bin(&content->g_collector);
             clear_bin(&content->g_env_collector);
-            write(1, "exit\n", 5);
             exit(255); 
         }
         if (chek_args_number(args + 1) > 0)
         {
             ft_putstr_fd("exit\nbash: exit: too many arguments\n", 2);
             content->status = 1;
-            return;
+            return 1;
         }
+    return 0;
 }
 static void clean_exit(t_container *content, int exit_code)
 {
@@ -54,7 +54,7 @@ static void clean_exit(t_container *content, int exit_code)
 
 }
 
- void handle_exit(t_data *current, t_container *content)
+void handle_exit(t_data *current, t_container *content)
 {
     char **args;
     ssize_t number;
@@ -64,7 +64,8 @@ static void clean_exit(t_container *content, int exit_code)
     exit_code = 0;
     if (args[0])
     {
-        filter_exit(content, args);
+        if (filter_exit(content, args))
+            return ;
         number = ft_atoi(args[0], current, content);
         exit_code = number % 256;
         if (exit_code < 0)

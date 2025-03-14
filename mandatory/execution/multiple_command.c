@@ -10,21 +10,9 @@ void	handle_fork_failure(t_container *content)
 	clean_fds(content->data);
 	content->status = 1;
 }
-void	execute_first(t_data *current, int *p_fd, t_container *content)
+static void first_child(t_container *content, t_data *current, int *p_fd)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		close(p_fd[0]);
-		close(p_fd[1]);
-		handle_fork_failure(content);
-		return;
-	}
-	if (pid == 0)
-	{
-		if (get_fds(current, content) != 0)
+	if (get_fds(current, content) != 0)
 			exit(1);
 		close(p_fd[0]);
 		if (current->out_fd == 0)
@@ -45,20 +33,10 @@ void	execute_first(t_data *current, int *p_fd, t_container *content)
 			}
 		}
 		if (dup2(current->out_fd, 1) < 0)
-		{
-			perror("dup2 out_fd");
-			exit(1);
-		}
-		if (current->in_fd != 0)
-			close(current->in_fd);
-		if (current->out_fd != 0)
-			close(current->out_fd);
-		
+			(perror("dup2 out_fd"), exit(1));
 		executing(current , content);
-	}
-	close(p_fd[1]);
 }
-static void	execut(t_container *content, t_data *current, int *p_fd, int in)
+void	execute_first(t_data *current, int *p_fd, t_container *content)
 {
 	pid_t	pid;
 
@@ -67,15 +45,17 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 	{
 		close(p_fd[0]);
 		close(p_fd[1]);
-		close(in);
 		handle_fork_failure(content);
-		if (content->fork_failed == 0)
-				content->fork_failed = 1;
 		return;
 	}
 	if (pid == 0)
-	{
-		if (get_fds(current,  content) != 0)
+		first_child(content, current, p_fd);
+	clean_fd(current);
+	close(p_fd[1]);
+}
+static void midle_child(t_data *current, int *p_fd, t_container *content, int in)
+{
+	if (get_fds(current,  content) != 0)
 			exit(1);
 		close(p_fd[0]); // Close unused read end
 		if (current->out_fd == 0)
@@ -97,17 +77,10 @@ static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 			exit(1);
 		}
 		if (dup2(current->out_fd, 1) < 0)
-		{
-			perror("dup2 out_fd");
-			exit(1);
-		}
+			(perror("dup2 out_fd"), exit(1));
 		executing(current , content);
-	}
-	close(p_fd[1]); // Close write end in parent
-	close(in);      // Close previous pipe input in parent
 }
-
-int	execute_last(t_container *content, t_data *current, int *p_fd)
+static void	execut(t_container *content, t_data *current, int *p_fd, int in)
 {
 	pid_t	pid;
 
@@ -116,12 +89,20 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 	{
 		close(p_fd[0]);
 		close(p_fd[1]);
+		close(in);
 		handle_fork_failure(content);
-		return 1;
+		if (content->fork_failed == 0)
+				content->fork_failed = 1;
+		return;
 	}
 	if (pid == 0)
-	{
-		if (get_fds(current, content) != 0)
+		midle_child(current, p_fd, content,  in);
+	close(p_fd[1]); 
+	close(in);      
+}
+static void last_child(t_data *current, int *p_fd, t_container *content)
+{
+	if (get_fds(current, content) != 0)
 			exit(1);
 		if (current->in_fd == 0)
 			current->in_fd = p_fd[0];
@@ -143,14 +124,25 @@ int	execute_last(t_container *content, t_data *current, int *p_fd)
 		if (current->out_fd != 0)
 		{
 			if (dup2(current->out_fd, 1) < 0)
-			{
-				perror("dup2 out_fd");
-				exit(1);
-			}
+				(perror("dup2 out_fd"), exit(1));
 		}
 		executing(current , content);
+}
+int	execute_last(t_container *content, t_data *current, int *p_fd)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		close(p_fd[0]);
+		close(p_fd[1]);
+		handle_fork_failure(content);
+		return 1;
 	}
-	close(p_fd[0]); // Close read end in parent
+	if (pid == 0)
+		last_child(current, p_fd, content);
+	close(p_fd[0]); 
 	return (pid);
 }
 
@@ -192,5 +184,4 @@ void	run_multiple(t_container *content)
 		update_status(content);
 	while (wait(NULL) > 0)
 		;
-	
 }
