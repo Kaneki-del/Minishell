@@ -16,43 +16,44 @@ char *get_file(t_gc **g_collector)
 }
 int her_doc(char *limiter, t_container *content)
 {
-    int fd;
-    char *line;
-    char *file_name;
-    int fd2;
-    file_name = get_file(&content->g_collector);
-    fd = open_file(file_name, 1);
-    fd2 = open_file(file_name, 0);
-    unlink(file_name);
-    while(1)
-    {
-        line = NULL;
-        line = readline("> ");
-        if (line == NULL)
-            break;
-        else if (ft_strcmp(line, filer_qoutations(limiter, &content->g_collector)) == 0)
-        {
-            free(line);
-            line = NULL;
-            break;
-        }
-        else 
-        {
-            // if (check_is_in_qoutes(limiter) == 0)
-            //     line = expand_here_doc_lines(content, line); // hada ma tbdlch fih
-            if (line)
-            {
-                write(fd, line,  ft_strlen(line));
-                write(fd, "\n", 1); 
-                line = NULL; // free line lead to a segfult
-            }
-            else 
-            {
-                write(fd, "\n", 1); 
-                line = NULL; // free line lead to a segfult
-            }
-        }
-    }
-    close(fd);
-    return fd2;
+	int fd;
+	char *line;
+	char *file_name;
+	int fd2;
+
+	file_name = get_file(&content->g_collector);
+	fd = open_file(file_name, 1);
+	fd2 = open_file(file_name, 0);
+	unlink(file_name);
+	while(1)
+	{
+		line = NULL;
+		line = readline("> ");
+		if (line == NULL)
+			break;
+		if (ft_strcmp(line, filer_qoutations(limiter, &content->g_collector)) == 0)
+		{
+			free(line);
+			line = NULL;
+			break;
+		}
+		else 
+		{
+			if ((check_is_in_qoutes(limiter) == 0) || (limiter[0] != '"' && limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"' && limiter[ft_strlen(limiter) - 1] != '\''))
+				line = expand_here_doc_lines(content, line);
+			if (line)
+			{
+				write(fd, line,  ft_strlen(line));
+				write(fd, "\n", 1); 
+				line = NULL; // free line lead to a segfult
+			}
+			else 
+			{
+				write(fd, "\n", 1); 
+				line = NULL; // free line lead to a segfult
+			}
+		}
+	}
+	close(fd);
+	return (fd2);
 }

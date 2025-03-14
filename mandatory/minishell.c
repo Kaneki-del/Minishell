@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/14 02:49:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/14 03:07:42 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,13 @@ void ft_printf(t_data **data)
 
 void init_content(t_container *content)
 {
-	  content->tokens = NULL;
+	content->tokens = NULL;
     content->data = NULL;
     content->save_path = NULL;
     content->line = NULL;
     content->is_expandable = 0;
+	content->flag = 0;
+	content->new_command = NULL;
 }
 
 int main(int ac, char **av, char **env)
@@ -112,6 +114,7 @@ int main(int ac, char **av, char **env)
     if (parsing_case(&content) == 0) // shoud move the clear_bin here
     {
       free(content.line);
+      clear_bin(&content.g_collector);
       content.g_collector = NULL;
       continue;
     }

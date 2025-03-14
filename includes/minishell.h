@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/13 15:48:21 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/14 03:08:56 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ typedef struct s_container
   t_gc *g_collector;
   t_gc *g_env_collector;
   int status;
+  int flag;
   char *line;
   int is_expandable;
   struct termios termios_value;
   char *save_path;
   int fork_failed;
-  pid_t	pid;
+  pid_t	pid;  char *new_command;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -117,20 +118,20 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
 char *filer_qoutations(char *command_line,  t_gc **g_collector);
 char **filterd(char **cmds,t_gc **g_collector);
 int tokener(t_container *content);
-char *check_env_var(t_container *content, char *command, int *flag, int here_doc_flag);
+char *check_env_var(t_container *content, char *command);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_container *content);
 char	*ft_itoa(int n, t_gc **g_collector);
 char **check_echo_options(char **cmd, t_gc **g_collector);
 int	ft_isalnum(int c);
+size_t	ft_strlen_2d(char **s);
 int check_is_in_qoutes(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char *filter_one_sides(char *command_line,  t_gc **g_collector);
 size_t words_count(const char *s, char c);
-int	ft_isascii(int c);
 void *gc(size_t size, t_gc **garbage_list);
-void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
+void ft_error(char *msg, char *dis,int fd);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_container *content);
 char *find_executable_path(t_data *current, t_container *content);
@@ -165,6 +166,18 @@ int rideraction_builtins(t_data *current);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
+char    **normal_ft_split(char const *s, char c, t_gc **g_collector);
+char *expand_here_doc_lines(t_container *content, char *command);
+char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, t_container *content);
+void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files);
+int token_checker(t_container *content);
+int check_is_last_redirection(t_token *iter, t_container *content);
+int check_is_pipe_first(t_token *iter, t_container *content, int flag);
+char *add_qoutations(char *command, t_gc **g_collector);
+char in_quotations(char *command, int *i, char qoute, int *is_in);
+int pair_check_cases(t_container *content, t_env *pair, char *key);
+char *expand(t_container *content, char *command, int *i);
 void update_status(t_container *content);
- void	ctrl_cmd(int sig);
+void	ctrl_cmd(int sig);
+char *expand_here_doc_lines(t_container *content, char *command);
 #endif

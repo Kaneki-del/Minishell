@@ -1,0 +1,19 @@
+cat < test ls || >> in -e
+
+
+
+echo \$HOME
+echo "\"" | cat
+
+echo "  "''"$USER"''"  "
+echo "  ''"$USER"''  "
+echo "  ''$USER''  "
+echo "  '$USER'  "
+echo "'$USER'"
+
+bash-3.2$ ls << s >
+
+minishell$> exit hello
+exit
+bash: exit: hello: numeric argument required
+exit

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:12:08 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/22 12:44:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:00:21 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*ft_lstnew(char *content, t_type_token type, t_gc **g_collector)
     
 	head = gc(sizeof(t_token), g_collector);
 	if (!head)
-		return (clear_bin(g_collector), NULL);
+		return (NULL);
 	head->value = content;
     head->token_type = type;
     head->index = index;
