@@ -1,6 +1,17 @@
 
 #include "../../includes/minishell.h"
 
+
+void type_flag(t_env *current_old, t_env **new_node, t_container *content)
+{
+	if (current_old->print_flag != 0)
+			*new_node = lstnew_env(current_old->key, current_old->value,
+					&content->g_collector, 1);
+		else
+			*new_node = lstnew_env(current_old->key, current_old->value,
+					&content->g_collector, 0);
+}
+
 t_env	*copy_list(t_container *content)
 {
 	t_env	*new_head;
@@ -10,18 +21,17 @@ t_env	*copy_list(t_container *content)
 
 	if (!content->env_list)
 		return (NULL);
-	if (content->env_list->print_flag == 1)
-		new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector, 1);
+	if (content->env_list->print_flag != 0)
+		new_head = lstnew_env(content->env_list->key, content->env_list->value,
+				&content->g_collector, 1);
 	else
-		new_head = lstnew_env(content->env_list->key, content->env_list->value, &content->g_collector, 0);
+		new_head = lstnew_env(content->env_list->key, content->env_list->value,
+				&content->g_collector, 0);
 	current_old = content->env_list->next;
 	current_new = new_head;
 	while (current_old)
 	{
-		if (current_old->print_flag == 1)
-			new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector, 1);
-		else
-			new_node = lstnew_env(current_old->key, current_old->value, &content->g_collector, 0);
+		type_flag(current_old, &new_node, content);
 		current_new->next = new_node;
 		current_new = new_node;
 		current_old = current_old->next;
@@ -71,13 +81,42 @@ void	delete_node(t_env **list_env, char *key)
 	// Unlink the node and free it
 	prev->next = temp->next;
 }
-void	print_export(t_data *current ,t_container *content)
+void	print_key_value(t_env *smallest)
+{
+	size_t	i;
+
+	if (check_is_in_qoutes(smallest->value))
+	{
+		i = 1;
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(smallest->key, 1);
+		ft_putstr_fd("=", 1);
+		ft_putstr_fd("\"", 1);
+		while (smallest->value[i] && i < ft_strlen(smallest->value) - 1)
+		{
+			write(1, &smallest->value[i], 1);
+			i++;
+		}
+		ft_putstr_fd("\"\n", 1);
+	}
+	else
+		printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
+}
+void filter_print(t_env *smallest)
+{
+	if (smallest->key && smallest->value && smallest->print_flag == 0
+			&& ft_strcmp(smallest->key, "_"))
+			print_key_value(smallest);
+		else if (!smallest->value && smallest->print_flag == 0
+			&& ft_strcmp(smallest->key, "_"))
+			printf("declare -x %s\n", smallest->key);
+}
+void	print_export(t_data *current, t_container *content)
 {
 	t_env	*smallest;
-	size_t 	i;
+	int		saved_stdout;
 
-	int saved_stdout = rideraction_builtins(current); // Store original stdout
-
+	saved_stdout = rideraction_builtins(current); // Store original stdout
 	if (!content->env_list)
 		return ;
 	t_env *temp = copy_list(content); // Start from the head
@@ -87,35 +126,13 @@ void	print_export(t_data *current ,t_container *content)
 		smallest = find_smallest(temp); // Find the smallest element in the list
 		if (!smallest)                  // Safety check
 			return ;
-		// Print the key and value of the smallest element
-		if (smallest->key && smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
-		{
-			if (check_is_in_qoutes(smallest->value))
-			{
-				i = 1;
-				ft_putstr_fd("declare -x ", 1);
-				ft_putstr_fd(smallest->key, 1);
-				ft_putstr_fd("=", 1);
-				ft_putstr_fd("\"", 1);
-				while (smallest->value[i] && i < ft_strlen(smallest->value) - 1)
-				{
-					write(1,&smallest->value[i],1);
-					i++;
-				}
-				ft_putstr_fd("\"\n", 1);
-			}
-			else 
-				printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
-		}
-		else if (!smallest->value && smallest->print_flag == 0 && ft_strcmp(smallest->key , "_"))
-			printf("declare -x %s\n", smallest->key);
-		// Delete the smallest node from the list
+		filter_print(smallest);
 		delete_node(&temp, smallest->key);
-			// Ensure temp is updated after deletion
 	}
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);
 		close(saved_stdout);
 	}
+	content->status = 0;
 }

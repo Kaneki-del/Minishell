@@ -21,15 +21,15 @@ void	*ft_memset(void *b, int c, size_t len)
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*ptr;
+	size_t	total_size;
+	char	*ptr;
 
-	if (count == 0 || size == 0)
-		return (malloc(0));
-	if (size > SIZE_MAX / count)
+	total_size = count * size;
+	if (size != 0 && total_size / size != count)
 		return (NULL);
-	ptr = malloc(count * size);
-	if (!ptr)
+	ptr = malloc(total_size);
+	if (ptr == NULL)
 		return (NULL);
-	ft_memset(ptr, 0, count * size);
+	ft_memset(ptr, 0, total_size);
 	return (ptr);
 }

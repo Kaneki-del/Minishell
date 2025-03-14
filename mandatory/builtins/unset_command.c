@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	filter_unset(char *key)
+static int	filter_unset(char *key)
 {
 	int	i;
 
@@ -19,45 +19,37 @@ int	filter_unset(char *key)
 	return (0);
 }
 
-int	unset_key(char **cmd, t_env **env_list)
+static void	unset_key(char **cmd, t_container *content)
 {
 	int		i;
 	t_env	*temp;
-	int status;
 
 	i = 0;
-	status = 0;
 	temp = NULL;
 	while (cmd[i])
 	{
-		if (!ft_strcmp(cmd[i], "_"))
-		{
-			i++;
-			continue;
-		}
 		if (filter_unset(cmd[i]) == 0)
 		{
-			temp = check_if_there(cmd[i], env_list);
+			temp = check_if_there(cmd[i], &content->env_list);
 			if (temp != NULL && temp->print_flag == 0)
-				delete_node(env_list, temp->key);
+				delete_node(&content->env_list, temp->key);
 		}
 		else {
 			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2), 
-			status = 1;
+			content->status = 1;
 		}
 		i++;	
 	}
-	return status;
 }
-int	handle_unset(char **cmd, t_env **env_list, t_data *current)
+void	handle_unset(char **cmd, t_container *content, t_data *current)
 {
 	int	i;
-
+	
 	clean_fd(current);
 	i = 0;
+	content->status = 0;
 	while (cmd[i])
 		i++;
 	if (i >= 2)
-		return unset_key(cmd + 1, env_list);
-	return 0;
+		unset_key(cmd + 1, content);
 }

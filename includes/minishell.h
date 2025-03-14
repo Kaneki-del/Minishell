@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 14:04:54 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/14 02:51:54 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_env {
 } t_env;
 
 
-
 // that struct contains most used variables
 typedef struct s_container
 {
@@ -84,12 +83,11 @@ typedef struct s_container
   t_gc *g_env_collector;
   int status;
   char *line;
-
   int is_expandable;
-
   struct termios termios_value;
   char *save_path;
-
+  int fork_failed;
+  pid_t	pid;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -103,11 +101,11 @@ char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
-int single_command(t_container *content);
+void	single_command(t_container *content);
 int ft_lstsize(t_data *lst);
 int	get_fds(t_data *list, t_container *content);
-int run_multiple(t_container *content);
-int execute_package(t_container *content);
+void run_multiple(t_container *content);
+void	execute_package(t_container *content);
 char **ft_split(char const *s, char c, t_gc **g_collector);
 t_token *ft_lstnew(char *content, t_type_token type, t_gc **g_collector);
 void ft_lstadd_back(t_token **lst, t_token *new);
@@ -135,9 +133,7 @@ void *gc(size_t size, t_gc **garbage_list);
 void ft_error(char *msg, char *dis,int fd, t_gc **g_collector);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_container *content);
-char *check_cmd_path(char **path_list, char *cmd_name, t_gc **g_collector);
 char *find_executable_path(t_data *current, t_container *content);
-char *get_env_path(t_container *content);
 void ft_putstr_fd(char *s, int fd);
 int open_file(char *file, int in_or_out);
 void executing(t_data *current, t_container *content);
@@ -145,30 +141,28 @@ void print_error(char *cmd_input);
 t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
-int	built_in(t_data *current, t_container *content); 
+void	built_in(t_data *current, t_container *content); 
 t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector, int set);
-void	print_env_list(t_env *env_list, t_data *list);
+void	print_env_list(t_container *content, t_data *list);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void	print_export(t_data *current ,t_container *content);
-int add_export(char **cmd, t_container *content);
+void add_export(char **cmd, t_container *content);
 void lstadd_back_env(t_env **lst, t_env *new_t);
 t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
-int	handle_unset(char **cmd, t_env **env_list, t_data *current);
+void	handle_unset(char **cmd, t_container *content, t_data *current);
 t_env *check_if_there(const char *key, t_env **env_list);
 void handle_echo(char **cmd,  t_data *list);
-void handle_pwd(t_env **env_list, t_data *current);
-int handle_cd(char **new_path, t_container *content);
+void	handle_pwd(t_container *content, t_data *current);
+void	handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
 int ft_atoi( char *str, t_data *current, t_container *content);
-int handle_exit(t_data *current, t_container *content);
+void handle_exit(t_data *current, t_container *content);
 void clean_fds(t_data *list);
 void ft_error_exec(char *msg, char *dis, char *left, int fd);
 int rideraction_builtins(t_data *current);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
-char	**normal_ft_split(char const *s, char c, t_gc **g_collector);
-
 #endif
