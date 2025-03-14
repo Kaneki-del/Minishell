@@ -1,18 +1,14 @@
-
 #include "../../includes/minishell.h"
 
-void	echo(char **cmd)
+static void	echo(char **cmd)
 {
-	int		i;
-	int		new_line;
-	
-	int		espace;
+	int	i;
+	int	new_line;
+	int	espace;
 
-	
 	espace = 0;
 	new_line = 0;
 	i = 0;
-
 	if (ft_strcmp(cmd[i], "-n") == 0)
 	{
 		i++;
@@ -32,21 +28,20 @@ void	echo(char **cmd)
 
 void	handle_echo(char **cmd, t_data *list)
 {
-	int saved_stdout = rideraction_builtins(list); // Store original stdout
+	int	i;
+	int	saved_stdout;
 
-	// Execute echo
-	int i = 0;
+	saved_stdout = rideraction_builtins(list); // Store original stdout
+	i = 0;
 	while (cmd[i])
 		i++;
 	if (i >= 2)
 		echo(cmd + 1);
-	else 
+	else
 		write(1, "\n", 1);
-	// Restore stdout
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);
 		close(saved_stdout);
 	}
 }
-

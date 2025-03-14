@@ -6,15 +6,13 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/02/28 10:15:22 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:17:09 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
-char	*get_env_path(t_container *content)
+static char	*get_env_path(t_container *content)
 {
 	char	*env_path;
 	t_env	*current;
@@ -36,7 +34,7 @@ char	*get_env_path(t_container *content)
 	return (env_path);
 }
 
-char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
+static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 {
 	int		i;
 	char	*full_cmd_path;
@@ -59,39 +57,55 @@ static char	*try_direct_access(t_data *current, t_container *content)
 {
 	char	*cmd_v;
 
-	if (access(current->cmds[0], X_OK) == 0)
+	if (access(current->cmds[0], F_OK) == 0)
 	{
-		cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
-		return (cmd_v);
+		
+		if (access(current->cmds[0], X_OK) == 0)
+		{
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			return (cmd_v);
+		}
+		else
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": Permission denied", 2);
+			exit(126);
+		}
 	}
 	return (NULL);
 }
-
-char	*find_executable_path(t_data *current, t_container *content)
+static char *cmd_path(t_container *content, t_data *current)
 {
-	char	**path_list;
 	char	*path_value;
-	char	*cmd_v;
-	
-	if (ft_strchr(current->cmds[0], '/') != NULL){
-		cmd_v = try_direct_access(current, content);
-		//bash: /ls: No such file or directory
-		if (!cmd_v)
-		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": No such file or directory", 2);
-			exit(127);	
-		}
-	}
-	else
-	{
+	char	**path_list;
+
 	path_value = get_env_path(content);
 	if (!path_value)
 		return (NULL);
 	path_list = ft_split(path_value, ':', &content->g_collector);
 	if (!path_list)
 		return (NULL);
-	cmd_v = check_cmd_path(path_list, current->cmds[0], &content->g_collector);
+	return (check_cmd_path(path_list, current->cmds[0], &content->g_collector));
+}
+char	*find_executable_path(t_data *current, t_container *content)
+{
+	char	*cmd_v;
+	
+	if (ft_strchr(current->cmds[0], '/') != NULL)
+	{
+		cmd_v = try_direct_access(current, content);
+		if (!cmd_v)
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": No such file or directory", 2);
+			exit(127);	
+		}
 	}
+	else if (access(current->cmds[0], X_OK) == 0)
+	{
+		cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+		return (cmd_v);
+	}
+	else
+		cmd_v = cmd_path(content, current);
 	return (cmd_v);
 }
 

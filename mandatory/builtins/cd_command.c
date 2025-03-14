@@ -1,11 +1,12 @@
 #include "../../includes/minishell.h"
 #include <string.h>
 
-void	update_original_pwd(t_container *content, char *path)
+static void	update_original_pwd(t_container *content, char *path)
 {
 	t_env *old_pwd;
 	t_env *pwd;
 	t_env *cpwd;
+
 	old_pwd = check_if_there("OLDPWD", &content->env_list);
 	if (old_pwd)
 	{
@@ -29,7 +30,7 @@ void	update_original_pwd(t_container *content, char *path)
 	}
 }
 
-char	*join_chdir(char *currpwd, char *path, t_container *content)
+static char	*join_chdir(char *currpwd, char *path, t_container *content)
 {
 	ft_putstr_fd("cd: error retrieving current directory: ", 2);
 	ft_putstr_fd("getcwd: cannot access ", 2);
@@ -38,7 +39,7 @@ char	*join_chdir(char *currpwd, char *path, t_container *content)
 	chdir(currpwd);
 	return (currpwd);
 }
-void update_pwd(t_container *content, char *new_path)
+static void update_pwd(t_container *content, char *new_path)
 {
 	char *current_pwd = getcwd(NULL, 0);
 
@@ -53,9 +54,37 @@ void update_pwd(t_container *content, char *new_path)
 	}
 	update_original_pwd(content, current_pwd);
 }
-int	handle_cd(char **new_path, t_container *content)
+static void cd_home(t_container *content)
 {
 	t_env	*temp;
+
+	temp = check_if_there("HOME", &content->env_list);
+		if (temp != NULL && temp->value != NULL)
+		{
+			if (!temp->value)
+				return;
+			else if (chdir(temp->value) == -1)
+			{
+				if (!ft_strcmp(temp->value, "\0"))
+					return ;
+				else
+				{
+					ft_error_exec_two("bash: cd: ", temp->value, ": No such file or directory", 2);
+					content->status = 1;
+				}
+			}
+		}
+		else
+		{ 
+			ft_error_exec_two("bash: cd", ": HOME", " not set",  2);
+			content->status = 1;
+		}
+
+}
+
+void	handle_cd(char **new_path, t_container *content)
+{
+	
 	t_env *tmp;
 	char *old_pwd;
 	
@@ -64,27 +93,17 @@ int	handle_cd(char **new_path, t_container *content)
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
 	else
-		content->save_path = old_pwd;
+		content->save_path = ft_strdup("", &content->g_collector);
 	if (new_path &&new_path[0])
 	{
 		if (chdir(new_path[0]) == -1)
 		{
 			perror(new_path[0]);
-			return (1);
+			content->status = 1;
 		}
 		else
 			update_pwd(content, new_path[0]);
 	}
 	else
-	{
-		temp = check_if_there("HOME", &content->env_list);
-		if (temp != NULL){
-			if (chdir(temp->value) == -1)
-				return (0);
-		}
-		else 
-			return (ft_error_exec_two("bash: cd", ": HOME", " not set",  2), 1);
-	}
-	// update_old_pwd(&content->env_list);
-	return (0);
+		cd_home(content);
 }

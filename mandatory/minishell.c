@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/10 22:41:29 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/14 02:49:00 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ int g_sig;
 
 void	ctrl_c(int sig)
 {
-  //this is for the ishew with the overlaping if prompt in in program insid program
-  // if (waitpid(-1, &sig, WNOHANG) == 0)
-  //     return ;
 	printf("\n");
+  
 	g_sig = sig;
+  
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -90,32 +89,33 @@ int main(int ac, char **av, char **env)
 	 rl_catch_signals = 0;
   
   while (1) {
-signal(SIGQUIT, SIG_IGN);
-	  signal(SIGINT, ctrl_c);
-    if (ac != 1 || !isatty(0))
-		return (1);
-    rl_catch_signals = 0;
+
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
+    if (ac != 1 || !isatty(0))
+		return (1);
+    
     init_content(&content);
-  
     content.line = readline("mshell$> ");
+    if (g_sig == 2)
+    {
+      content.status =  1;
+      g_sig = 0;
+    }
     if (!content.line){
       printf("exit\n");
       clear_bin(&content.g_collector);
-      exit(0);
+      exit(content.status);
     }
     if (content.line[0] != '\0')
       add_history(content.line);
-    // this function contains all paring cases
     if (parsing_case(&content) == 0) // shoud move the clear_bin here
     {
       free(content.line);
       content.g_collector = NULL;
       continue;
     }
-    // // ft_printf(&content.data);
-    content.status = execute_package(&content);
+    execute_package(&content);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;
