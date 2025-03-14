@@ -11,8 +11,11 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
             if (ft_strcmp(cmd_options[0], "export") == 0)
             {
 			    cmd_options = ft_split(*only_command, ' ', &content->g_collector);
-                cmd_options[1] = filer_qoutations(ft_strdup(*only_command + 7, &content->g_collector),  &content->g_collector); 
-                cmd_options[2] = NULL;
+                if (cmd_options[1] && cmd_options[2])
+                {
+                    cmd_options[1] = filer_qoutations(ft_strdup(*only_command + 7, &content->g_collector),  &content->g_collector); 
+                    cmd_options[2] = NULL;
+                }
             }
             else
             {

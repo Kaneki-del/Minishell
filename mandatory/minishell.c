@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/12 15:23:08 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/14 00:39:19 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int main(int ac, char **av, char **env)
 {
 
 	(void)av;
+	(void)ac;
 
 	t_container content;
 	tcgetattr(STDERR_FILENO, &content.termios_value);
@@ -95,13 +96,13 @@ int main(int ac, char **av, char **env)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ctrl_c);
 		if (ac != 1 || !isatty(0))
-			return (1);
+			exit (1);
 		rl_catch_signals = 0;
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ctrl_c);
 		init_content(&content);
 
-		content.line = readline("mshell$> ");
+		content.line = readline("shell$> ");
 		if (!content.line)
 		{
 			printf("exit\n");

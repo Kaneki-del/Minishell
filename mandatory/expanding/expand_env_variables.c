@@ -60,23 +60,25 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
     return (NULL);
 }
 
-int finding_and_expanding(t_container *content, char *command, int *i, char qoute)
+int finding_and_expanding(t_container *content, char *command, int *i, char qoute, int *is_in, int *inexpand_here)
 {
     char *expanded_part;
 
     expanded_part = NULL;
+    if (command[(*i)] == '<' && command[(*i) + 1] == '<' && !*is_in)
+        *inexpand_here = 1;
     if (command[(*i)] == '$' && qoute != '\'' && command[(*i) + 1] != qoute && (ft_isalnum(command[(*i) + 1]) \
     || command[(*i) + 1] == '\''  || command[(*i) + 1] == '"' || command[(*i) + 1] == '?' || command[(*i) + 1] == '_'))
     {
-        if (command[(*i)] && qoute == '"' && command[(*i) + 1] == '\'')
+        if ((command[(*i)] && qoute == '"' && command[(*i) + 1] == '\'') || (*inexpand_here && command[(*i) + 1] != '\''  && command[(*i) + 1] != '"' ))
             ;
         else
         {
-            check_expanding_variables(content, command, i, qoute);
+            check_expanding_variables(content, command, i, qoute);  
             return (1);
         }
     }
-    else if(qoute != '"' && qoute != '\'' && command[(*i)] == '~')
+    else if(qoute != '"' && qoute != '\'' && command[(*i)] == '~' && !*inexpand_here)
     {
         expanded_part = expand_telda(command, i, &content->env_list);
         if (expanded_part)
@@ -93,7 +95,9 @@ char *check_env_var(t_container *content, char *command)
     int i;
     int is_in;
     char qoute;
+    int inexpand_here;
 
+    inexpand_here = 0;
     if (!command)
         return (NULL);
     i = 0;
@@ -103,7 +107,7 @@ char *check_env_var(t_container *content, char *command)
     while (command[i])
     {
         qoute = in_quotations(command, &i, qoute, &is_in);
-        if (finding_and_expanding(content, command, &i, qoute))
+        if (finding_and_expanding(content, command, &i, qoute, &is_in, &inexpand_here))
             continue;
         content->new_command = ft_strchr_join(content->new_command, command[i], &content->g_collector);
         i++;
