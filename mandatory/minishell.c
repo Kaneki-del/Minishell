@@ -6,20 +6,21 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/14 03:07:42 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:24:34 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-int g_sig;
+
 
 void	ctrl_c(int sig)
 {
 	printf("\n");
-  
-	g_sig = sig;
-  
+  if (g_sig == 4)
+    close(0);
+  else
+	  g_sig = sig;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -94,11 +95,17 @@ int main(int ac, char **av, char **env)
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
+   
     if (ac != 1 || !isatty(0))
 		return (1);
     
     init_content(&content);
     content.line = readline("mshell$> ");
+    if (g_sig == 4)
+    {
+      dup2(0, 2);
+      g_sig = 0;
+    }
     if (g_sig == 2)
     {
       content.status =  1;

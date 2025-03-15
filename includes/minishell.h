@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/14 03:08:56 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:17:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
+int g_sig;
 typedef enum s_type_token {
   T_WORD,
   T_PIPE,
@@ -180,4 +180,6 @@ char *expand(t_container *content, char *command, int *i);
 void update_status(t_container *content);
 void	ctrl_cmd(int sig);
 char *expand_here_doc_lines(t_container *content, char *command);
+int prioritize_herdoc(t_data *list, char **rideractions, t_container *content);
+void	ctrl_c(int sig);
 #endif
