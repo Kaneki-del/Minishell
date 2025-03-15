@@ -44,8 +44,7 @@ int parser(t_container *content)
 		if (content->flag == 0)
 			return (0);
 		cmd_options = prepare_commands(&only_command, old_command, cmd_options, content);
-		add_data_back(&content->data, new_data_node(cmd_options, filterd(ft_split(dir_files, ' ', \
-		&content->g_collector), &content->g_collector), &content->g_collector));
+		add_data_back(&content->data, new_data_node(cmd_options, filterd(ft_split(dir_files, ' ', &content->g_collector), &content->g_collector), &content->g_collector));
 	}
 	return (1);
 }

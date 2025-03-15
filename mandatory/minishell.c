@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/14 03:07:42 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:18:24 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ int main(int ac, char **av, char **env)
   content.env_list = get_env_list(env, &content);
   content.status = 0;
 	 rl_catch_signals = 0;
-  
+  (void)ac;
   while (1) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-    if (ac != 1 || !isatty(0))
-		return (1);
+    // if (ac != 1 || !isatty(0))
+	// 	return (1);
     
     init_content(&content);
     content.line = readline("mshell$> ");
