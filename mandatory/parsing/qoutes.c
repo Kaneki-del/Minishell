@@ -18,7 +18,8 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
     return (NULL); // shoud handle
   while (command_line[i])
   {
-    if ((command_line[i] == '"' || command_line[i] == '\'') && !in_qoute) {
+    if ((command_line[i] == '"' || command_line[i] == '\'') && !in_qoute)
+    {
       qoute = command_line[i];
       (in_qoute = 1, i++);
     }
@@ -64,7 +65,8 @@ char **filterd(char **cmds,t_gc **g_collector)
     return (NULL);
   while (cmds[i] != NULL)
   {
-    if (ft_strncmp(cmds[i - 1], "<<", 3) != 0 || (ft_strncmp(cmds[i - 1], "<<", 3) != 0 && (ft_strcmp(cmds[i], "''") == 0 || ft_strcmp(cmds[i], "\"\"") == 0)))
+    if (ft_strncmp(cmds[i - 1], "<<", 3) != 0 || (ft_strncmp(cmds[i - 1], "<<", 3) != 0 \
+    && (ft_strcmp(cmds[i], "''") == 0 || ft_strcmp(cmds[i], "\"\"") == 0)))
     {
       cmds[i] = filer_qoutations(cmds[i], g_collector);
       if (!cmds[i])
@@ -77,7 +79,8 @@ char **filterd(char **cmds,t_gc **g_collector)
 
 int check_is_in_qoutes(char *str)
 {
-  if (str && (str[0] == '"' || str[0] == '\'') && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
+  if (str && (str[0] == '"' || str[0] == '\'') \
+  && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
     return (1);
   return (0);
 }
