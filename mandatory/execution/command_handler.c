@@ -54,7 +54,7 @@ int get_herdocs(t_data **list, t_container *content)
 	current = *list;
 	while(current)
 	{
-		if (prioritize_herdoc(current, current->directions, content) == -3)
+			if (prioritize_herdoc(current, current->directions, content) == -3)
 			return -3;
 		current= current->next;
 	}

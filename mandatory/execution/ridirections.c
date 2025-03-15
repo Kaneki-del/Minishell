@@ -78,8 +78,6 @@ int rediractions_out(t_data *list, int fd, int i)
 }
 int rideractions_handler(t_data *list, int i)
 {
-	int temp_fd;
-
 	if (ft_strcmp(list->directions[i], ">") == 0)
 	{
 		if (rediractions_out(list, 1, i) == 1)
@@ -98,14 +96,6 @@ int rideractions_handler(t_data *list, int i)
 	{
 		if (rediractions_out(list, 2, i) == 1)
 			return 1;
-	}
-	else if (ft_strcmp(list->directions[i], "<>") == 0)
-	{
-		i++;
-		temp_fd = open_file(list->directions[i], 1);
-		if (temp_fd == -1)
-			return 1;
-		close(temp_fd);
 	}
 	return 0;	
 }

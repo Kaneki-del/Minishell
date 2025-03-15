@@ -35,8 +35,8 @@ static char	*join_chdir(char *currpwd, char *path, t_container *content)
 	ft_putstr_fd("cd: error retrieving current directory: ", 2);
 	ft_putstr_fd("getcwd: cannot access ", 2);
 	ft_putstr_fd("parent directories: No such file or directory\n", 2);
+	currpwd = ft_strjoin(currpwd, "/", &content->g_collector);
 	currpwd = ft_strjoin(currpwd, path, &content->g_collector);
-	chdir(currpwd);
 	return (currpwd);
 }
 static void update_pwd(t_container *content, char *new_path)
@@ -47,10 +47,7 @@ static void update_pwd(t_container *content, char *new_path)
 	{
 		if (check_if_there("CPWD", &content->env_list) != NULL)
 			current_pwd = check_if_there("CPWD", &content->env_list)->value;
-		if (!ft_strcmp(new_path, ".."))
-			current_pwd = join_chdir(current_pwd, "/..", content);
-		if (!ft_strcmp(new_path, "."))
-			current_pwd = join_chdir(current_pwd, "/.", content);
+		current_pwd = join_chdir(current_pwd, new_path, content);
 	}
 	update_original_pwd(content, current_pwd);
 }

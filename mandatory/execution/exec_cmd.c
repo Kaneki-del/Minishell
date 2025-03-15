@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 23:40:27 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 18:05:10 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,21 @@ int is_directory( char *path)
         return 0; 
     return S_ISDIR(path_stat.st_mode);
 }
-void exec_error(t_data *current)
+void exec_error(t_data *current, char *cmd_path)
 {
-	if (is_directory(current->cmds[0]))
+	if (is_directory(cmd_path))
+	{
+		if (!ft_strcmp(current->cmds[0], "."))
 		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
-			exit(126);
+			ft_putstr_fd("bash: .: filename argument required\n.: usage: . filename [arguments]\n", 2);
+			exit(2);
 		}
-		else
-			exit(0);
+		ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
+		exit(126);
+	}
+	if (access(current->cmds[0], X_OK) == 0)
+		exit(0);
+			
 }
 void	executing(t_data *current, t_container *content)
 {
@@ -137,6 +143,6 @@ void	executing(t_data *current, t_container *content)
 	if (current->cmds)
 	{
 		if (execve(cmd_path, current->cmds, list_char) == -1)
-			exec_error(current);
+			exec_error(current, cmd_path);
 	}
 }
