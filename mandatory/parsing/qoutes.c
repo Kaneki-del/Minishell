@@ -15,7 +15,7 @@ char *filer_qoutations(char *command_line,  t_gc **g_collector)
     return (NULL);
   words_between = gc(ft_strlen(command_line) + 1, g_collector);
   if (!words_between)
-    return (clear_bin(g_collector), NULL); // shoud handle
+    return (NULL); // shoud handle
   while (command_line[i])
   {
     if ((command_line[i] == '"' || command_line[i] == '\'') && !in_qoute) {
@@ -80,4 +80,27 @@ int check_is_in_qoutes(char *str)
   if (str && (str[0] == '"' || str[0] == '\'') && (str[ft_strlen(str) - 1] == '"' || str[ft_strlen(str) - 1] == '\''))
     return (1);
   return (0);
+}
+
+char *add_qoutations(char *command, t_gc **g_collector)
+{
+  int i;
+  int j;
+  char *res;
+
+  i = 0;
+  j = 1;
+  if (check_is_in_qoutes(command))
+      return (command);
+  res = gc(ft_strlen(command) + 3, g_collector);
+  res[0] = '"';
+  while (command[i])
+  {
+    res[j] = command[i];
+    i++;
+    j++;
+  }
+  res[j] = '"';
+  res[j + 1] = '\0';
+  return (res);
 }

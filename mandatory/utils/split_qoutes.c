@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/11 00:50:45 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:16:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
 
     start = *i;
     while (s[*i] && (in_quote || (s[*i] != c && s[*i] != '\t'))) { // Added '\t' check
-        if (s[*i] == '\'' || s[*i] == '"') {
-            if (!in_quote) {
+        if (s[*i] == '\'' || s[*i] == '"')
+        {
+            if (!in_quote)
+            {
                 in_quote = 1;
                 quote = s[*i];
             }
-            else if (s[*i] == quote) {
+            else if (s[*i] == quote)
+            {
                 in_quote = 0;
                 quote = 0;
             }
@@ -71,7 +74,7 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
     }
     char *word = gc(len + 1, g_collector);
     if (!word)
-        return (clear_bin(g_collector), NULL);
+        return (NULL);
     ft_strlcpy(word, s + start, len + 1);
     return (word);
 }
@@ -86,15 +89,13 @@ char **ft_split(char const *s, char c, t_gc **g_collector)
     return (NULL);
   p = gc((words_count(s, c) + 1) * sizeof(char *), g_collector);
   if (!p)
-    return (clear_bin(g_collector), NULL);
+    return (NULL);
   i = 0;
   j = 0;
   while ((words_count(s, c)) > j) {
     p[j] = store_next_word(s, &i, c, g_collector);
-    if (!(p[j])) {
-      clear_bin(g_collector);
+    if (!(p[j]))
       return (NULL);
-    }
     j++;
   }
   p[j] = NULL;

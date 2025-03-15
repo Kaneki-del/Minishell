@@ -17,7 +17,7 @@ char	*ft_strdup(const char *s1,  t_gc **g_collector)
 
 	p = gc(ft_strlen(s1) + 1, g_collector);
 	if (!p)
-		return (clear_bin(g_collector), NULL);
+		return (NULL);
 	i = -1;
 	while (s1[++i])
 		p[i] = s1[i];

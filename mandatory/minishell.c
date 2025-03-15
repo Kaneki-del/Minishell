@@ -6,20 +6,21 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/14 02:49:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:38:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-int g_sig;
+
 
 void	ctrl_c(int sig)
 {
 	printf("\n");
-  
-	g_sig = sig;
-  
+  // if (g_sig == 4)
+  //   close(0);
+
+	  g_sig = sig;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -68,11 +69,13 @@ void ft_printf(t_data **data)
 
 void init_content(t_container *content)
 {
-	  content->tokens = NULL;
+	content->tokens = NULL;
     content->data = NULL;
     content->save_path = NULL;
     content->line = NULL;
     content->is_expandable = 0;
+	content->flag = 0;
+	content->new_command = NULL;
 }
 
 int main(int ac, char **av, char **env)
@@ -92,11 +95,17 @@ int main(int ac, char **av, char **env)
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
+   
     if (ac != 1 || !isatty(0))
 		return (1);
     
     init_content(&content);
     content.line = readline("mshell$> ");
+    // if (g_sig == 4)
+    // {
+    //   dup2(0, 2);
+    //   g_sig = 0;
+    // }
     if (g_sig == 2)
     {
       content.status =  1;
@@ -112,6 +121,7 @@ int main(int ac, char **av, char **env)
     if (parsing_case(&content) == 0) // shoud move the clear_bin here
     {
       free(content.line);
+      clear_bin(&content.g_collector);
       content.g_collector = NULL;
       continue;
     }

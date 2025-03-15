@@ -27,8 +27,8 @@ static void chidl_single(t_data *current, t_container *content)
 void	single_command(t_container *content)
 {
 	t_data *current; 
-	
 	current = content->data;
+	
 	if (!current->cmds || !current->cmds[0])
 	{
 		content->status = 0;

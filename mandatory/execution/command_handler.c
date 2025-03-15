@@ -46,16 +46,34 @@ static void	intial(t_data **list, t_container *content)
 	if (sig == SIGQUIT)
 		write(1, "Quit\n", 5);
 }
+int get_herdocs(t_data **list, t_container *content)
+{
+	t_data	*current;
+	
+	current = NULL;
+	current = *list;
+	while(current)
+	{
+		if (prioritize_herdoc(current, current->directions, content) == -3)
+			return -3;
+		current= current->next;
+	}
+	return 0;
+}
 void	execute_package(t_container *content)
 {
-	signal(SIGINT, ctrl_cmd);
-	signal(SIGQUIT, ctrl_cmd);
 	int	list_size;
 	content->status = 0;
 	if (!content->data)
 		return;
 	list_size = ft_lstsize(content->data);
 	intial(&content->data, content);
+	
+	if (get_herdocs(&content->data, content) == -3)
+		return;
+
+	signal(SIGINT, ctrl_cmd);
+	signal(SIGQUIT, ctrl_cmd);
 	if (list_size == 1)
 	{
 		if ( get_fds(content->data, content) != 0)

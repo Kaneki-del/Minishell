@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:57:56 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/02/23 11:31:50 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:59:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_data *new_data_node(char **command, char **directions, t_gc **g_collector)
     t_data *head;
     head = gc(sizeof(t_data), g_collector);
     if (!head)
-        return (clear_bin(g_collector), NULL);
+        return (NULL);
     head->cmds = command;
     head->directions = directions;
     head->next = NULL;

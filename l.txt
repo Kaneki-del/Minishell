@@ -67,24 +67,24 @@ cat | cat | caaat | ls  ///works at 11.34   ✅ (the command correct not in sort
  echo ;;   
  echo hi";" hihi  
  echo hi " ; " hihi  
- cd  
- cd .  
- cd ~  
- cd /  
- cd no_file (not work)
- cd a b c d  
- pwd a  
- pwd a b c d  
+ cd ✅ 
+ cd .  ✅
+ cd ~  ✅
+ cd /  ✅
+ cd no_file (not work) ✅
+ cd a b c d  ✅
+ pwd a  ✅
+ pwd a b c d  ✅
  export LOL=lala ROR=rara  ✅
  unset LOL ROR   ✅
  export "HI= hi"   ✅
  export "HI =hi"  ✅
  /bin/ls ✅ 
- # write something the press ctrl+c  
- # write something then press ctrl+d  
- # write something then press ctrl+\  
- echo $? 
- l^Ds   
+ # write something the press ctrl+c  ✅
+ # write something then press ctrl+d  ✅
+ # write something then press ctrl+\  ✅
+ echo $? ✅
+ l^Ds   ✅
  echo |  ✅
  | echo  ✅
  sort | ls # check output order   
@@ -157,12 +157,12 @@ $"CUSER"
 
 Mini$hell$: exit "88 55 98"  ✅
 
-Mini$hell$: mkdir ttt  
-Mini$hell$: ttt/  
-is a directory: ttt/  
+Mini$hell$: mkdir ttt ✅ 
+Mini$hell$: ttt/  ✅
+is a directory: ttt/  ✅
 
 
-Mini$hell$: cd .. 
+Mini$hell$: cd .. ✅
 Mini$hell$: env | grep PWD ✅
 // pwd and oldpwd should not be added  
 
@@ -335,7 +335,7 @@ Mini$hell$: << "" ✅
 
 
 Mini$hell$: export a=""ls -la"" ✅
-minishell: export: `-la': not a valid identifier 
+minishell: export: `-la': not a valid identifier ✅
 
 echo ll >  test  ✅
 
