@@ -65,8 +65,7 @@ char **filterd(char **cmds,t_gc **g_collector)
     return (NULL);
   while (cmds[i] != NULL)
   {
-    if (ft_strncmp(cmds[i - 1], "<<", 3) != 0 || (ft_strncmp(cmds[i - 1], "<<", 3) != 0 \
-    && (ft_strcmp(cmds[i], "''") == 0 || ft_strcmp(cmds[i], "\"\"") == 0)))
+    if (i > 0 && ((ft_strncmp(cmds[i - 1], "<<", 3) != 0 && (ft_strncmp(cmds[i], "''", 3) == 0 || ft_strncmp(cmds[i], "\"\"", 3) == 0)) || (ft_strncmp(cmds[i - 1], "<<", 3) != 0)) )
     {
       cmds[i] = filer_qoutations(cmds[i], g_collector);
       if (!cmds[i])
