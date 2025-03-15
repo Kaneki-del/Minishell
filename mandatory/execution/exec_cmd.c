@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/13 23:40:27 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/14 21:41:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void exec_error(t_data *current)
 {
 	if (is_directory(current->cmds[0]))
 		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
+			ft_error_exec_two("bash: ", current->cmds[0], ": is a directory", 2);
 			exit(126);
 		}
 		else

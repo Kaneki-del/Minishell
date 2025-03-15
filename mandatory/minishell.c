@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/15 01:38:40 by sait-nac         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -90,12 +79,11 @@ int main(int ac, char **av, char **env)
   content.env_list = get_env_list(env, &content);
   content.status = 0;
 	 rl_catch_signals = 0;
-  
+  (void)ac;
   while (1) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-   
     if (ac != 1 || !isatty(0))
 		return (1);
     
