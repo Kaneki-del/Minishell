@@ -59,8 +59,8 @@ int prioritize_herdoc(t_data *list, char **rideractions, t_container *content)
 			if (list->in_fd != 0)
 				close(list->in_fd);
 			list->in_fd = her_doc(rideractions[i], content);
-			if (list->in_fd == -1)
-					return 1;
+			if (list->in_fd == -3)
+					return -3;
 		}
 		i++;
 	}
@@ -113,11 +113,13 @@ int rideractions_handler(t_data *list, int i)
 int	get_fds(t_data *list, t_container *content)
 {
 	(void)content;
+
 	char	**full_cmd;
 	int		i;
+
 	full_cmd = list->directions;
 	i = 0;
-	if (!full_cmd)
+	if (!full_cmd || !full_cmd[0])
 		return 0;
 	while (full_cmd[i])
 	{

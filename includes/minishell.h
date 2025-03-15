@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/15 00:29:33 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:17:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
+int g_sig;
 typedef enum s_type_token {
   T_WORD,
   T_PIPE,
