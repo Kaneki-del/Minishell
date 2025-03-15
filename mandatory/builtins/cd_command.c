@@ -35,7 +35,8 @@ static char	*join_chdir(char *currpwd, char *path, t_container *content)
 	ft_putstr_fd("cd: error retrieving current directory: ", 2);
 	ft_putstr_fd("getcwd: cannot access ", 2);
 	ft_putstr_fd("parent directories: No such file or directory\n", 2);
-	currpwd = ft_strjoin(currpwd, "/", &content->g_collector);
+	if (currpwd[ft_strlen(currpwd) - 1] != '/')
+		currpwd = ft_strjoin(currpwd, "/", &content->g_collector);
 	currpwd = ft_strjoin(currpwd, path, &content->g_collector);
 	return (currpwd);
 }
