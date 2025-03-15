@@ -20,9 +20,9 @@ int her_doc(char *limiter, t_container *content)
 	char *line;
 	char *file_name;
 	int fd2;
-	g_sig = 4;
-	signal(SIGQUIT, SIG_IGN);
-    signal(SIGINT, ctrl_c);
+	// g_sig = 4;
+	// signal(SIGQUIT, SIG_IGN);
+    // signal(SIGINT, ctrl_c);
 
 
 	file_name = get_file(&content->g_collector);

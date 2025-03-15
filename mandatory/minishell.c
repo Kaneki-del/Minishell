@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/15 01:24:34 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 01:38:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 void	ctrl_c(int sig)
 {
 	printf("\n");
-  if (g_sig == 4)
-    close(0);
-  else
+  // if (g_sig == 4)
+  //   close(0);
+
 	  g_sig = sig;
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -101,11 +101,11 @@ int main(int ac, char **av, char **env)
     
     init_content(&content);
     content.line = readline("mshell$> ");
-    if (g_sig == 4)
-    {
-      dup2(0, 2);
-      g_sig = 0;
-    }
+    // if (g_sig == 4)
+    // {
+    //   dup2(0, 2);
+    //   g_sig = 0;
+    // }
     if (g_sig == 2)
     {
       content.status =  1;
