@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/14 03:08:56 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 00:29:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,4 +180,6 @@ char *expand(t_container *content, char *command, int *i);
 void update_status(t_container *content);
 void	ctrl_cmd(int sig);
 char *expand_here_doc_lines(t_container *content, char *command);
+int prioritize_herdoc(t_data *list, char **rideractions, t_container *content);
+void	ctrl_c(int sig);
 #endif

@@ -21,6 +21,10 @@ int her_doc(char *limiter, t_container *content)
 	char *file_name;
 	int fd2;
 
+
+	// g_sig = 4;
+	// signal(SIGQUIT, SIG_IGN);
+    // signal(SIGINT, ctrl_c);
 	file_name = get_file(&content->g_collector);
 	fd = open_file(file_name, 1);
 	fd2 = open_file(file_name, 0);
