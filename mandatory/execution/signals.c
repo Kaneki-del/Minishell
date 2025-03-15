@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtin.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 23:02:06 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:02:08 by sait-nac         ###   ########.fr       */
+/*   Created: 2025/03/15 23:07:26 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:43:03 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_builtin_commands(char **commands)
+void	ctrl_cmd(int sig)
 {
-	if (commands && commands[0] != NULL)
-	{
-		if (ft_strcmp(commands[0], "cd") == 0 || ft_strcmp(commands[0],
-				"pwd") == 0 || ft_strcmp(commands[0], "export") == 0
-			|| ft_strcmp(commands[0], "unset") == 0 || ft_strcmp(commands[0],
-				"env") == 0 || ft_strcmp(commands[0], "exit") == 0
-			|| ft_strcmp(commands[0], "echo") == 0)
-			return (1);
-	}
-	return (0);
+	if (sig == SIGQUIT)
+		write(1, "Quit\n", 5);
+}
+
+void	ctrl_c_herdoc(int sig)
+{
+	close(0);
+	g_sig = sig;
 }

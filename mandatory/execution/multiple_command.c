@@ -18,7 +18,7 @@ static void first_child(t_container *content, t_data *current, int *p_fd)
 		if (current->out_fd == 0)
 			current->out_fd = p_fd[1];
 		else
-			close(p_fd[1]); // Close write end if already set
+			close(p_fd[1]);
 		if (check_builtin_commands(current->cmds))
 		{	
 			(built_in(current ,content));
@@ -57,15 +57,15 @@ static void midle_child(t_data *current, int *p_fd, t_container *content, int in
 {
 	if (get_fds(current,  content) != 0)
 			exit(1);
-		close(p_fd[0]); // Close unused read end
+		close(p_fd[0]);
 		if (current->out_fd == 0)
 			current->out_fd = p_fd[1];
 		else
-			close(p_fd[1]); // Close write end if already set
+			close(p_fd[1]);
 		if (current->in_fd == 0)
 			current->in_fd = in;
 		else
-			close(in); // Close previous pipe input
+			close(in);
 		if (check_builtin_commands(current->cmds))
 		{	
 			(built_in(current ,content));

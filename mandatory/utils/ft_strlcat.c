@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtin.c                                       :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 23:02:06 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:02:08 by sait-nac         ###   ########.fr       */
+/*   Created: 2025/03/15 23:09:29 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:09:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_builtin_commands(char **commands)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	if (commands && commands[0] != NULL)
+	size_t	dst_lent;
+	size_t	src_lent;
+	size_t	i;
+
+	i = 0;
+	src_lent = ft_strlen(src);
+	if (dstsize == 0)
+		return (src_lent);
+	dst_lent = ft_strlen(dst);
+	if (dst_lent >= dstsize)
+		return (dstsize + src_lent);
+	while (i < (dstsize - dst_lent - 1) && src[i])
 	{
-		if (ft_strcmp(commands[0], "cd") == 0 || ft_strcmp(commands[0],
-				"pwd") == 0 || ft_strcmp(commands[0], "export") == 0
-			|| ft_strcmp(commands[0], "unset") == 0 || ft_strcmp(commands[0],
-				"env") == 0 || ft_strcmp(commands[0], "exit") == 0
-			|| ft_strcmp(commands[0], "echo") == 0)
-			return (1);
+		dst[dst_lent + i] = src[i];
+		i++;
 	}
-	return (0);
+	dst[dst_lent + i] = '\0';
+	return (dst_lent + src_lent);
 }

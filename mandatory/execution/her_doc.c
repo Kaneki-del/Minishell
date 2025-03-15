@@ -14,12 +14,8 @@ char *get_file(t_gc **g_collector)
 		i++;
 	}
 }
-void	ctrl_c_heredoc(int sig)
-{
-	close(0);
-	g_sig = sig;
-}
-char	*fill_heredoc(char *limiter, t_container *content)
+
+char	*buffer_line(char *limiter, t_container *content)
 {
 	char	*line;
 	char	*tmp;
@@ -46,7 +42,6 @@ int	hrdc_ctrlc(int fd, t_container *content)
 		content->status = 1;
 		if (dup2(fd, 0) == -1)
 		{
-			// fds_error(data, "Dup2() call failure[717]\n");
 			printf("error in dup\n");
 			return (-3);
 		}
@@ -56,24 +51,23 @@ int	hrdc_ctrlc(int fd, t_container *content)
 	content->status = 0;
 	return (0);
 }
-static char	*buffer_file_content(char *limiter, t_container *content)
+static char	*buffer_content(char *limiter, t_container *content)
 {
 	char	*tmp;
 	char	*final;
 
 	final = NULL;
-	signal(SIGINT, ctrl_c_heredoc);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ctrl_c_herdoc);
 	while (!g_sig)
 	{
-		tmp = fill_heredoc(limiter, content);
+		tmp = buffer_line(limiter, content);
 		if (tmp == NULL)
 			break ;
 		final = ft_strjoin(final, tmp, &content->g_collector);
 	}
 	return (final);
 }
-int	open_hdc(char *file)
+int	open_hrd(char *file)
 {
 	int	hdc;
 
@@ -87,17 +81,17 @@ int	open_hdc(char *file)
 }
 static void	fill_hdc_file(char *file, char *final, t_container *content)
 {
-	int	hdc;
+	int	hrd;
 
-	hdc = open_hdc(file);
-	if (hdc == -1)
+	hrd = open_hrd(file);
+	if (hrd == -1)
 	{
 		content->status = 1;
 		return ;
 	}
 	if (final)
-		write(hdc, final, ft_strlen(final));
-	close(hdc);
+		write(hrd, final, ft_strlen(final));
+	close(hrd);
 }
 int	end_hdc(int fd, char *file)
 {
@@ -108,11 +102,9 @@ int	end_hdc(int fd, char *file)
 	if (hdc == -1)
 	{
 		ft_putstr_fd("Open() call failed[013]\n", 2);
-		// close_fildes(data);
 		unlink(file);
 		return (-1);
 	}
-	// data->fildes = append_fdes(data, hdc);
 	unlink(file);
 	return (hdc);
 }
@@ -126,7 +118,7 @@ int her_doc(char *limiter, t_container *content)
 	fd = dup(0);
 	if (fd == -1)
 		return (-1);
-	final = buffer_file_content(limiter, content);
+	final = buffer_content(limiter, content);
 	if (hrdc_ctrlc(fd, content) == -3)
 		return (-3);
 	file_name = get_file(&content->g_collector);

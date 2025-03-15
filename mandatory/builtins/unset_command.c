@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset_command.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 23:03:31 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:06:35 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -13,8 +24,8 @@ static int	filter_unset(char *key)
 		if (!((key[i] >= 'a' && key[i] <= 'z') || (key[i] >= 'A'
 					&& key[i] <= 'Z') || (key[i] >= '0' && key[i] <= '9')
 				|| key[i] == '_'))
-			return (1); // Invalid key, return immediately
-		i++;          // Increment only if the character is valid
+			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -34,17 +45,19 @@ static void	unset_key(char **cmd, t_container *content)
 			if (temp != NULL && temp->print_flag == 0)
 				delete_node(&content->env_list, temp->key);
 		}
-		else {
-			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2), 
+		else
+		{
+			ft_error_exec("bash: unset:", cmd[i], ": not a valid identifier", 2);
 			content->status = 1;
 		}
-		i++;	
+		i++;
 	}
 }
+
 void	handle_unset(char **cmd, t_container *content, t_data *current)
 {
 	int	i;
-	
+
 	clean_fd(current);
 	i = 0;
 	content->status = 0;

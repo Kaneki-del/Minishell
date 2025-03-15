@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 22:43:47 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 void	print_env_list(t_container *content, t_data *list)
 {
 	t_env	*current;
 	int		saved_stdout;
 
-	saved_stdout = rideraction_builtins(list); // Store original stdout
+	saved_stdout = rideraction_builtins(list);
 	current = content->env_list;
 	while (current != NULL)
 	{
@@ -34,7 +45,6 @@ void	handle_export(t_data *current, t_container *content)
 		add_export(content->data->cmds + 1, content);
 }
 
-// for the norms
 void	built_in(t_data *current, t_container *content)
 {
 	if (ft_strcmp(content->data->cmds[0], "env") == 0)

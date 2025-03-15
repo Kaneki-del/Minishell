@@ -1,23 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:30:58 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-t_env	*lstnew_env(char *key, char *value, t_gc **g_env_collector, int set)
-{
-	t_env	*new_node;
-
-	new_node = (t_env *)gc(sizeof(t_env), g_env_collector);
-	if (!new_node)
-		return (NULL);
-	new_node->key = ft_strdup(key, g_env_collector);
-	if (value)
-		new_node->value = ft_strdup(value, g_env_collector);
-	else
-		new_node->value = NULL;
-	new_node->print_flag = set;
-	new_node->next = NULL;
-	return (new_node);
-}
-
-char	**ft_split_equal_to(const char *s, t_gc **g_collector)
+static char	**ft_split_equal_to(const char *s, t_gc **g_collector)
 {
 	char	**str;
 	size_t	len;
@@ -46,38 +41,7 @@ char	**ft_split_equal_to(const char *s, t_gc **g_collector)
 	return (str);
 }
 
-void	lstadd_back_env(t_env **lst, t_env *new_t)
-{
-	t_env	*ptr;
-	t_env	*current;
-
-	current = *lst;
-	if (!lst || !new_t)
-	{
-		return ;
-	}
-	else if (*lst == NULL)
-		*lst = new_t;
-	else
-	{
-		ptr = ft_lstlast(current);
-		ptr->next = new_t;
-	}
-}
-void	clean_old_pwd(t_env **env_list)
-{
-	t_env	*current;
-
-	current = NULL;
-	current = *env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->key, "OLDPWD") == 0)
-			current->value = NULL;
-		current = current->next;
-	}
-}
-char	**get_backup_env(t_container *content)
+static char	**get_backup_env(t_container *content)
 {
 	char	**new_env;
 
@@ -91,7 +55,7 @@ char	**get_backup_env(t_container *content)
 	return (new_env);
 }
 
-void	get_pwd(t_env **env_list, t_container *content)
+static void	get_pwd(t_env **env_list, t_container *content)
 {
 	char	*pwd;
 	t_env	*cpwd;
@@ -103,7 +67,7 @@ void	get_pwd(t_env **env_list, t_container *content)
 	{
 		if (check_if_there("PWD", env_list) != NULL)
 			check_if_there("PWD", env_list)->value = ft_strdup(pwd,
-					&content->g_env_collector);
+				&content->g_env_collector);
 		else
 			lstadd_back_env(env_list, lstnew_env("PWD", pwd,
 					&content->g_env_collector, 0));
@@ -111,14 +75,14 @@ void	get_pwd(t_env **env_list, t_container *content)
 		if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 				env_list) != NULL)
 			check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
-					&content->g_env_collector);
+				&content->g_env_collector);
 		else if (cpwd != NULL && cpwd->value != NULL)
 			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
 					&content->g_env_collector, 3));
 	}
 }
 
-void	check_flags(t_env *returned_env, t_container *content, int flag)
+static void	check_flags(t_env *returned_env, t_container *content, int flag)
 {
 	if (check_if_there("PATH", &returned_env) != NULL && flag == 1)
 		check_if_there("PATH", &returned_env)->print_flag = 1;
@@ -128,6 +92,7 @@ void	check_flags(t_env *returned_env, t_container *content, int flag)
 	else
 		clean_old_pwd(&returned_env);
 }
+
 t_env	*get_env_list(char **env, t_container *content)
 {
 	int		i;

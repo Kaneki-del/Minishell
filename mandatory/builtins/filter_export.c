@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filter_export.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 23:01:31 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:01:48 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	filter_key(char *key, char *value)
@@ -12,7 +24,7 @@ int	filter_key(char *key, char *value)
 		if (!((key[i] >= 'a' && key[i] <= 'z') || (key[i] >= 'A'
 					&& key[i] <= 'Z') || (key[i] >= '0' && key[i] <= '9')
 				|| key[i] == '_'))
-			return (1); // Invalid key, return immediately
+			return (1);
 		i++;
 	}
 	if (!((key[i] >= 'a' && key[i] <= 'z') || (key[i] >= 'A' && key[i] <= 'Z')

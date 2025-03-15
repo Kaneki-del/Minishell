@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo_command.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 22:53:50 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	echo(char **cmd)
@@ -31,7 +43,7 @@ void	handle_echo(char **cmd, t_data *list)
 	int	i;
 	int	saved_stdout;
 
-	saved_stdout = rideraction_builtins(list); // Store original stdout
+	saved_stdout = rideraction_builtins(list);
 	i = 0;
 	while (cmd[i])
 		i++;

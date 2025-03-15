@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_handler.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 23:07:21 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/15 23:08:42 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int max_herdoc(char **rideractions)
+static int	max_herdoc(char **rideractions)
 {
-	int count;
-	int i;
+	int	count;
+	int	i;
 
 	i = 0;
 	count = 0;
 	if (!rideractions || !rideractions[0])
-		return 0;
+		return (0);
 	while (rideractions[i])
 	{
 		if (ft_strcmp(rideractions[i], "<<") == 0)
@@ -16,21 +28,22 @@ int max_herdoc(char **rideractions)
 		i++;
 	}
 	if (count > 16)
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
 
 static void	intial(t_data **list, t_container *content)
 {
 	t_data	*current;
-	
+
 	current = NULL;
 	current = *list;
 	while (current)
 	{
 		if (max_herdoc(current->directions) == 1)
 		{
-			ft_error_exec_two("bash: ", "maximum here-document", " count exceeded", 2);
+			ft_error_exec_two("bash: ", "maximum here-document",
+				" count exceeded", 2);
 			clean_fds(*list);
 			clear_bin(&content->g_collector);
 			clear_bin(&content->g_env_collector);
@@ -41,44 +54,40 @@ static void	intial(t_data **list, t_container *content)
 		current = current->next;
 	}
 }
- void	ctrl_cmd(int sig)
-{
-	if (sig == SIGQUIT)
-		write(1, "Quit\n", 5);
-}
-int get_herdocs(t_data **list, t_container *content)
+
+int	get_herdocs(t_data **list, t_container *content)
 {
 	t_data	*current;
-	
+
 	current = NULL;
 	current = *list;
-	while(current)
+	while (current)
 	{
-			if (prioritize_herdoc(current, current->directions, content) == -3)
-			return -3;
-		current= current->next;
+		if (prioritize_herdoc(current, current->directions, content) == -3)
+			return (-3);
+		current = current->next;
 	}
-	return 0;
+	return (0);
 }
+
 void	execute_package(t_container *content)
 {
 	int	list_size;
+
 	content->status = 0;
 	if (!content->data)
-		return;
+		return ;
 	list_size = ft_lstsize(content->data);
 	intial(&content->data, content);
-	
 	if (get_herdocs(&content->data, content) == -3)
-		return;
-
+		return ;
 	signal(SIGINT, ctrl_cmd);
 	signal(SIGQUIT, ctrl_cmd);
 	if (list_size == 1)
 	{
-		if ( get_fds(content->data, content) != 0)
-			content->status = 1; 
-		else 
+		if (get_fds(content->data, content) != 0)
+			content->status = 1;
+		else
 			single_command(content);
 	}
 	else if (list_size >= 2)

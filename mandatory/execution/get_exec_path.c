@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 18:16:17 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/15 23:38:42 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ static char	*get_env_path(t_container *content)
 	}
 	return (env_path);
 }
+char **get_path(t_container *content)
+{
+	char	*path_value;
+	char	**path_list;
+	
+	path_value = get_env_path(content);
+	if (!path_value)
+		return (NULL);
+	path_list = ft_split(path_value, ':', &content->g_collector);
+	if (!path_list)
+		return (NULL);
+	return (path_list);
+}
 
 static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 {
@@ -53,6 +66,24 @@ static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 	return (NULL);
 }
 
+
+
+void print_dir_error(t_data *current)
+{
+	if (ft_strcmp(current->cmds[0], ".") == 0 || ft_strcmp(current->cmds[0], "..") == 0)
+	{
+		if (!ft_strcmp(current->cmds[0], ".."))
+		{
+			ft_error_exec_two("bash: ", current->cmds[0], ": command not found", 2);
+			exit(127);
+		}
+		else
+		{
+			ft_putstr_fd("bash: .: filename argument required\n.: usage: . filename [arguments]\n", 2);
+			exit(2);
+		}
+	}
+}
 static char	*try_direct_access(t_data *current, t_container *content)
 {
 	char	*cmd_v;
@@ -73,18 +104,16 @@ static char	*try_direct_access(t_data *current, t_container *content)
 	}
 	return (NULL);
 }
-char **get_path(t_container *content)
+char *executable(t_data *current, t_container *content)
 {
-	char	*path_value;
-	char	**path_list;
-	
-	path_value = get_env_path(content);
-	if (!path_value)
-		return (NULL);
-	path_list = ft_split(path_value, ':', &content->g_collector);
-	if (!path_list)
-		return (NULL);
-	return (path_list);
+	char	*cmd_v;
+	cmd_v = try_direct_access(current, content);
+	if (!cmd_v)
+	{
+			ft_error_exec_two("bash: ", current->cmds[0], ": No such file or directory", 2);
+			exit(127);	
+	}
+	return cmd_v;
 }
 char	*find_executable_path(t_data *current, t_container *content)
 {
@@ -93,14 +122,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 
 	path = NULL;
 	if (ft_strchr(current->cmds[0], '/') != NULL)
-	{
-		cmd_v = try_direct_access(current, content);
-		if (!cmd_v)
-		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": No such file or directory", 2);
-			exit(127);	
-		}
-	}
+		cmd_v = executable(current, content);
 	else
 		path = get_path(content);
 	if (!path || !path[0])
@@ -116,19 +138,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 			exit(127);
 		}	
 	}
-	if (ft_strcmp(current->cmds[0], ".") == 0 || ft_strcmp(current->cmds[0], "..") == 0)
-	{
-		if (!ft_strcmp(current->cmds[0], ".."))
-		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": command not found", 2);
-			exit(127);
-		}
-		else
-		{
-			ft_putstr_fd("bash: .: filename argument required\n.: usage: . filename [arguments]\n", 2);
-			exit(2);
-		}
-	}
+	print_dir_error(current);
 	cmd_v = check_cmd_path(path, current->cmds[0], &content->g_collector);
 	return (cmd_v);
 }
