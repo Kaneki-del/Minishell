@@ -59,8 +59,8 @@ int prioritize_herdoc(t_data *list, char **rideractions, t_container *content)
 			if (list->in_fd != 0)
 				close(list->in_fd);
 			list->in_fd = her_doc(rideractions[i], content);
-			if (list->in_fd == -1)
-					return 1;
+			if (list->in_fd == -3)
+					return -3;
 		}
 		i++;
 	}
