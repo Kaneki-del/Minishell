@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:02:41 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:02:56 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 16:10:25 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ void	handle_pwd(t_container *content, t_data *current)
 			print_pwd_error(content);
 	}
 	else
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-	}
+		(printf("%s\n", pwd), free(pwd));
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);

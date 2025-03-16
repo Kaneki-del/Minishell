@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:54:52 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:03:24 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 16:09:21 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,12 @@ void	delete_node(t_env **list_env, char *key)
 	prev->next = temp->next;
 }
 
-static void	print_key_value(t_env *smallest)
+void	print_key_value(t_env *smallest)
 {
-	size_t	i;
-
-	if (check_is_in_qoutes(smallest->value))
-	{
-		i = 1;
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(smallest->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd("\"", 1);
-		while (smallest->value[i] && i < ft_strlen(smallest->value) - 1)
-		{
-			write(1, &smallest->value[i], 1);
-			i++;
-		}
-		ft_putstr_fd("\"\n", 1);
-	}
-	else
+	if (smallest->key && smallest->value)
 		printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
+	else if (!smallest->value)
+		printf("declare -x %s\n", smallest->key);
 }
 
 static void	filter_print(t_env *smallest)
