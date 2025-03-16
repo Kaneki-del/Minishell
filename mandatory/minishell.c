@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/15 13:09:49 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/16 01:07:57 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int main(int ac, char **av, char **env)
 {
 
   (void)av;
+  (void)ac;
   
   t_container content;
   tcgetattr(STDERR_FILENO, &content.termios_value);
@@ -126,6 +127,9 @@ int main(int ac, char **av, char **env)
       continue;
     }
     execute_package(&content);
+    // t_env *tmp = check_if_there("a", &content.env_list);
+    // if (tmp)
+    //   printf("the key=%s, value=%s\n", tmp->key, tmp->value);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

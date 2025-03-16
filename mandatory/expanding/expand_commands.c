@@ -1,5 +1,54 @@
 #include "../../includes/minishell.h"
 
+
+char *remove_quotes(char *command, t_gc **g_collector)
+{
+    char *res;
+    int i;
+    int j;
+    char current_quote;
+
+    current_quote = '\0';
+    j = 0;
+    i = 0;
+    if (!command) 
+        return (NULL);
+    res = gc(ft_strlen(command) + 1, g_collector);
+    if (!res) 
+        return (NULL);
+    while (command[i])
+    {
+        if (current_quote == '\0' && (command[i] == '\'' || command[i] == '"'))
+            current_quote = command[i++];
+        else if (current_quote && command[i] == current_quote)
+        {
+            current_quote = '\0';
+            i++;
+        }
+        else
+            res[j++] = command[i++];
+    }
+    res[j] = '\0';
+    return res;
+}
+
+
+char **filter_all(char **cmds, t_gc **g_collector)
+{
+    int i;
+
+    i = 0;
+    if (!cmds)
+        return (NULL);
+    while (cmds[i])
+    {
+        cmds[i] = remove_quotes(cmds[i], g_collector);
+        i++;
+    }
+    return (cmds);
+}
+
+
 char** prepare_export_command(char **only_command, char **cmd_options, t_container *content)
 {
 	if(ft_strlen_2d(cmd_options) < 3)
@@ -13,7 +62,7 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
 			    cmd_options = ft_split(*only_command, ' ', &content->g_collector);
                 if (cmd_options[1])
                 {
-                    cmd_options[1] = filer_qoutations(ft_strdup(*only_command + 7, &content->g_collector),  &content->g_collector); 
+                    cmd_options[1] = remove_quotes(ft_strdup(*only_command + 7, &content->g_collector),&content->g_collector); 
                     cmd_options[2] = NULL;
                 }
             }
@@ -25,9 +74,49 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
 		}
 	}
 	else
-		cmd_options = filterd(normal_ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
+		cmd_options = filter_all(normal_ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
 	return (cmd_options);
 }
+// void get_index_quotesd(char *command, int *start, int *end)
+// {
+//     static char quote;
+//     int i;
+//     int command_len;
+
+//     i = 0;
+//     quote = '\0';
+//     while (command[i])
+//     {
+//         if (command[i] == '"' || command[i] == '\'')
+//         {
+//             if (quote == '\0')
+//             {
+//                 quote = command[i];
+//                 *start = i;
+//             }
+//             else if (quote == command[i] && quote !='\0')
+//             {
+//                 quote = '\0';
+//                 *end = i;
+//             }
+//         }
+//     }
+// }
+
+void ft_print2(char **str)
+{
+  int i;
+
+  i = 0;
+  if (!str)
+    return ;
+  while (str[i])
+  {
+    printf("(%s)\n", str[i]);
+    i++;  
+  }
+}
+
 
 char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, t_container *content)
 {
@@ -41,7 +130,12 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 		cmd_options = prepare_export_command(only_command, cmd_options, content);
 	}
 	else
-		cmd_options = filterd(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
+    {
+        if (content->flag == 5)
+            cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector);
+        else
+		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
+    }
 	cmd_options = check_echo_options(cmd_options, &content->g_collector);
 	return (cmd_options);
 }
