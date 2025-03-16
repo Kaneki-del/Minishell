@@ -1,16 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   her_doc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/16 00:30:14 by sait-nac          #+#    #+#             */
+/*   Updated: 2025/03/16 00:30:35 by sait-nac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-char *get_file(t_gc **g_collector)
+char	*get_file(t_gc **g_collector)
 {
-	char *file_name;
-	int i;
+	char	*file_name;
+	int		i;
 
 	i = 0;
-	while(1)
+	while (1)
 	{
-		file_name = ft_strjoin ("/tmp/.her_doc" , ft_itoa(i, g_collector), g_collector);
+		file_name = ft_strjoin("/tmp/.her_doc", ft_itoa(i, g_collector),
+				g_collector);
 		if (access(file_name, F_OK) == -1)
-			return file_name;
+			return (file_name);
 		i++;
 	}
 }
@@ -28,13 +41,14 @@ char	*buffer_line(char *limiter, t_container *content)
 		free(line);
 		return (NULL);
 	}
-	else 
-		if ((check_is_in_qoutes(limiter) == 0) || (limiter[0] != '"' && limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"' && limiter[ft_strlen(limiter) - 1] != '\''))
-				line = expand_here_doc_lines(content, line);
+	else if ((check_is_in_qoutes(limiter) == 0) || (limiter[0] != '"'
+			&& limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"'
+			&& limiter[ft_strlen(limiter) - 1] != '\''))
+		line = expand_here_doc_lines(content, line);
 	tmp = ft_strjoin(line, "\n", &content->g_collector);
 	return (tmp);
-	
 }
+
 int	hrdc_ctrlc(int fd, t_container *content)
 {
 	if (g_sig)
@@ -51,6 +65,7 @@ int	hrdc_ctrlc(int fd, t_container *content)
 	content->status = 0;
 	return (0);
 }
+
 static char	*buffer_content(char *limiter, t_container *content)
 {
 	char	*tmp;
@@ -67,6 +82,7 @@ static char	*buffer_content(char *limiter, t_container *content)
 	}
 	return (final);
 }
+
 int	open_hrd(char *file)
 {
 	int	hdc;
@@ -77,8 +93,9 @@ int	open_hrd(char *file)
 		printf("Open() call failed[719]\n");
 		return (-1);
 	}
-	return hdc;
+	return (hdc);
 }
+
 static void	fill_hdc_file(char *file, char *final, t_container *content)
 {
 	int	hrd;
@@ -93,6 +110,7 @@ static void	fill_hdc_file(char *file, char *final, t_container *content)
 		write(hrd, final, ft_strlen(final));
 	close(hrd);
 }
+
 int	end_hdc(int fd, char *file)
 {
 	int	hdc;
@@ -108,12 +126,13 @@ int	end_hdc(int fd, char *file)
 	unlink(file);
 	return (hdc);
 }
-int her_doc(char *limiter, t_container *content)
+
+int	her_doc(char *limiter, t_container *content)
 {
-	int fd;
-	char *file_name;
-	char *final;
-	int hdc;
+	int		fd;
+	char	*file_name;
+	char	*final;
+	int		hdc;
 
 	fd = dup(0);
 	if (fd == -1)
