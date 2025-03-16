@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 15:42:14 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:51:16 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*buffer_line(char *limiter, t_container *content)
 {
 	char	*line;
 	char	*tmp;
-
+	char	*line_tmp;
 	line = readline("> ");
 	if (line == NULL || g_sig)
 		return (NULL);
@@ -41,9 +41,12 @@ static char	*buffer_line(char *limiter, t_container *content)
 	else if ((check_is_in_qoutes(limiter) == 0) || (limiter[0] != '"'
 			&& limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"'
 			&& limiter[ft_strlen(limiter) - 1] != '\''))
-		line = expand_here_doc_lines(content, line);
+	{
+		line_tmp = line;
+		line = expand_here_doc_lines(content, line_tmp);
+		free(line_tmp);
+	}
 	tmp = ft_strjoin(line, "\n", &content->g_collector);
-	
 	return (tmp);
 }
 
