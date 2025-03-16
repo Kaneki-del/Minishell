@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:58 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 22:54:43 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	filter_exit(t_container *content, char **args)
 	if (filter_args(args[0]) == 1)
 	{
 		ft_putstr_fd("exit\n", 2);
-		ft_error_exec_two("bash: exit: ", args[0],
+		ft_error_exec_two("mshell: exit: ", args[0],
 			": numeric argument required", 2);
 		clean_fds(content->data);
 		clear_bin(&content->g_collector);
@@ -54,7 +54,7 @@ static int	filter_exit(t_container *content, char **args)
 	}
 	if (chek_args_number(args + 1) > 0)
 	{
-		ft_putstr_fd("exit\nbash: exit: too many arguments\n", 2);
+		ft_putstr_fd("exit\nmshell: exit: too many arguments\n", 2);
 		content->status = 1;
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/16 00:25:15 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:12:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include <termios.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -65,7 +64,6 @@ typedef struct s_gc {
   struct s_gc *next;
 } t_gc;
 
-//the env  list struct
 typedef struct s_env {
   char *key;
   char *value;
@@ -73,8 +71,6 @@ typedef struct s_env {
   struct s_env *next;
 } t_env;
 
-
-// that struct contains most used variables
 typedef struct s_container
 {
   t_data *data;
@@ -185,4 +181,12 @@ void	update_original_pwd(t_container *content, char *path);
 char	**env_to_array(t_container *content);
 void	ctrl_c_herdoc(int sig);
 void	clean_old_pwd(t_env **env_list);
+void	fill_hdc_file(char *file, char *final, t_container *content);
+char	*buffer_content(char *limiter, t_container *content);
+char	**get_path(t_container *content);
+void	handle_fork_failure(t_container *content);
+void	execute_first(t_data *current, int *p_fd, t_container *content);
+void	execut(t_container *content, t_data *current, int *p_fd, int in);
+char	**get_backup_env(t_container *content);
+
 #endif

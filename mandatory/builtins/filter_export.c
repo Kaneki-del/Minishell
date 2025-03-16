@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:01:31 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:01:48 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	add_export(char **cmd, t_container *content)
 			valid_key(splited_equal, content);
 		else
 		{
-			ft_error_exec("bash: export:", cmd[i], ": not a valid identifier",
+			ft_error_exec("mshell: export:", cmd[i], ": not a valid identifier",
 				2);
 			content->status = 1;
 		}

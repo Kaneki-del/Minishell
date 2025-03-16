@@ -59,7 +59,7 @@ static int skeep_special_char(t_container *content, int *start)
     if (is_in == 1)
     {
         content->status = 258;
-        return (ft_error("bash: syntax error near unexpected token", ft_chrjoin(qoute, '\0', &content->g_collector), 2), 0);
+        return (ft_error("mshell: syntax error near unexpected token", ft_chrjoin(qoute, '\0', &content->g_collector), 2), 0);
     }
     return (1);
 }

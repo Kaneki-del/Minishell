@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:22:24 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 00:24:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:51:03 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	open_file_part_two(char *file, int in_or_out)
 		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (ret == -1)
 		{
-			ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+			ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
 			return (-1);
 		}
 	}
@@ -31,7 +31,7 @@ static int	open_file_part_two(char *file, int in_or_out)
 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (ret == -1)
 		{
-			ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+			ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
 			return (-1);
 		}
 	}
@@ -45,7 +45,7 @@ static int	open_file(char *file, int in_or_out)
 	ret = 0;
 	if (!file || file[0] == '\0')
 	{
-		ft_error_exec_two("bash: ", file, ": No such file or directory", 2);
+		ft_error_exec_two("mshell: ", file, ": No such file or directory", 2);
 		return (-1);
 	}
 	if (in_or_out == 0)
@@ -54,10 +54,10 @@ static int	open_file(char *file, int in_or_out)
 		if (ret == -1)
 		{
 			if (access(file, F_OK) == -1)
-				ft_error_exec_two("bash: ", file, ": No such file or directory",
-					2);
+				ft_error_exec_two("mshell: ", file,
+					": No such file or directory", 2);
 			else if (access(file, R_OK) == -1)
-				ft_error_exec_two("bash: ", file, ": Permission denied", 2);
+				ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
 		}
 	}
 	else

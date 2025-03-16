@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 00:28:33 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:17:04 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,45 +41,39 @@ static char	**ft_split_equal_to(const char *s, t_gc **g_collector)
 	return (str);
 }
 
-static char	**get_backup_env(t_container *content)
+static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 {
-	char	**new_env;
+	t_env	*cpwd;
 
-	new_env = (char **)gc(5 * sizeof(char *), &content->g_collector);
-	new_env[0] = ft_strdup("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.",
-			&content->g_collector);
-	new_env[1] = ft_strdup("PWD=/Users/sait-nac", &content->g_collector);
-	new_env[2] = ft_strdup("SHLVL=1", &content->g_collector);
-	new_env[3] = ft_strdup("_=/usr/bin/env", &content->g_collector);
-	new_env[4] = NULL;
-	return (new_env);
+	if (check_if_there("PWD", env_list) != NULL)
+		check_if_there("PWD", env_list)->value = ft_strdup(pwd,
+			&content->g_env_collector);
+	else
+		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
+				&content->g_env_collector, 0));
+	cpwd = check_if_there("PWD", env_list);
+	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
+			env_list) != NULL)
+		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
+			&content->g_env_collector);
+	else if (cpwd != NULL && cpwd->value != NULL)
+		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
+				&content->g_env_collector, 3));
 }
 
 static void	get_pwd(t_env **env_list, t_container *content)
 {
 	char	*pwd;
-	t_env	*cpwd;
 
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
-		printf("shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-	else
 	{
-		if (check_if_there("PWD", env_list) != NULL)
-			check_if_there("PWD", env_list)->value = ft_strdup(pwd,
-				&content->g_env_collector);
-		else
-			lstadd_back_env(env_list, lstnew_env("PWD", pwd,
-					&content->g_env_collector, 0));
-		cpwd = check_if_there("PWD", env_list);
-		if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
-				env_list) != NULL)
-			check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
-				&content->g_env_collector);
-		else if (cpwd != NULL && cpwd->value != NULL)
-			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
-					&content->g_env_collector, 3));
+		ft_putstr_fd("shell-init: error retrieving current directory: ", 2);
+		ft_putstr_fd("getcwd: cannot access parent directories", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
+	else
+		get_pwd_part2(env_list, content, pwd);
 }
 
 static void	check_flags(t_env *returned_env, t_container *content, int flag)

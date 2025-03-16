@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/15 13:09:49 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:54:26 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void init_content(t_container *content)
 
 int main(int ac, char **av, char **env)
 {
-
   (void)av;
   
   t_container content;
@@ -98,14 +97,8 @@ int main(int ac, char **av, char **env)
    
     if (ac != 1 || !isatty(0))
 		return (1);
-    
     init_content(&content);
     content.line = readline("mshell$> ");
-    // if (g_sig == 4)
-    // {
-    //   dup2(0, 2);
-    //   g_sig = 0;
-    // }
     if (g_sig == 2)
     {
       content.status =  1;
@@ -118,7 +111,7 @@ int main(int ac, char **av, char **env)
     }
     if (content.line[0] != '\0')
       add_history(content.line);
-    if (parsing_case(&content) == 0) // shoud move the clear_bin here
+    if (parsing_case(&content) == 0)
     {
       free(content.line);
       clear_bin(&content.g_collector);

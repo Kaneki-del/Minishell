@@ -66,7 +66,7 @@ int pair_check_cases(t_container *content, t_env *pair, char *key)
     {
         if (content->flag == 1)
         {
-            ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
+            ft_error_exec_two("mshell: ", key, ": ambiguous redirect", 2);
             content->flag = 0;
             content->status = 1;
         }
@@ -75,7 +75,7 @@ int pair_check_cases(t_container *content, t_env *pair, char *key)
     if (pair && content->flag == 1 && pair->value && \
     (words_count(filer_qoutations(pair->value, &content->g_collector), ' ') > 1))
     {
-        ft_error_exec_two("bash: ", key, ": ambiguous redirect", 2);
+        ft_error_exec_two("mshell: ", key, ": ambiguous redirect", 2);
         content->flag = 0;
         content->status = 1;
         return (1);

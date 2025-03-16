@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 22:52:57 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	cd_home(t_container *content)
 				return ;
 			else
 			{
-				ft_error_exec_two("bash: cd: ", temp->value,
+				ft_error_exec_two("mshell: cd: ", temp->value,
 					": No such file or directory", 2);
 				content->status = 1;
 			}
@@ -60,7 +60,7 @@ static void	cd_home(t_container *content)
 	}
 	else
 	{
-		ft_error_exec_two("bash: cd", ": HOME", " not set", 2);
+		ft_error_exec_two("mshell: cd", ": HOME", " not set", 2);
 		content->status = 1;
 	}
 }

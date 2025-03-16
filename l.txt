@@ -185,14 +185,14 @@ ls: <: No such file or directory  ✅
 
 ls > saad <<< ls   ASK ILYASSSSSSSSSS  ❌
 
-bash-3.2$ ./minishell_saad   ✅
-bash: ./minishell_saad: is a directory -> use stat function to check if it a directory  ✅
+mshell-3.2$ ./minishell_saad   ✅
+mshell: ./minishell_saad: is a directory -> use stat function to check if it a directory  ✅
 
 env -i ./minishell -> SHLVL should  be shown only once command should work  
 
 
 unset PATH   
-    --> bash : minishell -> run minishell  
+    --> mshell : minishell -> run minishell  
     -> minishell: minishell -> command not found  
 
    ls > cat > ik | ls | cat | caat | ls  ✅
@@ -215,7 +215,7 @@ cat<home  ✅
 export this=" "'HOME'""   ✅
 Mini$hell$: echo $this   ✅
   'HOME'   
-bash-3.2$ exit "q"  ✅
+mshell-3.2$ exit "q"  ✅
 
 
 
@@ -228,7 +228,7 @@ Mini$hell$: export this=" "'HOME'""  ✅
 Mini$hell$: echo $this  ✅
 'HOME'  
 
-bash-3.2$ echo 'hello \\n' 
+mshell-3.2$ echo 'hello \\n' 
 hello \\n  
 cat Makefile feefe > outfile | cat outfile  
 
@@ -281,11 +281,11 @@ Mini$hell$: $a ✅
 
 << $""  ✅
  
-bash-3.2$ export a=" a     a     a   " b="   b     b       b   "✅
-bash-3.2$ $a$b✅
-bash: a: command not found✅
-bash-3.2$ "$a$b"✅
-bash:  a     a     a      b     b   b   : command not found✅
+mshell-3.2$ export a=" a     a     a   " b="   b     b       b   "✅
+mshell-3.2$ $a$b✅
+mshell: a: command not found✅
+mshell-3.2$ "$a$b"✅
+mshell:  a     a     a      b     b   b   : command not found✅
 
 
 Mini$hell$: $_ b✅

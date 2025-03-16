@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:51:37 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:28:27 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:42:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	clean_old_pwd(t_env **env_list)
 		current = current->next;
 	}
 }
+
 static void	update_old_pwd(t_container *content)
 {
 	t_env	*old_pwd;

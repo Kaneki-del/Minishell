@@ -6,46 +6,11 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 00:29:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:50:41 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static char	*get_env_path(t_container *content)
-{
-	char	*env_path;
-	t_env	*current;
-
-	current = NULL;
-	current = content->env_list;
-	env_path = NULL;
-	while (current)
-	{
-		if (ft_strcmp(current->key, "PATH") == 0)
-		{
-			env_path = ft_strdup(current->value, &content->g_collector);
-			if (env_path == NULL)
-				return (NULL);
-		}
-		current = current->next;
-	}
-	return (env_path);
-}
-
-char	**get_path(t_container *content)
-{
-	char	*path_value;
-	char	**path_list;
-
-	path_value = get_env_path(content);
-	if (!path_value)
-		return (NULL);
-	path_list = ft_split(path_value, ':', &content->g_collector);
-	if (!path_list)
-		return (NULL);
-	return (path_list);
-}
 
 static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 {
@@ -66,21 +31,21 @@ static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 	return (NULL);
 }
 
-void	print_dir_error(t_data *current)
+static void	print_dir_error(t_data *current)
 {
 	if (ft_strcmp(current->cmds[0], ".") == 0 || ft_strcmp(current->cmds[0],
 			"..") == 0)
 	{
 		if (!ft_strcmp(current->cmds[0], ".."))
 		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": command not found",
-				2);
+			ft_error_exec_two("mshell: ",
+				current->cmds[0], ": command not found", 2);
 			exit(127);
 		}
 		else
 		{
-			ft_putstr_fd("bash: .: filename argument required\n.: usage: . filename [arguments]\n",
-				2);
+			ft_putstr_fd("mshell: .: filename argument required\n", 2);
+			ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 			exit(2);
 		}
 	}
@@ -99,22 +64,22 @@ static char	*try_direct_access(t_data *current, t_container *content)
 		}
 		else
 		{
-			ft_error_exec_two("bash: ", current->cmds[0], ": Permission denied",
-				2);
+			ft_error_exec_two("mshell: ", current->cmds[0],
+				": Permission denied", 2);
 			exit(126);
 		}
 	}
 	return (NULL);
 }
 
-char	*executable(t_data *current, t_container *content)
+static char	*executable(t_data *current, t_container *content)
 {
 	char	*cmd_v;
 
 	cmd_v = try_direct_access(current, content);
 	if (!cmd_v)
 	{
-		ft_error_exec_two("bash: ", current->cmds[0],
+		ft_error_exec_two("mshell: ", current->cmds[0],
 			": No such file or directory", 2);
 		exit(127);
 	}
@@ -140,7 +105,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 		}
 		else
 		{
-			ft_error_exec_two("bash: ", current->cmds[0],
+			ft_error_exec_two("mshell: ", current->cmds[0],
 				": No such file or directory", 2);
 			exit(127);
 		}

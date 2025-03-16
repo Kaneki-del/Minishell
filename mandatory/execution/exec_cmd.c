@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:16:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:49:41 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	exec_error(t_data *current, char *cmd_path)
 	{
 		if (!ft_strcmp(current->cmds[0], "."))
 		{
-			ft_putstr_fd("bash: .: filename argument required\n.: usage: . filename [arguments]\n",
-				2);
+			ft_putstr_fd("mshell: .: filename argument required\n", 2);
+			ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 			exit(2);
 		}
-		ft_error_exec_two("bash: ", current->cmds[0], ": Is a directory", 2);
+		ft_error_exec_two("mshell: ", current->cmds[0], ": Is a directory", 2);
 		exit(126);
 	}
 	if (access(current->cmds[0], X_OK) == 0)
@@ -50,7 +50,8 @@ void	executing(t_data *current, t_container *content)
 	cmd_path = find_executable_path(current, content);
 	if (!cmd_path || ft_strcmp(current->cmds[0], "\0") == 0)
 	{
-		ft_error_exec_two("bash: ", current->cmds[0], ": command not found", 2);
+		ft_error_exec_two("mshell: ", current->cmds[0],
+			": command not found", 2);
 		exit(127);
 	}
 	list_char = env_to_array(content);

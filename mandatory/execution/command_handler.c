@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:21 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:08:42 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:38:00 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	intial(t_data **list, t_container *content)
 	{
 		if (max_herdoc(current->directions) == 1)
 		{
-			ft_error_exec_two("bash: ", "maximum here-document",
+			ft_error_exec_two("mshell: ", "maximum here-document",
 				" count exceeded", 2);
 			clean_fds(*list);
 			clear_bin(&content->g_collector);
@@ -92,5 +92,6 @@ void	execute_package(t_container *content)
 	}
 	else if (list_size >= 2)
 		run_multiple(content);
+	clean_fds(content->data);
 	tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value);
 }
