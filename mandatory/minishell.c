@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/16 14:54:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:06:55 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int main(int ac, char **av, char **env)
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-   
     if (ac != 1 || !isatty(0))
 		return (1);
     init_content(&content);
@@ -106,6 +105,7 @@ int main(int ac, char **av, char **env)
     }
     if (!content.line){
       printf("exit\n");
+      clear_bin(&content.g_env_collector);
       clear_bin(&content.g_collector);
       exit(content.status);
     }
@@ -124,6 +124,4 @@ int main(int ac, char **av, char **env)
     content.g_collector = NULL;
     content.line = NULL;
   }
-   clear_bin(&content.g_env_collector);
-  return (0);
 }

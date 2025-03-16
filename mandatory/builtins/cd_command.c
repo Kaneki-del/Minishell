@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:07:41 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ static void	cd_home(t_container *content)
 void	handle_cd(char **new_path, t_container *content)
 {
 	t_env	*tmp;
-	char	*old_pwd;
 
-	old_pwd = getcwd(NULL, 0);
 	tmp = check_if_there("PWD", &content->env_list);
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
