@@ -1,16 +1,5 @@
 #include "../../includes/minishell.h"
 
-static void input_check_redirection(t_container *content, int *i)
-{
-    if (content->line[(*i) + 1] == '>')
-    {
-        (*i)++;
-        ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("<>", &content->g_collector), T_REDIRECTE_OUT, &content->g_collector));
-    }
-    else 
-        ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("<", &content->g_collector), T_REDIRECTE_IN, &content->g_collector));
-}
-
 static void token_split(t_container *content, int *i)
 {
     if (content->line[(*i)] == '<' && content->line[(*i) + 1] == '<')
@@ -24,7 +13,7 @@ static void token_split(t_container *content, int *i)
         (*i)++;
     }
     else if (content->line[(*i)] == '<')
-        input_check_redirection(content, i);
+        ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("<", &content->g_collector), T_REDIRECTE_IN, &content->g_collector));
     else if (content->line[(*i)] == '>')
     {
         ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup(">", &content->g_collector), T_REDIRECTE_OUT, &content->g_collector));
