@@ -51,11 +51,13 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 	else
 		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
 				&content->g_env_collector, 0));
-	cpwd = check_if_there("PWD", env_list);
+	cpwd = check_if_there("PWD", env_list);	
 	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 			env_list) != NULL)
 		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
 			&content->g_env_collector);
+
+	
 	else if (cpwd != NULL && cpwd->value != NULL)
 		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
 				&content->g_env_collector, 3));
@@ -73,7 +75,10 @@ static void	get_pwd(t_env **env_list, t_container *content)
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
 	else
+	{
 		get_pwd_part2(env_list, content, pwd);
+		free(pwd);
+	}
 }
 
 static void	check_flags(t_env *returned_env, t_container *content, int flag)

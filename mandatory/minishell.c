@@ -89,7 +89,6 @@ int main(int ac, char **av, char **env)
   content.env_list = get_env_list(env, &content);
   content.status = 0;
 	 rl_catch_signals = 0;
-  
   while (1) {
 
     signal(SIGQUIT, SIG_IGN);
@@ -105,6 +104,7 @@ int main(int ac, char **av, char **env)
     }
     if (!content.line){
       printf("exit\n");
+      free(content.line);
       clear_bin(&content.g_env_collector);
       clear_bin(&content.g_collector);
       exit(content.status);

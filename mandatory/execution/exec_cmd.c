@@ -52,6 +52,8 @@ void	executing(t_data *current, t_container *content)
 	{
 		ft_error_exec_two("mshell: ", current->cmds[0],
 			": command not found", 2);
+		clear_bin(&content->g_collector);
+		clear_bin(&content->g_env_collector);
 		exit(127);
 	}
 	list_char = env_to_array(content);

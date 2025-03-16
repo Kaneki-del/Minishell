@@ -39,7 +39,10 @@ void	handle_pwd(t_container *content, t_data *current)
 			print_pwd_error(content);
 	}
 	else
+	{
 		printf("%s\n", pwd);
+		free(pwd);
+	}
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, 1);
