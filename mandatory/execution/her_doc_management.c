@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 13:50:12 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:42:14 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static char	*buffer_line(char *limiter, t_container *content)
 			&& limiter[ft_strlen(limiter) - 1] != '\''))
 		line = expand_here_doc_lines(content, line);
 	tmp = ft_strjoin(line, "\n", &content->g_collector);
+	
 	return (tmp);
 }
 

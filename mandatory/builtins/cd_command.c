@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 15:07:41 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:35:39 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static void	update_pwd(t_container *content, char *new_path)
 			current_pwd = check_if_there("CPWD", &content->env_list)->value;
 		current_pwd = join_chdir(current_pwd, new_path, content);
 	}
-	update_original_pwd(content, current_pwd);
+	{
+		update_original_pwd(content, current_pwd);
+		free(current_pwd);
+	}
 }
 
 static void	cd_home(t_container *content)
