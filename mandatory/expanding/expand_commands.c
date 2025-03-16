@@ -32,6 +32,19 @@ char *remove_quotes(char *command, t_gc **g_collector)
     return res;
 }
 
+void ft_print2(char **str)
+{
+  int i;
+
+  i = 0;
+  if (!str)
+    return ;
+  while (str[i])
+  {
+    printf("(%s)\n", str[i]);
+    i++;  
+  }
+}
 
 char **filter_all(char **cmds, t_gc **g_collector)
 {
@@ -48,9 +61,36 @@ char **filter_all(char **cmds, t_gc **g_collector)
     return (cmds);
 }
 
+int get_char_index(char *s, char c)
+{
+    int i = 0;
+    int store = 0;
+    char qoute;
+    int is_in;
+
+    is_in = 0;
+    while (s[i])
+    {
+        if (s[i] == '"' || s[i] == '\'' )
+        {
+            if (is_in == 0 )
+            {
+                is_in = 1;
+                qoute = s[i];
+            }
+            else if (is_in == 1 && qoute == s[i])
+                is_in = 0;
+        }
+        if (s[i] == c && !is_in)
+            store = i;
+        i++;
+    }
+    return (store);
+}
 
 char** prepare_export_command(char **only_command, char **cmd_options, t_container *content)
 {
+    
 	if(ft_strlen_2d(cmd_options) < 3)
 	{
 		if (cmd_options && cmd_options[1] && cmd_options[1][0] == '$')
@@ -59,10 +99,12 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
 		{
             if (ft_strcmp(cmd_options[0], "export") == 0)
             {
-			    cmd_options = ft_split(*only_command, ' ', &content->g_collector);
+                if (cmd_options[1] && cmd_options[1][get_char_index(cmd_options[1], '=') + 1] == '"' && cmd_options[1][ft_strlen(cmd_options[1]) - 1] == '"')
+                    *only_command = remove_quotes(*only_command, &content->g_collector);
+                cmd_options = ft_split(*only_command, ' ', &content->g_collector);
                 if (cmd_options[1])
                 {
-                    cmd_options[1] = remove_quotes(ft_strdup(*only_command + 7, &content->g_collector),&content->g_collector); 
+                    cmd_options[1] = ft_strdup(*only_command + 7, &content->g_collector); 
                     cmd_options[2] = NULL;
                 }
             }
@@ -74,49 +116,9 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
 		}
 	}
 	else
-		cmd_options = filter_all(normal_ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
+		cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector);
 	return (cmd_options);
 }
-// void get_index_quotesd(char *command, int *start, int *end)
-// {
-//     static char quote;
-//     int i;
-//     int command_len;
-
-//     i = 0;
-//     quote = '\0';
-//     while (command[i])
-//     {
-//         if (command[i] == '"' || command[i] == '\'')
-//         {
-//             if (quote == '\0')
-//             {
-//                 quote = command[i];
-//                 *start = i;
-//             }
-//             else if (quote == command[i] && quote !='\0')
-//             {
-//                 quote = '\0';
-//                 *end = i;
-//             }
-//         }
-//     }
-// }
-
-void ft_print2(char **str)
-{
-  int i;
-
-  i = 0;
-  if (!str)
-    return ;
-  while (str[i])
-  {
-    printf("(%s)\n", str[i]);
-    i++;  
-  }
-}
-
 
 char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, t_container *content)
 {
@@ -132,7 +134,7 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 	else
     {
         if (content->flag == 5)
-            cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector);
+            cmd_options = ft_split(*only_command, ' ', &content->g_collector);
         else
 		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
     }

@@ -98,9 +98,11 @@ void	delete_node(t_env **list_env, char *key)
 void	print_key_value(t_env *smallest)
 {
 	if (smallest->key && smallest->value)
-			printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
-		else if (!smallest->value)
-			printf("declare -x %s\n", smallest->key);
+	{
+		printf("declare -x %s=\"%s\"\n", smallest->key, smallest->value);
+	}
+	else if (!smallest->value)
+		printf("declare -x %s\n", smallest->key);
 }
 void filter_print(t_env *smallest)
 {
