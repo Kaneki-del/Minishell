@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:55:55 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,9 @@ static int	handle_pipes(t_container *content)
 
 void	run_multiple(t_container *content)
 {
-	int	status;
-	int	exit_code;
 	int	id_last_command;
 
 	content->fork_failed = 0;
-	status = 0;
-	exit_code = 0;
 	id_last_command = handle_pipes(content);
 	waitpid(id_last_command, &content->status, 0);
 	if (content->status != 1)
