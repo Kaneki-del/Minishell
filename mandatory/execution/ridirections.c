@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:22:24 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:51:03 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:35:15 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,34 +65,34 @@ static int	open_file(char *file, int in_or_out)
 	return (ret);
 }
 
-static int	rediractions_out(t_data *list, int fd, int i)
+static int	rediractions_out(t_data *list, int fd, int *i)
 {
-	i++;
+	(*i)++;
 	if (list->out_fd != 0)
 		close(list->out_fd);
-	list->out_fd = open_file(list->directions[i], fd);
+	list->out_fd = open_file(list->directions[*i], fd);
 	if (list->out_fd == -1)
 		return (1);
 	return (0);
 }
 
-static int	rideractions_handler(t_data *list, int i)
+static int	rideractions_handler(t_data *list, int *i)
 {
-	if (ft_strcmp(list->directions[i], ">") == 0)
+	if (ft_strcmp(list->directions[*i], ">") == 0)
 	{
 		if (rediractions_out(list, 1, i) == 1)
 			return (1);
 	}
-	else if (ft_strcmp(list->directions[i], "<") == 0)
+	else if (ft_strcmp(list->directions[*i], "<") == 0)
 	{
-		i++;
+		(*i)++;
 		if (list->in_fd != 0)
 			close(list->in_fd);
-		list->in_fd = open_file(list->directions[i], 0);
+		list->in_fd = open_file(list->directions[*i], 0);
 		if (list->in_fd == -1)
 			return (1);
 	}
-	else if (ft_strcmp(list->directions[i], ">>") == 0)
+	else if (ft_strcmp(list->directions[*i], ">>") == 0)
 	{
 		if (rediractions_out(list, 2, i) == 1)
 			return (1);
@@ -112,7 +112,7 @@ int	get_fds(t_data *list, t_container *content)
 		return (0);
 	while (full_cmd[i])
 	{
-		if (rideractions_handler(list, i) == 1)
+		if (rideractions_handler(list, &i) == 1)
 			return (1);
 		i++;
 	}
