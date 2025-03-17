@@ -24,7 +24,8 @@ static char	*get_env_path(t_container *content)
 	{
 		if (ft_strcmp(current->key, "PATH") == 0)
 		{
-			env_path = ft_strdup(current->value, &content->g_collector);
+			if (current->value)
+				env_path = ft_strdup(current->value, &content->g_collector);
 			if (env_path == NULL)
 				return (NULL);
 		}
