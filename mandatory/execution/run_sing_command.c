@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:39:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:39:05 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:45:56 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static void	chidl_single(t_data *current, t_container *content)
 	{
 		if (dup2(current->in_fd, 0) < 0)
 		{
-			close(current->in_fd);
-			close(current->out_fd);
+			perror("error in dup2");
 			exit(1);
 		}
 		close(current->in_fd);
@@ -28,7 +27,7 @@ static void	chidl_single(t_data *current, t_container *content)
 	{
 		if (dup2(current->out_fd, 1) < 0)
 		{
-			close(current->out_fd);
+			perror("error in dup2");
 			exit(1);
 		}
 		close(current->out_fd);
@@ -54,8 +53,8 @@ void	single_command(t_container *content)
 	content->pid = fork();
 	if (content->pid < 0)
 	{
-		clean_fd(current);
-		content->status = 1;
+		handle_fork_failure(content);
+		return ;
 	}
 	if (content->pid == 0)
 		chidl_single(current, content);

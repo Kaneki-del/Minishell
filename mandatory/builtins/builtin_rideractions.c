@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:59 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 22:43:27 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:38:34 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int	rideraction_builtins(t_data *current)
 		saved_stdout = dup(1);
 		if (saved_stdout < 0)
 		{
-			perror("error saving stdout");
-			exit(10);
+			perror("error in dup");
+			exit(1);
 		}
 		if (dup2(current->out_fd, 1) < 0)
 		{
 			perror("error in dup2");
-			exit(10);
+			exit(1);
 		}
 		close(current->out_fd);
 	}

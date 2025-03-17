@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:54:52 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 16:14:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:40:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	print_export(t_data *current, t_container *content)
 	}
 	if (saved_stdout != -1)
 	{
-		dup2(saved_stdout, 1);
+		if (dup2(saved_stdout, 1) == -1)
+			(perror("error in dup2"), exit(1));
 		close(saved_stdout);
 	}
 	content->status = 0;

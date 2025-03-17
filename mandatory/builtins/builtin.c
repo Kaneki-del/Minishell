@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 22:43:47 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:52:31 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	print_env_list(t_container *content, t_data *list)
 	}
 	if (saved_stdout != -1)
 	{
-		dup2(saved_stdout, 1);
+		if (dup2(saved_stdout, 1) == -1)
+		{
+			perror("error in dup2");
+			exit(1);
+		}
 		close(saved_stdout);
 	}
 }
@@ -54,7 +58,7 @@ void	built_in(t_data *current, t_container *content)
 	else if (ft_strcmp(current->cmds[0], "unset") == 0)
 		handle_unset(current->cmds, content, current);
 	else if (ft_strcmp(current->cmds[0], "echo") == 0)
-		handle_echo(current->cmds, current);
+		handle_echo(current);
 	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
 		handle_pwd(content, current);
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)

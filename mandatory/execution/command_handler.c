@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:21 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:38:00 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:48:16 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,21 @@ static int	max_herdoc(char **rideractions)
 	return (0);
 }
 
-static void	intial(t_data **list, t_container *content)
+static void	intial(t_data **list)
+{
+	t_data	*current;
+
+	current = NULL;
+	current = *list;
+	while (current)
+	{
+		current->in_fd = 0;
+		current->out_fd = 0;
+		current = current->next;
+	}
+}
+
+int	get_herdocs(t_data **list, t_container *content)
 {
 	t_data	*current;
 
@@ -49,21 +63,7 @@ static void	intial(t_data **list, t_container *content)
 			clear_bin(&content->g_env_collector);
 			exit(2);
 		}
-		current->in_fd = 0;
-		current->out_fd = 0;
-		current = current->next;
-	}
-}
-
-int	get_herdocs(t_data **list, t_container *content)
-{
-	t_data	*current;
-
-	current = NULL;
-	current = *list;
-	while (current)
-	{
-		if (prioritize_herdoc(current, current->directions, content) == -3)
+		else if (prioritize_herdoc(current, current->directions, content) == -3)
 			return (-3);
 		current = current->next;
 	}
@@ -75,10 +75,11 @@ void	execute_package(t_container *content)
 	int	list_size;
 
 	content->status = 0;
+	content->fork_failed = 0;
 	if (!content->data)
 		return ;
 	list_size = ft_lstsize(content->data);
-	intial(&content->data, content);
+	intial(&content->data);
 	if (get_herdocs(&content->data, content) == -3)
 		return ;
 	signal(SIGINT, ctrl_cmd);
