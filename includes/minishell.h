@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/16 14:12:33 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:09:01 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,6 @@ void	handle_fork_failure(t_container *content);
 void	execute_first(t_data *current, int *p_fd, t_container *content);
 void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
+char *remove_quotes(char *command, t_gc **g_collector);
 
 #endif

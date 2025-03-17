@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-
 char *remove_quotes(char *command, t_gc **g_collector)
 {
     char *res;
@@ -133,6 +132,7 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 	}
 	else
     {
+
         if (content->flag == 5)
             cmd_options = ft_split(*only_command, ' ', &content->g_collector);
         else
