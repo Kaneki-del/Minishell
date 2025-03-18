@@ -132,12 +132,12 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 	}
 	else
     {
-
         if (content->flag == 5)
             cmd_options = ft_split(*only_command, ' ', &content->g_collector);
         else
 		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
     }
+    // char **old = ft_split(old_cmd, ' ', &content->g_collector);
 	cmd_options = check_echo_options(cmd_options, &content->g_collector);
 	return (cmd_options);
 }

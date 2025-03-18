@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/17 16:05:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:16:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int main(int ac, char **av, char **env) {
       content.g_collector = NULL;
       continue;
     }
+    // ft_printf(&content.data);
     execute_package(&content);
     // t_env *tmp = check_if_there("a", &content.env_list);
     // if (tmp)

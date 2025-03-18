@@ -59,7 +59,6 @@ char **filterd(char **cmds,t_gc **g_collector)
 {
   int i;
   
-
   i = 0;
   if (!cmds)
     return (NULL);
@@ -67,16 +66,12 @@ char **filterd(char **cmds,t_gc **g_collector)
   {
     if (i > 0 && ft_strncmp(cmds[i - 1], "<<", 3) != 0)
     {
-      cmds[i] = filer_qoutations(cmds[i], g_collector);
+      cmds[i] = remove_quotes(cmds[i], g_collector);
       if (!cmds[i])
         return (NULL);
     }
-    if (ft_strncmp(cmds[i], "''", 3) == 0 || ft_strncmp(cmds[i], "\"\"", 3) == 0)
-    {
-      cmds[i] = filer_qoutations(cmds[i], g_collector);
-      if (!cmds[i])
-        return (NULL);
-    }
+    else if (ft_strncmp(cmds[i], "''", 3) == 0 || ft_strncmp(cmds[i], "\"\"", 3) == 0)
+      cmds[i] = remove_quotes(cmds[i], g_collector);
     i++;
   }
   return (cmds);
