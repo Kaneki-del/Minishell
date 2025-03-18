@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/17 16:09:01 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 01:40:35 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
 void	handle_unset(char **cmd, t_container *content, t_data *current);
 t_env *check_if_there(const char *key, t_env **env_list);
-void handle_echo(char **cmd,  t_data *list);
+void handle_echo(t_container *content, char **cmd,  t_data *list);
 void	handle_pwd(t_container *content, t_data *current);
 void	handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
@@ -189,5 +189,6 @@ void	execute_first(t_data *current, int *p_fd, t_container *content);
 void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
+char **filter_all(char **cmds, t_gc **g_collector);
 
 #endif

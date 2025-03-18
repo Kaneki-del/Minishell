@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 22:53:50 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:49:36 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	echo(char **cmd)
+static void	echo(t_container *content, char **cmd)
 {
 	int	i;
 	int	new_line;
@@ -30,7 +30,10 @@ static void	echo(char **cmd)
 	{
 		if (espace == 1)
 			write(1, " ", 1);
-		ft_putstr_fd(cmd[i], 1);
+		if (content->flag == 5 && ft_strncmp(content->line, "echo", 4) == 0 && ft_strchr(cmd[i], '"'))
+			ft_putstr_fd(remove_quotes(cmd[i], &content->g_collector), 1);
+		else
+			ft_putstr_fd(cmd[i], 1);
 		espace = 1;
 		i++;
 	}
@@ -38,7 +41,7 @@ static void	echo(char **cmd)
 		write(1, "\n", 1);
 }
 
-void	handle_echo(char **cmd, t_data *list)
+void	handle_echo(t_container *content, char **cmd, t_data *list)
 {
 	int	i;
 	int	saved_stdout;
@@ -48,7 +51,7 @@ void	handle_echo(char **cmd, t_data *list)
 	while (cmd[i])
 		i++;
 	if (i >= 2)
-		echo(cmd + 1);
+		echo(content, cmd + 1);
 	else
 		write(1, "\n", 1);
 	if (saved_stdout != -1)

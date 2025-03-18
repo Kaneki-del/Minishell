@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_doc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 15:51:16 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:20:07 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static char	*buffer_line(char *limiter, t_container *content)
 		free(line);
 		return (NULL);
 	}
-	else if ((check_is_in_qoutes(limiter) == 0) || (limiter[0] != '"'
-			&& limiter[0] != '\'' && limiter[ft_strlen(limiter) - 1] != '"'
-			&& limiter[ft_strlen(limiter) - 1] != '\''))
+	else if (!ft_strchr(limiter, '"') && !ft_strchr(limiter, '\''))
 	{
 		line_tmp = line;
 		line = expand_here_doc_lines(content, line_tmp);

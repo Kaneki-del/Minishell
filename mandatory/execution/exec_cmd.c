@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 15:14:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:24:15 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,36 @@ void	exec_error(t_data *current, char *cmd_path)
 		exit(0);
 }
 
+// void ft_printdd2(char **str)
+// {
+//   int i;
+
+//   i = 0;
+//   if (!str)
+//     return ;
+//   while (str[i])
+//   {
+//     printf("(%s)\n", str[i]);
+//     i++;  
+//   }
+// }
+
+// void find_quotations(char **str)
+// {
+// 	int i;
+
+//   i = 0;
+//   if (!str)
+//     return ;
+//   while (str[i])
+//   {
+// 	printf();
+//     if (str[i][0] == '"' && check_is_in_qoutes(str[i]))
+// 		str[i] = 
+//     i++;  
+//   }
+// }
+
 void	executing(t_data *current, t_container *content)
 {
 	char	*cmd_path;
@@ -41,6 +71,8 @@ void	executing(t_data *current, t_container *content)
 		exit(0);
 	if (!current->cmds || !current->cmds[0])
 		exit(0);
+	if (content->flag == 5 && check_is_in_qoutes(content->line))
+		current->cmds = filter_all(current->cmds, &content->g_collector);
 	cmd_path = find_executable_path(current, content);
 	if (!cmd_path || ft_strcmp(current->cmds[0], "\0") == 0)
 	{
