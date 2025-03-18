@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 17:24:15 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:52:18 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exec_error(t_data *current, char *cmd_path)
 {
 	if (is_directory(cmd_path))
 	{
-		ft_error_exec_two("mshell: ", current->cmds[0], ": Is a directory", 2);
+		ft_error_exec_two("mshell: ", current->cmds[0], ": is a directory", 2);
 		exit(126);
 	}
 	if (access(current->cmds[0], X_OK) == 0)

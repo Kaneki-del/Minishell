@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 22:21:56 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:41:07 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	built_in(t_data *current, t_container *content)
 	else if (ft_strcmp(current->cmds[0], "unset") == 0)
 		handle_unset(current->cmds, content, current);
 	else if (ft_strcmp(current->cmds[0], "echo") == 0)
-		handle_echo(content, current->cmds, current);
+		handle_echo(content, current);
 	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
 		handle_pwd(content, current);
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)

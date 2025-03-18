@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 22:22:06 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:36:26 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	echo(t_container *content, char **cmd)
 		write(1, "\n", 1);
 }
 
-void	handle_echo(char **cmd, t_data *list)
+void	handle_echo(t_container *content, t_data *list)
 {
 	int		i;
 	int		saved_stdout;
