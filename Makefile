@@ -13,7 +13,7 @@ FILS = $(wildcard $(M)/$(U)/*.c) \
 		$(wildcard $(M)/$(ED)/*.c)\
 		$(wildcard $(M)/*.c) 
 
-CFLAGS =  -Wall -Wextra -Werror  -g #-fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror  -g -fsanitize=address
 RLLIB1 = $(shell brew --prefix readline)/lib
 RLINC1 = $(shell brew --prefix readline)/include
 REDLINE = -lreadline -lncurses

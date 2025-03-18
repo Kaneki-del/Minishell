@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 23:54:24 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:43:52 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	handle_echo(t_data *list)
 	int		i;
 	int		saved_stdout;
 	char	**cmd;
+	
 	
 	cmd = list->cmds;
 	saved_stdout = rideraction_builtins(list);
