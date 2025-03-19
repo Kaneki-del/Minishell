@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/19 00:26:44 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:38:16 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int main(int ac, char **av, char **env) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-    if (ac != 1 || !isatty(0)) 
-      return (1); 
+    // if (ac != 1 || !isatty(0)) 
+    //   return (1); 
     init_content(&content);
     content.line = readline("mshell$> ");
     if (g_sig == 2) {

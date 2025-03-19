@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:58 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/19 00:34:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 01:00:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ static int	filter_args(char *arg)
 	i = 0;
 	if (arg[i] == '\0')
 		return 1;
-	if (arg[i] == '+' || arg[i] == '-')
-	{
+	while (arg[i] == 32 || (arg[i] >= 9 && arg[i] <= 13))
 		i++;
-	}
-	
+	if (arg[i] == '\0')
+		return 1;
+	if ((arg[i] == '+' || arg[i] == '-') && arg[i + 1] != '\0')
+		i++;
 	while (arg[i])
 	{
 		if (ft_isdigit(arg[i]) == 0)
