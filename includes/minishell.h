@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
 /*   Updated: 2025/03/18 01:40:35 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/19 02:16:04 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +24,7 @@
 #include <unistd.h>
 #include <sys/stat.h>  
 
+#define PIPE -13
 int g_sig;
 typedef enum s_type_token {
   T_WORD,
@@ -85,7 +87,9 @@ typedef struct s_container
   struct termios termios_value;
   char *save_path;
   int fork_failed;
-  pid_t	pid;  char *new_command;
+  pid_t	pid;  
+  char *new_command;
+  int if_pipe;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -190,5 +194,5 @@ void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
-
+int	is_directory(char *path);
 #endif

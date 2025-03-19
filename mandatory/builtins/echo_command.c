@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
 /*   Updated: 2025/03/18 17:49:36 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:43:52 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +42,16 @@ static void	echo(t_container *content, char **cmd)
 		write(1, "\n", 1);
 }
 
-void	handle_echo(t_container *content, char **cmd, t_data *list)
+void	handle_echo(t_container *content, t_data *list)
 {
-	int	i;
-	int	saved_stdout;
-
+	int		i;
+	int		saved_stdout;
+	char	**cmd;
+	
+	
+	cmd = list->cmds;
 	saved_stdout = rideraction_builtins(list);
+	
 	i = 0;
 	while (cmd[i])
 		i++;
@@ -56,7 +61,11 @@ void	handle_echo(t_container *content, char **cmd, t_data *list)
 		write(1, "\n", 1);
 	if (saved_stdout != -1)
 	{
-		dup2(saved_stdout, 1);
+		if (dup2(saved_stdout, 1) == -1)
+		{
+			perror("error in dup2");
+			exit(1);
+		}
 		close(saved_stdout);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:55:55 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:30:01 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ static void	last_child(t_data *current, int *p_fd, t_container *content)
 	{
 		if (dup2(current->in_fd, 0) < 0)
 		{
-			perror("dup2 in_fd");
+			perror("error in dup2");
 			exit(1);
 		}
 	}
 	if (current->out_fd != 0)
 	{
 		if (dup2(current->out_fd, 1) < 0)
-			(perror("dup2 out_fd"), exit(1));
+			(perror("error in dup2"), exit(1));
 	}
 	executing(current, content);
 }
@@ -78,14 +78,14 @@ static int	handle_pipes(t_container *content)
 
 	current = content->data;
 	if (pipe(p_fd) == -1)
-		exit(1);
+		return(perror("pipe"), -1);
 	execute_first(current, p_fd, content);
 	current = current->next;
 	while (current != NULL && current->next != NULL)
 	{
 		t = p_fd[0];
 		if (pipe(p_fd) == -1)
-			exit(1);
+			return(perror("pipe"), -1);
 		execut(content, current, p_fd, t);
 		close(t);
 		current = current->next;
@@ -97,9 +97,11 @@ static int	handle_pipes(t_container *content)
 void	run_multiple(t_container *content)
 {
 	int	id_last_command;
-
-	content->fork_failed = 0;
+	
+	content->if_pipe = PIPE;
 	id_last_command = handle_pipes(content);
+	if (id_last_command == -1)
+		exit(1);
 	waitpid(id_last_command, &content->status, 0);
 	if (content->status != 1)
 		update_status(content);

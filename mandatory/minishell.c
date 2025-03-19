@@ -68,6 +68,7 @@ void init_content(t_container *content) {
   content->is_expandable = 0;
   content->flag = 0;
   content->new_command = NULL;
+  content->if_pipe = 0;
 }
 
 int main(int ac, char **av, char **env) {
@@ -85,8 +86,8 @@ int main(int ac, char **av, char **env) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-    /*   if (ac != 1 || !isatty(0)) */
-    /* return (1); */
+    // if (ac != 1 || !isatty(0)) 
+    //   return (1); 
     init_content(&content);
     content.line = readline("mshell$> ");
     if (g_sig == 2) {
@@ -94,7 +95,8 @@ int main(int ac, char **av, char **env) {
       g_sig = 0;
     }
     if (!content.line) {
-      printf("exit\n");
+      if (isatty(STDIN_FILENO))
+	      write(2, "exit\n", 6);
       free(content.line);
       clear_bin(&content.g_env_collector);
       clear_bin(&content.g_collector);

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:30:14 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:38:39 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/17 23:46:42 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	hrdc_ctrlc(int fd, t_container *content)
 		content->status = 1;
 		if (dup2(fd, 0) == -1)
 		{
-			printf("error in dup\n");
-			return (-3);
+			perror("error in dup2");
+			exit(1);
 		}
 		close(fd);
 		return (-3);
