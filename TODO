@@ -16,14 +16,7 @@ mshell$> cat << '"'
 > 
 > 
 > 
--------------------------
-bash: 9223372036854775807: command not found
-bash-3.2$ exit 9223372036854775807  4 2  2
-exit
-bash: exit: too many arguments
-bash-3.2$ exit 9223372036854775810  4 2  2
-exit
-bash: exit: 9223372036854775810: numeric argument required
+
 -------------------------
 mshell$> $a"$b""$c"
 mshell: c"a""t": command not found

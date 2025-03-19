@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:58 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/19 01:00:40 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 16:45:48 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,7 @@ static int	filter_exit(t_container *content, char **args)
 		clear_bin(&content->g_env_collector);
 		exit(255);
 	}
-	if (chek_args_number(args + 1) > 0)
-	{
-		exit_p(content);
-		ft_putstr_fd("mshell: exit: too many arguments\n", 2);
-		content->status = 1;
-		return (1);
-	}
+	
 	return (0);
 }
 
@@ -93,6 +87,13 @@ void	handle_exit(t_data *current, t_container *content)
 		if (filter_exit(content, args))
 			return ;
 		number = ft_atoi(args[0], current, content);
+		if (chek_args_number(args + 1) > 0)
+		{
+			exit_p(content);
+			ft_putstr_fd("mshell: exit: too many arguments\n", 2);
+			content->status = 1;
+			return ; 
+		}
 		exit_code = number % 256;
 		if (exit_code < 0)
 			exit_code += 256;
