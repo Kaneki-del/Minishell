@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 23:52:12 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:30:01 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ static int	handle_pipes(t_container *content)
 void	run_multiple(t_container *content)
 {
 	int	id_last_command;
-
+	
+	content->if_pipe = PIPE;
 	id_last_command = handle_pipes(content);
 	if (id_last_command == -1)
 		exit(1);

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/17 23:53:09 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:28:56 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <sys/stat.h>  
 
+#define PIPE -13
 int g_sig;
 typedef enum s_type_token {
   T_WORD,
@@ -85,7 +86,9 @@ typedef struct s_container
   struct termios termios_value;
   char *save_path;
   int fork_failed;
-  pid_t	pid;  char *new_command;
+  pid_t	pid;  
+  char *new_command;
+  int if_pipe;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/18 15:33:06 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:26:44 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void init_content(t_container *content) {
   content->is_expandable = 0;
   content->flag = 0;
   content->new_command = NULL;
+  content->if_pipe = 0;
 }
 
 int main(int ac, char **av, char **env) {
