@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 23:41:07 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:00:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	handle_export(t_data *current, t_container *content)
 
 void	built_in(t_data *current, t_container *content)
 {
-	if (ft_strcmp(content->data->cmds[0], "env") == 0)
+	if (ft_strcmp(current->cmds[0], "env") == 0)
 		print_env_list(content, content->data);
 	else if (ft_strcmp(current->cmds[0], "export") == 0)
 		handle_export(current, content);

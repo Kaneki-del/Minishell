@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 23:36:26 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:00:42 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	handle_echo(t_container *content, t_data *list)
 	int		i;
 	int		saved_stdout;
 	char	**cmd;
+	
 	
 	cmd = list->cmds;
 	saved_stdout = rideraction_builtins(list);
