@@ -74,7 +74,7 @@ int finding_and_expanding(t_container *content, char *command, int *i, char qout
             ;
         else
         {
-            check_expanding_variables(content, command, i, qoute);  
+            check_expanding_variables(content, command, i, qoute); 
             return (1);
         }
     }
