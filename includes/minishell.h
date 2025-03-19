@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/19 00:28:56 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/19 02:16:04 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,5 +192,5 @@ void	execute_first(t_data *current, int *p_fd, t_container *content);
 void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
-
+int	is_directory(char *path);
 #endif

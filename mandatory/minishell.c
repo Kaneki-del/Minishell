@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/19 00:38:16 by sait-nac         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 void ctrl_c(int sig) {
@@ -95,7 +83,8 @@ int main(int ac, char **av, char **env) {
       g_sig = 0;
     }
     if (!content.line) {
-      printf("exit\n");
+      if (isatty(STDIN_FILENO))
+	      write(2, "exit\n", 6);
       free(content.line);
       clear_bin(&content.g_env_collector);
       clear_bin(&content.g_collector);
