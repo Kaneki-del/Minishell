@@ -156,9 +156,9 @@ void expanding_cmds_redirections(t_container *content, char **only_command, char
 	}
 }
 
-int pair_check_cases(t_container *content, t_env *pair, char *key)
+int pair_check_cases(t_container *content, t_env *pair, char *key, int is_here_doc)
 {
-    if (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3)
+    if (!is_here_doc && (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3))
     {
         if (content->flag == 1)
         {
@@ -168,7 +168,7 @@ int pair_check_cases(t_container *content, t_env *pair, char *key)
         }
         return (1);
     }
-    if (pair && content->flag == 1 && pair->value && \
+    if (!is_here_doc && pair && content->flag == 1 && pair->value && \
     (words_count(filer_qoutations(pair->value, &content->g_collector), ' ') > 1))
     {
         ft_error_exec_two("mshell: ", key, ": ambiguous redirect", 2);
@@ -179,7 +179,7 @@ int pair_check_cases(t_container *content, t_env *pair, char *key)
     return (0);
 }
 
-char *expand(t_container *content, char *command, int *i)
+char *expand(t_container *content, char *command, int *i, int is_here_doc)
 {
     t_env *pair;
     char *key;
@@ -195,7 +195,7 @@ char *expand(t_container *content, char *command, int *i)
     ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
     pair = check_if_there(key, &content->env_list);
     (*i) = start;
-    if (pair_check_cases(content, pair, key) == 1)
+    if (pair_check_cases(content, pair, key, is_here_doc) == 1)
         return (ft_strdup("\0", &content->g_collector));
     content->flag = 5;
     if (!pair->value)

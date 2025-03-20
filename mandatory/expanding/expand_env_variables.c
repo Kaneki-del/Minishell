@@ -52,7 +52,7 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
         (*i)++;
     else if (ft_isalnum(command[(*i)]) || command[(*i)] == '_')
     {
-        expanded_part = expand(content, command, i);
+        expanded_part = expand(content, command, i, 0);
         if (expanded_part)
             content->new_command = ft_strjoin(content->new_command, expanded_part, &content->g_collector);
         return (expanded_part);

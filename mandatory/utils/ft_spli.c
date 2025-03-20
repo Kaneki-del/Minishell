@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_qoutes copy.c                                :+:      :+:    :+:   */
+/*   ft_spli.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/20 03:10:22 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:39:47 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ char **ft_spl(const char *s, char c, t_gc **g_collector) {
     p[j] = NULL;
     return p;
 }
-
-
 
 
 // char **ft_split(char const *s, char c, t_gc **g_collector) {

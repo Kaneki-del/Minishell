@@ -16,7 +16,7 @@ int here_doc_expander(t_container *content, char *command, char **new_command, i
 		(*i)++;
 	else if (ft_isalnum(command[(*i)]) || command[(*i)] == '_')
 	{
-		curent_part = expand(content, command, i);
+		curent_part = expand(content, command, i, 1);
 		if (curent_part)
 			*new_command = ft_strjoin(*new_command, curent_part, &content->g_collector);
 		return (1);

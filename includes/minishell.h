@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/20 03:08:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:21:40 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,8 @@ int check_is_last_redirection(t_token *iter, t_container *content);
 int check_is_pipe_first(t_token *iter, t_container *content, int flag);
 char *add_qoutations(char *command, t_gc **g_collector);
 char in_quotations(char *command, int *i, char qoute, int *is_in);
-int pair_check_cases(t_container *content, t_env *pair, char *key);
-char *expand(t_container *content, char *command, int *i);
+int pair_check_cases(t_container *content, t_env *pair, char *key, int is_here_doc);
+char *expand(t_container *content, char *command, int *i, int is_here_doc);
 void update_status(t_container *content);
 void	ctrl_cmd(int sig);
 char *expand_here_doc_lines(t_container *content, char *command);

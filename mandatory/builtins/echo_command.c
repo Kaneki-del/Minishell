@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 03:17:29 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:15:04 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,88 @@
 // 			hold = ft_strjoin(hold, cmd_no_cotes[j], &content->g_collector);
 // 			j++;
 // 		}
-// 		cmds[i] = hold;
+// 		cmds[i] = hold;	
 // 		printf("(%s)\n", hold);
 // 		i++;
 // 	}
 // 	return (cmds);
 // }
+int is_only_space(char *cmd)
+{
+	int j = 0;
+	if (!cmd)
+		return (0);
+	while (cmd[j])
+	{
+		if (cmd[j] != ' ')
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
+char **prepare_last_command(t_container *content, char **temp_cmd, char **cmd)
+{
+	int j = 0;
+	size_t count;
+	int i;
+
+	count = 0;
+	while (temp_cmd[j])
+	{
+		if (is_only_space(temp_cmd[j]))
+			count++;
+		j++;
+	}
+	cmd = gc((sizeof(char *) * (count + 1)), &content->g_collector);
+	if (!cmd)
+		return (NULL);
+	j = 0;
+	i = 0;
+	while (temp_cmd[j])
+	{
+		if (is_only_space(temp_cmd[j]) == 1)
+		{
+			printf("(%s)\n", temp_cmd[j]);
+			cmd[i] = temp_cmd[j];
+			if (!cmd[i])
+				return (NULL);
+			i++;	
+		}	
+		j++;
+	}
+	cmd[i] = NULL;
+	return (cmd);
+}
 
 static void	echo(t_container *content, t_data *current)
 {
 	int	i;
 	int	new_line;
 	int	espace;
+	// char **temp_cmd;
 	char **cmd;
+	char *old_cmd;
 
 	espace = 0;
 	new_line = 0;
-	expanding_cmds_redirections(content, &current->befor_expanding, NULL, 1);
-	cmd = ft_spl(current->befor_expanding, ' ', &content->g_collector);
+	cmd = NULL;
+	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector);
+	expanding_cmds_redirections(content, &current->befor_expanding, NULL, 0);
+	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector);
 	int j = 0;
 	while (cmd[j])
 	{
-		printf("(%s%d)\n", cmd[j], j);
+		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
+			cmd[j] = remove_quotes(cmd[j], &content->g_collector);
 		j++;
 	}
 	
+	// if (!temp_cmd || !temp_cmd[0])
+	// 	return ;
+	// cmd = prepare_last_command(content, temp_cmd, cmd);
+	// if (!cmd || !cmd[0])
+	// 	return ;
 	i = 1;
 	if (ft_strcmp(cmd[i], "-n") == 0)
 	{
