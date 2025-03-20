@@ -142,17 +142,17 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 	return (cmd_options);
 }
 
-void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files) //export a="echo sdf"   export k="export $a"
+void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files, int shoud_skeep) //export a="echo sdf"   export k="export $a"
 {
-	if (*only_command)
+	if (only_command && *only_command)
 	{
 		content->flag = 2;
-		*only_command = check_env_var(content, *only_command);
+		*only_command = check_env_var(content, *only_command, shoud_skeep);
 	}
-	if (*dir_files)
+	if (dir_files && *dir_files)
 	{
 		content->flag = 1;
-		*dir_files = check_env_var(content, *dir_files);
+		*dir_files = check_env_var(content, *dir_files, shoud_skeep);
 	}
 }
 

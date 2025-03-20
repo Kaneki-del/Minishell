@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/18 23:37:22 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 03:08:09 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_data {
   t_type_token dir_input_type;
   t_type_token dir_output_type;
   struct s_data *next;
-
+  char *befor_expanding;
 } t_data;
 
 typedef struct s_gc {
@@ -96,7 +96,7 @@ char *ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collector);
-t_data *new_data_node(char **command, char **directions, t_gc **g_collector);
+t_data *new_data_node(char *before_command,char **command, char **directions, t_gc **g_collector);
 void add_data_back(t_data **lst, t_data *new);
 char *ft_chrjoin(char c, char b, t_gc **g_collector);
 void	single_command(t_container *content);
@@ -115,7 +115,7 @@ t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc *
 char *filer_qoutations(char *command_line,  t_gc **g_collector);
 char **filterd(char **cmds,t_gc **g_collector);
 int tokener(t_container *content);
-char *check_env_var(t_container *content, char *command);
+char *check_env_var(t_container *content, char *command, int shoud_skeep);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_container *content);
@@ -164,7 +164,7 @@ int her_doc(char *limiter, t_container *content);
 char    **normal_ft_split(char const *s, char c, t_gc **g_collector);
 char *expand_here_doc_lines(t_container *content, char *command);
 char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, t_container *content);
-void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files);
+void expanding_cmds_redirections(t_container *content, char **only_command, char **dir_files, int shoud_skeep);
 int token_checker(t_container *content);
 int check_is_last_redirection(t_token *iter, t_container *content);
 int check_is_pipe_first(t_token *iter, t_container *content, int flag);
@@ -190,5 +190,5 @@ void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
-
+char **ft_spl(const char *s, char c, t_gc **g_collector);
 #endif

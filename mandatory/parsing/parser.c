@@ -40,12 +40,11 @@ int parser(t_container *content)
 	{
 		iter = init_data(iter, &dir_files, &only_command, &content->g_collector);
 		old_command = only_command;
-		expanding_cmds_redirections(content, &only_command, &dir_files);
+		expanding_cmds_redirections(content, &only_command, &dir_files, 0);
 		if (content->flag == 0)
 			return (0);
 		cmd_options = prepare_commands(&only_command, old_command, cmd_options, content);
-
-		add_data_back(&content->data, new_data_node(cmd_options, filterd(ft_split(dir_files, ' ', \
+		add_data_back(&content->data, new_data_node(old_command, cmd_options, filterd(ft_split(dir_files, ' ', \
 		&content->g_collector), &content->g_collector), &content->g_collector));
 	}
 	return (1);

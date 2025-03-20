@@ -1,0 +1,13 @@
+'t'
+Makefile
+cmds
+faced_cases.txt
+fi
+includes
+l.txt
+mandatory
+minishell
+minishell_tests.txt
+mpanic
+s
+t

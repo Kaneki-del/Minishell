@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/18 23:52:18 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 02:53:43 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,30 @@ void	exec_error(t_data *current, char *cmd_path)
 //   }
 // }
 
-void	executing(t_data *current, t_container *content)
+void    executing(t_data *current, t_container *content)
 {
-	char	*cmd_path;
-	char	**list_char;
+    char    *cmd_path;
+    char    **list_char;
 
-	if (!content->env_list)
-		exit(0);
-	if (!current->cmds || !current->cmds[0])
-		exit(0);
-	if (content->flag == 5 && check_is_in_qoutes(content->line))
-		current->cmds = filter_all(current->cmds, &content->g_collector);
-	cmd_path = find_executable_path(current, content);
-	if (!cmd_path || ft_strcmp(current->cmds[0], "\0") == 0)
-	{
-		ft_error_exec_two("mshell: ", current->cmds[0],
-			": command not found", 2);
-		clear_bin(&content->g_collector);
-		clear_bin(&content->g_env_collector);
-		exit(127);
-	}
-	list_char = env_to_array(content);
-	if (current->cmds)
-	{
-		if (execve(cmd_path, current->cmds, list_char) == -1)
-			exec_error(current, cmd_path);
-	}
+    if (!content->env_list)
+        exit(0);
+    if (!current->cmds || !current->cmds[0])
+        exit(0);
+    if (content->flag == 5 && (ft_strchr(content->line, '\'') || ft_strchr(content->line, '"')))
+        current->cmds = filter_all(current->cmds, &content->g_collector);
+    cmd_path = find_executable_path(current, content);
+    if (!cmd_path || ft_strcmp(current->cmds[0], "\0") == 0)
+    {
+        ft_error_exec_two("mshell: ", current->cmds[0],
+            ": command not found", 2);
+        clear_bin(&content->g_collector);
+        clear_bin(&content->g_env_collector);
+        exit(127);
+    }
+    list_char = env_to_array(content);
+    if (current->cmds)
+    {
+        if (execve(cmd_path, current->cmds, list_char) == -1)
+            exec_error(current, cmd_path);
+    }
 }

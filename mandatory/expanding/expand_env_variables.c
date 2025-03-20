@@ -60,13 +60,16 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
     return (NULL);
 }
 
-int finding_and_expanding(t_container *content, char *command, int *i, char qoute, int *is_in, int *inexpand_here)
+int finding_and_expanding(t_container *content, char *command, int *i, char qoute, int *is_in, int *inexpand_here, int shoud_skeep)
 {
     char *expanded_part;
 
+    (void) shoud_skeep;
     expanded_part = NULL;
     if (command[(*i)] == '<' && command[(*i) + 1] == '<' && !*is_in)
         *inexpand_here = 1;
+    if (shoud_skeep && (((command[(*i)] == '"' || command[(*i)] == '\'') && qoute == command[(*i)] && *is_in) || ((command[(*i)] == '"' || command[(*i)] == '\'') && !*is_in)))
+        return ((*i)++, 1);
     if (command[(*i)] == '$' && qoute != '\'' && command[(*i) + 1] != qoute && (ft_isalnum(command[(*i) + 1]) \
     || command[(*i) + 1] == '\''  || command[(*i) + 1] == '"' || command[(*i) + 1] == '?' || command[(*i) + 1] == '_'))
     {
@@ -90,7 +93,7 @@ int finding_and_expanding(t_container *content, char *command, int *i, char qout
     return (0);
 }
 // the first this is the epandable string shoud starts with $ and end with special character 
-char *check_env_var(t_container *content, char *command)
+char *check_env_var(t_container *content, char *command, int shoud_skeep)
 {
     int i;
     int is_in;
@@ -107,7 +110,7 @@ char *check_env_var(t_container *content, char *command)
     while (command[i])
     {
         qoute = in_quotations(command, &i, qoute, &is_in);
-        if (finding_and_expanding(content, command, &i, qoute, &is_in, &inexpand_here))
+        if (finding_and_expanding(content, command, &i, qoute, &is_in, &inexpand_here, shoud_skeep))
             continue;
         content->new_command = ft_strchr_join(content->new_command, command[i], &content->g_collector);
         i++;
