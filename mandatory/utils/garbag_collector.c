@@ -52,6 +52,7 @@ void *gc(size_t size, t_gc **garbage_list)
     {
         clear_bin(garbage_list);
         write(2, "allocation failed!", 17);
+        exit(EXIT_FAILURE);
     }
     new_garbage_node->adress = allocated;
     new_garbage_node->next = NULL;

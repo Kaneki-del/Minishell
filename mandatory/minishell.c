@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/18 16:16:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:38:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int main(int ac, char **av, char **env) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-    // if (ac != 1 || !isatty(0)) 
-    //   return (1); 
+    if (ac != 1 || !isatty(0)) 
+      return (1); 
     init_content(&content);
     content.line = readline("mshell$> ");
     if (g_sig == 2) {
