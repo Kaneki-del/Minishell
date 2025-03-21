@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/20 15:21:40 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:06:34 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ typedef struct s_container
   struct termios termios_value;
   char *save_path;
   int fork_failed;
-  pid_t	pid;  char *new_command;
+  pid_t	pid;
+  char *new_command;
+  int is_status;
 } t_container;
 
 char *ft_strrchr(const char *s, int c);
@@ -174,7 +176,6 @@ int pair_check_cases(t_container *content, t_env *pair, char *key, int is_here_d
 char *expand(t_container *content, char *command, int *i, int is_here_doc);
 void update_status(t_container *content);
 void	ctrl_cmd(int sig);
-char *expand_here_doc_lines(t_container *content, char *command);
 int prioritize_herdoc(t_data *list, char **rideractions, t_container *content);
 void	ctrl_c(int sig);
 void	update_original_pwd(t_container *content, char *path);

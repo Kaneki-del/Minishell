@@ -13,7 +13,7 @@ char *exit_status(t_container *content, int *i)
     return (res);
 }
 
-static char *expand_telda(char *command, int *i, t_env **env_list)
+static char *expand_telda(char *command, int *i, t_container *content)
 {
     t_env *pair;
 
@@ -24,9 +24,9 @@ static char *expand_telda(char *command, int *i, t_env **env_list)
     && command[(*i) - 1] == '='))))
     {
         (*i)++;
-        pair = check_if_there("HOME", env_list);
+        pair = check_if_there("HOME", &content->env_list);
         if (!pair)
-            return (NULL);
+            return (ft_strdup("", &content->g_collector));
         return (pair->value);
     }
     return (NULL);
@@ -43,9 +43,9 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
     if (command[(*i)] == '?')
     {
         (*i)++;
-        content->new_command = ft_strjoin(content->new_command, \
-        ft_itoa(content->status, &content->g_collector), &content->g_collector);
-        return (expanded_part);
+        content->new_command = ft_strjoin(content->new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
+        // printf("[%s]\n", content->new_command);
+        return (expanded_part);//   --------
     }
     else if (((ft_isdigit(command[(*i)]) || (!ft_isalpha(command[(*i)]) && command[(*i)] != '_')) \
     && (command[(*i)] != '"' && command[(*i)] != '\'' )))
@@ -83,7 +83,7 @@ int finding_and_expanding(t_container *content, char *command, int *i, char qout
     }
     else if(qoute != '"' && qoute != '\'' && command[(*i)] == '~' && !*inexpand_here)
     {
-        expanded_part = expand_telda(command, i, &content->env_list);
+        expanded_part = expand_telda(command, i, content);
         if (expanded_part)
         {
             content->new_command = ft_strjoin(content->new_command, expanded_part, &content->g_collector);

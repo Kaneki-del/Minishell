@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/18 23:44:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:08:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void init_content(t_container *content) {
   content->line = NULL;
   content->is_expandable = 0;
   content->flag = 0;
+  content->is_status = 0;
   content->new_command = NULL;
 }
 
@@ -110,6 +111,7 @@ int main(int ac, char **av, char **env) {
     }
     // ft_printf(&content.data);
     execute_package(&content);
+
     // t_env *tmp = check_if_there("a", &content.env_list);
     // if (tmp)
     //   printf("the key=%s, value=%s\n", tmp->key, tmp->value);

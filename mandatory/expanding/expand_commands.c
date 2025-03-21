@@ -31,20 +31,6 @@ char *remove_quotes(char *command, t_gc **g_collector)
     return res;
 }
 
-void ft_print2(char **str)
-{
-  int i;
-
-  i = 0;
-  if (!str)
-    return ;
-  while (str[i])
-  {
-    printf("(%s)\n", str[i]);
-    i++;  
-  }
-}
-
 char **filter_all(char **cmds, t_gc **g_collector)
 {
     int i;
@@ -138,7 +124,6 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
     }
     // char **old = ft_split(old_cmd, ' ', &content->g_collector);
-	cmd_options = check_echo_options(cmd_options, &content->g_collector);
 	return (cmd_options);
 }
 

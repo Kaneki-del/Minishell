@@ -40,6 +40,7 @@ int parser(t_container *content)
 	{
 		iter = init_data(iter, &dir_files, &only_command, &content->g_collector);
 		old_command = only_command;
+		content->is_status = content->status;
 		expanding_cmds_redirections(content, &only_command, &dir_files, 0);
 		if (content->flag == 0)
 			return (0);
