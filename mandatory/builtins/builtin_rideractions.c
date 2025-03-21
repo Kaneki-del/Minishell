@@ -6,15 +6,15 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:59 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 14:28:46 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:04:07 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	rideraction_builtins(t_data *current)
+int	rideraction_builtins(t_data *current, t_container *content)
 {
-	int	saved_stdout; 
+	int	saved_stdout;
 
 	saved_stdout = -1;
 	if (current->in_fd != 0)
@@ -25,12 +25,12 @@ int	rideraction_builtins(t_data *current)
 		if (saved_stdout < 0)
 		{
 			perror("error in dup");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		if (dup2(current->out_fd, 1) < 0)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		close(current->out_fd);
 	}

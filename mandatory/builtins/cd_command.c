@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_command.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 16:10:14 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:45:06 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static char	*join_chdir(char *currpwd, char *path, t_container *content)
 	ft_putstr_fd("getcwd: cannot access ", 2);
 	ft_putstr_fd("parent directories: No such file or directory\n", 2);
 	if (currpwd[ft_strlen(currpwd) - 1] != '/')
-		currpwd = ft_strjoin(currpwd, "/", &content->g_collector);
-	currpwd = ft_strjoin(currpwd, path, &content->g_collector);
+		currpwd = ft_strjoin(currpwd, "/", &content->g_collector, content);
+	currpwd = ft_strjoin(currpwd, path, &content->g_collector, content);
 	return (currpwd);
 }
 
@@ -76,7 +76,7 @@ void	handle_cd(char **new_path, t_container *content)
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
 	else
-		content->save_path = ft_strdup("", &content->g_collector);
+		content->save_path = ft_strdup("", &content->g_collector, content);
 	if (new_path && new_path[0])
 	{
 		if (content->flag)

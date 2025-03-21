@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:52:05 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 13:53:40 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:01:36 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static char	*get_env_path(t_container *content)
 		if (ft_strcmp(current->key, "PATH") == 0)
 		{
 			if (current->value)
-				env_path = ft_strdup(current->value, &content->g_collector);
+				env_path = ft_strdup(current->value, &content->g_collector,
+						content);
 			if (env_path == NULL)
 				return (NULL);
 		}

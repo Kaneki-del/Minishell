@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:11:48 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:12:28 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:39:00 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char **fill_env_arr(int count, t_container *content)
 	int		i;
 	t_env	*temp;
 
-	env_array = gc((count + 1) * sizeof(char *), &content->g_collector);
+	env_array = gc((count + 1) * sizeof(char *), &content->g_collector, content);
 	if (!env_array)
 	{
 		perror("malloc failed");
@@ -50,8 +50,8 @@ static char **fill_env_arr(int count, t_container *content)
 	i = 0;
 	while (temp)
 	{
-		tem = ft_strjoin(temp->key, "=", &content->g_collector);
-		env_array[i] = ft_strjoin(tem, temp->value, &content->g_collector);
+		tem = ft_strjoin(temp->key, "=", &content->g_collector, content);
+		env_array[i] = ft_strjoin(tem, temp->value, &content->g_collector, content);
 		i++;
 		temp = temp->next;
 	}

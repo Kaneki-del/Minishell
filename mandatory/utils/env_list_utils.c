@@ -6,20 +6,20 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:26:35 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 17:31:59 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:47:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env	*lstnew_env(char *key, char *value, t_gc **g_env_collector, int set)
+t_env	*lstnew_env(char *key, char *value, t_container *content, int set)
 {
 	t_env	*new_node;
 
-	new_node = (t_env *)gc(sizeof(t_env), g_env_collector);
-	new_node->key = ft_strdup(key, g_env_collector);
+	new_node = (t_env *)gc(sizeof(t_env), &content->g_env_collector, content);
+	new_node->key = ft_strdup(key, &content->g_env_collector, content);
 	if (value)
-		new_node->value = ft_strdup(value, g_env_collector);
+		new_node->value = ft_strdup(value, &content->g_env_collector, content);
 	else
 		new_node->value = NULL;
 	new_node->print_flag = set;

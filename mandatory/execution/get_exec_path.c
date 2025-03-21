@@ -6,13 +6,14 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:31:15 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:01:26 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
+static char	*check_cmd_path(char **path_list, char *cmd_name,
+	t_container *content)
 {
 	int		i;
 	char	*full_cmd_path;
@@ -20,8 +21,10 @@ static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 	i = 0;
 	while (path_list[i])
 	{
-		full_cmd_path = ft_strjoin(path_list[i], "/", gc);
-		full_cmd_path = ft_strjoin(full_cmd_path, cmd_name, gc);
+		full_cmd_path = ft_strjoin(path_list[i], "/", &content->g_collector,
+				content);
+		full_cmd_path = ft_strjoin(full_cmd_path, cmd_name,
+				&content->g_collector, content);
 		if (!full_cmd_path)
 			return (NULL);
 		if (access(full_cmd_path, X_OK) == 0)
@@ -50,7 +53,7 @@ static char	*try_direct_access(t_data *current, t_container *content)
 	{
 		if (access(current->cmds[0], X_OK) == 0)
 		{
-			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
 		}
 		else
@@ -91,7 +94,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 	{
 		if (access(current->cmds[0], X_OK) == 0)
 		{
-			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
 		}
 		else
@@ -102,6 +105,6 @@ char	*find_executable_path(t_data *current, t_container *content)
 		}
 	}
 	print_dir_error(current);
-	cmd_v = check_cmd_path(path, current->cmds[0], &content->g_collector);
+	cmd_v = check_cmd_path(path, current->cmds[0], content);
 	return (cmd_v);
 }

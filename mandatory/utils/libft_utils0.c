@@ -10,12 +10,12 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1,  t_gc **g_collector)
+char	*ft_strdup(const char *s1,  t_gc **g_collector, t_container *content)
 {
 	size_t	i;
 	char	*p;
 
-	p = gc(ft_strlen(s1) + 1, g_collector);
+	p = gc(ft_strlen(s1) + 1, g_collector, content);
 	if (!p)
 		return (NULL);
 	i = -1;
@@ -52,7 +52,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector)
+char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector, t_container *content)
 {
 	size_t	total_len;
 	char	*result;
@@ -64,7 +64,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector)
 	if (!s2)
 		return (ft_strdup(s1, g_collector));
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	result = gc(total_len, g_collector);
+	result = gc(total_len, g_collector, content);
 	if (!result)
 		return (NULL);
 	ft_strlcpy(result, s1, total_len);

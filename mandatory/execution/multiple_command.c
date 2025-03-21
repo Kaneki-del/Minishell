@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:32:32 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:52:32 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void	last_child(t_data *current, int *p_fd, t_container *content)
 		if (dup2(current->in_fd, 0) < 0)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 	}
 	if (current->out_fd != 0)
 	{
 		if (dup2(current->out_fd, 1) < 0)
-			(perror("error in dup2"), exit(1));
+			(perror("error in dup2"), clean_exit2(content, 1));
 	}
 	executing(current, content);
 }

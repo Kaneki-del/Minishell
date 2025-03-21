@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:51:37 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:42:45 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:45:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static void	update_old_pwd(t_container *content)
 	{
 		if (content->save_path != NULL)
 			old_pwd->value = ft_strdup(content->save_path,
-					&content->g_env_collector);
+					&content->g_env_collector, content);
 		else
-			old_pwd->value = ft_strdup("", &content->g_env_collector);
+			old_pwd->value = ft_strdup("", &content->g_env_collector, content);
 	}
 	else
 		lstadd_back_env(&content->env_list, lstnew_env("OLDPWD",
@@ -52,7 +52,7 @@ void	update_original_pwd(t_container *content, char *path)
 	update_old_pwd(content);
 	pwd = check_if_there("PWD", &content->env_list);
 	if (pwd && path)
-		pwd->value = ft_strdup(path, &content->g_env_collector);
+		pwd->value = ft_strdup(path, &content->g_env_collector, content);
 	else if (path)
 		lstadd_back_env(&content->env_list, lstnew_env("PWD", path,
 				&content->g_env_collector, 1));

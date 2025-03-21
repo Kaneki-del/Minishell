@@ -6,13 +6,13 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:31:01 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:46:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	**ft_split_equal_to(const char *s, t_gc **g_collector)
+static char	**ft_split_equal_to(const char *s, t_container *content)
 {
 	char	**str;
 	size_t	len;
@@ -20,19 +20,19 @@ static char	**ft_split_equal_to(const char *s, t_gc **g_collector)
 
 	if (s == NULL)
 		return (NULL);
-	str = gc(sizeof(char *) * 3, g_collector);
+	str = gc(sizeof(char *) * 3, &content->g_collector, content);
 	len = ft_strlen(s);
 	j = 0;
 	while (s[j] != '=' && s[j] != '\0')
 		j++;
 	if (s[j] == '=')
 	{
-		str[0] = ft_substr(s, 0, j, g_collector);
-		str[1] = ft_substr(s, j + 1, len - j, g_collector);
+		str[0] = ft_substr(s, 0, j, &content->g_collector);
+		str[1] = ft_substr(s, j + 1, len - j, &content->g_collector);
 	}
 	else
 	{
-		str[0] = ft_strdup(s, g_collector);
+		str[0] = ft_strdup(s, &content->g_collector, content);
 		str[1] = NULL;
 	}
 	str[2] = NULL;
@@ -45,7 +45,7 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 
 	if (check_if_there("PWD", env_list) != NULL)
 		check_if_there("PWD", env_list)->value = ft_strdup(pwd,
-			&content->g_env_collector);
+			&content->g_env_collector, content);
 	else
 		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
 				&content->g_env_collector, 0));
@@ -53,7 +53,7 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 			env_list) != NULL)
 		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
-			&content->g_env_collector);
+			&content->g_env_collector, content);
 	else if (cpwd != NULL && cpwd->value != NULL)
 		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
 				&content->g_env_collector, 3));
@@ -105,7 +105,7 @@ t_env	*get_env_list(char **env, t_container *content)
 	}
 	while (env[i])
 	{
-		temp = ft_split_equal_to(env[i], &content->g_collector);
+		temp = ft_split_equal_to(env[i], content);
 		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1],
 				&content->g_env_collector, 0));
 		i++;

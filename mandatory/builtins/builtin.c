@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:16:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:53:17 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_env_list(t_container *content, t_data *list)
 	t_env	*current;
 	int		saved_stdout;
 
-	saved_stdout = rideraction_builtins(list);
+	saved_stdout = rideraction_builtins(list, content);
 	current = content->env_list;
 	while (current != NULL)
 	{
@@ -30,7 +30,7 @@ void	print_env_list(t_container *content, t_data *list)
 		if (dup2(saved_stdout, 1) == -1)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		close(saved_stdout);
 	}
