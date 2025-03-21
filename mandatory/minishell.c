@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/21 01:15:22 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:54:04 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,23 @@ void init_content(t_container *content) {
   content->if_pipe = 0;
 }
 int main(int ac, char **av, char **env) {
+  
   (void)av;
   (void)ac;
-
   t_container content;
+  
   tcgetattr(STDERR_FILENO, &content.termios_value);
   content.g_env_collector = NULL;
   content.g_collector = NULL;
   content.env_list = get_env_list(env, &content);
   content.status = 0;
   rl_catch_signals = 0;
-  while (1) {
-
-    signal(SIGQUIT, SIG_IGN);
-    signal(SIGINT, ctrl_c);
+  while (1) 
+  {
     if (ac != 1 || !isatty(0)) 
       return (1); 
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, ctrl_c);
     init_content(&content);
     content.line = readline("mshell$> ");
     if (g_sig == 2) {

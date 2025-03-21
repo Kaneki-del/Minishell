@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:59 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 23:38:34 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:28:46 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	rideraction_builtins(t_data *current)
 {
-	int	saved_stdout;
+	int	saved_stdout; 
 
 	saved_stdout = -1;
 	if (current->in_fd != 0)
