@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_doc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 23:26:09 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:31:54 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*buffer_line(char *limiter, t_container *content)
 	char	*line;
 	char	*tmp;
 	char	*line_tmp;
-	
+
 	line_tmp = readline("> ");
 	if (line_tmp == NULL || g_sig)
 		return (NULL);

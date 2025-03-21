@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/21 00:53:34 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:15:22 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,11 @@
 
 void ctrl_c(int sig) {
   printf("\n");
-  // if (g_sig == 4)
-  //   close(0);
-
   g_sig = sig;
   rl_on_new_line();
   rl_replace_line("", 0);
   rl_redisplay();
 }
-void ft_print2d(char **str) {
-  int i;
-
-  i = 0;
-  if (!str)
-    return;
-  while (str[i]) {
-    printf("%s ", str[i]);
-    i++;
-  }
-}
-
-// void f()
-// {
-//   system("lsof -c minishell");
-// }
-void ft_printf(t_data **data) {
-  t_data *iter;
-
-  iter = *data;
-  while (iter) {
-    printf("\n");
-    printf("================================\n");
-    printf("\n");
-    printf("\n");
-    printf("COMMAND   : ");
-    ft_print2d(iter->cmds);
-    printf("\n");
-    printf("DIRECTION : ");
-    ft_print2d(iter->directions);
-    printf("\n");
-    printf("\n");
-    printf("================================\n");
-    printf("\n");
-    iter = iter->next;
-  }
-}
-
 void init_content(t_container *content) {
   content->tokens = NULL;
   content->data = NULL;
@@ -71,7 +30,6 @@ void init_content(t_container *content) {
   content->new_command = NULL;
   content->if_pipe = 0;
 }
-
 int main(int ac, char **av, char **env) {
   (void)av;
   (void)ac;
@@ -87,8 +45,8 @@ int main(int ac, char **av, char **env) {
 
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, ctrl_c);
-    // if (ac != 1 || !isatty(0)) 
-    //   return (1); 
+    if (ac != 1 || !isatty(0)) 
+      return (1); 
     init_content(&content);
     content.line = readline("mshell$> ");
     if (g_sig == 2) {
@@ -96,8 +54,7 @@ int main(int ac, char **av, char **env) {
       g_sig = 0;
     }
     if (!content.line) {
-      if (isatty(STDIN_FILENO))
-	      write(2, "exit\n", 6);
+	    write(1, "exit\n", 6);
       free(content.line);
       clear_bin(&content.g_env_collector);
       clear_bin(&content.g_collector);
@@ -111,12 +68,7 @@ int main(int ac, char **av, char **env) {
       content.g_collector = NULL;
       continue;
     }
-    // ft_printf(&content.data);
     execute_package(&content);
-
-    // t_env *tmp = check_if_there("a", &content.env_list);
-    // if (tmp)
-    //   printf("the key=%s, value=%s\n", tmp->key, tmp->value);
     free(content.line);
     clear_bin(&content.g_collector);
     content.g_collector = NULL;

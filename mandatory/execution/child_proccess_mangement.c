@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:56:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 23:46:34 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:28:48 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	first_child(t_container *content, t_data *current, int *p_fd)
 	{
 		if (dup2(current->in_fd, 0) < 0)
 		{
-			perror("error in dup");;
+			perror("error in dup");
 			exit(1);
 		}
 	}

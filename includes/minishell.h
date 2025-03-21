@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 00:55:07 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:24:11 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,4 +196,5 @@ char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
 int	is_directory(char *path);char **ft_spl(const char *s, char c, t_gc **g_collector);
+void	clean_exit(t_container *content, int exit_code);
 #endif

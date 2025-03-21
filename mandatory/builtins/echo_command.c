@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   echo_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 00:53:02 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:27:32 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -18,9 +17,9 @@ static void	echo(t_container *content, t_data *current)
 	int	i;
 	int	new_line;
 	int	espace;
-	// char **temp_cmd;
 	char **cmd;
 	char *old_cmd;
+	int j;
 
 	espace = 0;
 	new_line = 0;
@@ -34,7 +33,7 @@ static void	echo(t_container *content, t_data *current)
 	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector);
 	if (!cmd || !cmd[0])
 		return ;
-	int j = 0;
+	j = 0;
 	while (cmd[j])
 	{
 		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
@@ -42,9 +41,6 @@ static void	echo(t_container *content, t_data *current)
 		j++;
 	}
 	cmd = check_echo_options(cmd, &content->g_collector);
-	// cmd = prepare_last_command(content, temp_cmd, cmd);
-	// if (!cmd || !cmd[0])
-	// 	return ;
 	i = 1;
 	if (ft_strcmp(cmd[i], "-n") == 0)
 	{
@@ -68,7 +64,6 @@ void	handle_echo(t_container *content, t_data *current)
 	int		i;
 	int		saved_stdout;
 	char	**cmd;
-	
 	
 	cmd = current->cmds;
 	saved_stdout = rideraction_builtins(current);

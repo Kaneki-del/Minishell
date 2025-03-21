@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 15:19:32 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:31:15 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	print_dir_error(t_data *current)
 			"..") == 0)
 	{
 		ft_error_exec_two("mshell: ",
-				current->cmds[0], ": command not found", 2);
+			current->cmds[0], ": command not found", 2);
 		exit(127);
 	}
 }

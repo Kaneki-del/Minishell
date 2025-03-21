@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:21 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 00:19:12 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:30:19 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	max_herdoc(char **rideractions)
 static void	intial(t_data **list)
 {
 	t_data	*current;
-	if(!list)
+
+	if (!list)
 		return ;
 	current = NULL;
 	current = *list;

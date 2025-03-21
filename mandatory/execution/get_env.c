@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 17:37:42 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:31:01 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 	else
 		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
 				&content->g_env_collector, 0));
-	cpwd = check_if_there("PWD", env_list);	
+	cpwd = check_if_there("PWD", env_list);
 	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 			env_list) != NULL)
 		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,

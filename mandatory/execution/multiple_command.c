@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/19 00:30:01 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:32:32 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ static int	handle_pipes(t_container *content)
 
 	current = content->data;
 	if (pipe(p_fd) == -1)
-		return(perror("pipe"), -1);
+		return (perror("pipe"), -1);
 	execute_first(current, p_fd, content);
 	current = current->next;
 	while (current != NULL && current->next != NULL)
 	{
 		t = p_fd[0];
 		if (pipe(p_fd) == -1)
-			return(perror("pipe"), -1);
+			return (perror("pipe"), -1);
 		execut(content, current, p_fd, t);
 		close(t);
 		current = current->next;
@@ -97,7 +97,7 @@ static int	handle_pipes(t_container *content)
 void	run_multiple(t_container *content)
 {
 	int	id_last_command;
-	
+
 	content->if_pipe = PIPE;
 	id_last_command = handle_pipes(content);
 	if (id_last_command == -1)
