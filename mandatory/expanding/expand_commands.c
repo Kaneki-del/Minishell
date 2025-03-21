@@ -143,9 +143,9 @@ void expanding_cmds_redirections(t_container *content, char **only_command, char
 
 int pair_check_cases(t_container *content, t_env *pair, char *key, int is_here_doc)
 {
-    if (!is_here_doc && (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3))
+    if (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3)
     {
-        if (content->flag == 1)
+        if (content->flag == 1 && !is_here_doc)
         {
             ft_error_exec_two("mshell: ", key, ": ambiguous redirect", 2);
             content->flag = 0;

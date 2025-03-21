@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_doc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:30:14 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 23:46:42 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:58:15 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ int	hrdc_ctrlc(int fd, t_container *content)
 		if (dup2(fd, 0) == -1)
 		{
 			perror("error in dup2");
+			clear_bin(&content->g_collector);
+			clear_bin(&content->g_env_collector);
+			clean_fds(content->data);
 			exit(1);
 		}
 		close(fd);

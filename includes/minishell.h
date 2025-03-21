@@ -6,9 +6,10 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 00:06:34 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:55:07 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -23,6 +24,7 @@
 #include <unistd.h>
 #include <sys/stat.h>  
 
+#define PIPE -13
 int g_sig;
 typedef enum s_type_token {
   T_WORD,
@@ -85,8 +87,10 @@ typedef struct s_container
   struct termios termios_value;
   char *save_path;
   int fork_failed;
-  pid_t	pid;
+  pid_t	pid;  
+
   char *new_command;
+  int if_pipe;
   int is_status;
 } t_container;
 
@@ -151,7 +155,7 @@ t_env *ft_lstlast(t_env *lst);
 void delete_node(t_env **list_env, char *key);
 void	handle_unset(char **cmd, t_container *content, t_data *current);
 t_env *check_if_there(const char *key, t_env **env_list);
-void handle_echo(t_container *content,  t_data *list);
+void handle_echo(t_container *content, t_data *list);
 void	handle_pwd(t_container *content, t_data *current);
 void	handle_cd(char **new_path, t_container *content);
 int	ft_isdigit(int c);
@@ -191,5 +195,5 @@ void	execut(t_container *content, t_data *current, int *p_fd, int in);
 char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
-char **ft_spl(const char *s, char c, t_gc **g_collector);
+int	is_directory(char *path);char **ft_spl(const char *s, char c, t_gc **g_collector);
 #endif

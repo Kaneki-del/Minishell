@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:17:04 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:37:42 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static char	**ft_split_equal_to(const char *s, t_gc **g_collector)
 	if (s == NULL)
 		return (NULL);
 	str = gc(sizeof(char *) * 3, g_collector);
-	if (str == NULL)
-		return (NULL);
 	len = ft_strlen(s);
 	j = 0;
 	while (s[j] != '=' && s[j] != '\0')
@@ -56,8 +54,6 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 			env_list) != NULL)
 		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
 			&content->g_env_collector);
-
-	
 	else if (cpwd != NULL && cpwd->value != NULL)
 		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
 				&content->g_env_collector, 3));
