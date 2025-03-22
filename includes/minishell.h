@@ -68,6 +68,17 @@ typedef struct s_vars
   char inexpand_here;
 } t_vars;
 
+typedef struct s_echo_vars
+{
+  int i;
+  int j;
+  int is_in;
+  char inexpand_here;
+  int   second_check;
+  int check;
+  char **new_cmds;
+} t_echo_vars;
+
 typedef struct s_container
 {
   t_data *data;
@@ -124,7 +135,6 @@ int	ft_isalnum(int c);
 size_t	ft_strlen_2d(char **s);
 int check_is_in_qoutes(char *str);
 void	*ft_calloc(size_t count, size_t size);
-char *filter_one_sides(char *command_line,  t_gc **g_collector);
 size_t words_count(const char *s, char c);
 void *gc(size_t size, t_gc **garbage_list, t_container *content);
 void ft_error(char *msg, char *dis,int fd);

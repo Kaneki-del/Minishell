@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_commands.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 03:19:18 by kben-tou          #+#    #+#             */
+/*   Updated: 2025/03/22 13:55:03 by kben-tou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 char** prepare_export_command(char **only_command, char **cmd_options, t_container *content)
@@ -69,48 +81,51 @@ char **only_command, char **dir_files, int shoud_skeep)
 	}
 }
 
-int pair_check_cases(t_container *content, t_env *pair, char *key, int is_here_doc)
+int	pair_check_cases(t_container *content, t_env *pair, char *key, \
+int is_here_doc)
 {
-    if (!pair || !pair->value || pair->value[0] == '\0' || pair->print_flag == 3)
-    {
-        if (content->flag == 1 && !is_here_doc)
-        {
-            ft_error_exec_two("mshell: $", key, ": ambiguous redirect", 2);
-            content->flag = 0;
-            content->status = 1;
-        }
-        return (1);
-    }
-    if (!is_here_doc && pair && content->flag == 1 && pair->value && \
-    (words_count(remove_quotes(pair->value, &content->g_collector), ' ') > 1))
-    {
-        ft_error_exec_two("mshell: $", key, ": ambiguous redirect", 2);
-        content->flag = 0;
-        content->status = 1;
-        return (1);
-    }
-    return (0);
+	if (!pair || !pair->value || pair->value[0] == '\0' \
+    || pair->print_flag == 3)
+	{
+		if (content->flag == 1 && !is_here_doc)
+		{
+			ft_error_exec_two("mshell: $", key, ": ambiguous redirect", 2);
+			content->flag = 0;
+			content->status = 1;
+		}
+		return (1);
+	}
+	if (!is_here_doc && pair && content->flag == 1 && pair->value && \
+	(words_count(remove_quotes(pair->value, &content->g_collector), ' ') > 1))
+	{
+		ft_error_exec_two("mshell: $", key, ": ambiguous redirect", 2);
+		content->flag = 0;
+		content->status = 1;
+		return (1);
+	}
+	return (0);
 }
 
-char *expand(t_container *content, char *command, int *i, int is_here_doc)
+char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 {
-    t_env   *pair;
-    char    *key;
-    int     start;
+	t_env	*pair;
+	char	*key;
+	int		start;
 
-    pair = NULL;
-    key = NULL;
+	pair = NULL;
+	key = NULL;
     start = (*i);
-    while (command[start] && (ft_isalnum(command[start]) || command[start] == '_'))
-        start++;
-    key = gc(start - (*i) + 1, &content->g_collector);
-    ft_strlcpy(key, &command[(*i)], start - (*i) + 1 );
-    pair = check_if_there(key, &content->env_list);
-    (*i) = start;
-    if (pair_check_cases(content, pair, key, is_here_doc) == 1)
-        return (ft_strdup("\0", &content->g_collector));
-    content->flag = 5;
-    if (!pair->value)
-        return (NULL);
-    return (pair->value);
+    while (command[start] && (ft_isalnum(command[start]) \
+    || command[start] == '_'))
+		start++;
+	key = gc(start - (*i) + 1, &content->g_collector);
+	ft_strlcpy(key, &command[(*i)], start - (*i) + 1);
+	pair = check_if_there(key, &content->env_list);
+	(*i) = start;
+	if (pair_check_cases(content, pair, key, is_here_doc) == 1)
+		return (ft_strdup("\0", &content->g_collector));
+	content->flag = 5;
+	if (!pair->value)
+		return (NULL);
+	return (pair->value);
 }
