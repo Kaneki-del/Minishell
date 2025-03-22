@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/17 16:10:14 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:02:39 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ static void	cd_home(t_container *content)
 	}
 }
 
-void	handle_cd(char **new_path, t_container *content)
+void	handle_cd(t_data *current, t_container *content)
 {
 	t_env	*tmp;
-
+	char **new_path = current->cmds+1;
+	
 	tmp = check_if_there("PWD", &content->env_list);
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
@@ -79,7 +80,7 @@ void	handle_cd(char **new_path, t_container *content)
 		content->save_path = ft_strdup("", &content->g_collector);
 	if (new_path && new_path[0])
 	{
-		if (content->flag)
+		if (content->flag == 5 && (ft_strchr(current->befor_expanding, '"') || ft_strchr(current->befor_expanding, '\'')) )
 			new_path[0] = remove_quotes(new_path[0], &content->g_collector);
 		if (chdir(new_path[0]) == -1)
 		{

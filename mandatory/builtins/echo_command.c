@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 00:53:02 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 00:47:04 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ static void	echo(t_container *content, t_data *current)
 		j++;
 	}
 	cmd = check_echo_options(cmd, &content->g_collector);
-	// cmd = prepare_last_command(content, temp_cmd, cmd);
-	// if (!cmd || !cmd[0])
-	// 	return ;
+	if (!cmd || !cmd[0])
+		return ;
 	i = 1;
 	if (ft_strcmp(cmd[i], "-n") == 0)
 	{

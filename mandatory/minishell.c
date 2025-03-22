@@ -6,17 +6,15 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/21 00:53:34 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 23:23:18 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void ctrl_c(int sig) {
+void ctrl_c(int sig) 
+{
   printf("\n");
-  // if (g_sig == 4)
-  //   close(0);
-
   g_sig = sig;
   rl_on_new_line();
   rl_replace_line("", 0);
@@ -65,8 +63,7 @@ void init_content(t_container *content) {
   content->data = NULL;
   content->save_path = NULL;
   content->line = NULL;
-  content->is_expandable = 0;
-  content->flag = 0;
+  content->flag = 1;
   content->is_status = 0;
   content->new_command = NULL;
   content->if_pipe = 0;
@@ -91,7 +88,8 @@ int main(int ac, char **av, char **env) {
     //   return (1); 
     init_content(&content);
     content.line = readline("mshell$> ");
-    if (g_sig == 2) {
+    if (g_sig == 2) 
+    {
       content.status = 1;
       g_sig = 0;
     }

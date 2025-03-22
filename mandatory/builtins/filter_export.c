@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filter_export.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:01:31 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/16 14:19:29 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 00:19:12 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ void	add_export(char **cmd, t_container *content)
 	while (cmd[i])
 	{
 		splited_equal = get_befor(cmd[i], &content->g_collector);
-		if (filter_key(splited_equal[0], splited_equal[1]) == 0
-			&& splited_equal[0])
+		if (splited_equal[0] && filter_key(splited_equal[0], splited_equal[1]) == 0)
 			valid_key(splited_equal, content);
 		else
 		{

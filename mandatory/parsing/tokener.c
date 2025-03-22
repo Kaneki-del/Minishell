@@ -53,33 +53,35 @@ static int skeep_special_char(t_container *content, int *start)
     return (1);
 }
 
-int tokener(t_container *content)
+int	tokener(t_container *content)
 {
-    int i;
-    int start;
-    char *word;
+	int		i;
+	int		start;
+	char	*word;
 
-    i = -1;
-    if (!content->line)
-      return (0);
-    word = NULL;
-    while (content->line[++i]) {
-        if (ft_strchr(" \n\t", content->line[i]))
-            continue ;
-        token_split(content, &i);
-        if (content->line[i] && !ft_strchr("<|>", content->line[i]) && !ft_strchr(" \n\t", content->line[i]))
-        {
-            start = i;
-            if (skeep_special_char(content, &start) == 0)
-                return (0);
-            word = gc(start - i + 1, &content->g_collector);
-            ft_strlcpy(word, &content->line[i], start - i + 1);
-            ft_lstadd_back(&content->tokens, ft_lstnew(word, T_WORD, &content->g_collector));
-            i = start - 1;
-        }
-    }
-    return (1);
+	i = -1;
+	if (!content->line)
+		return (0);
+	word = NULL;
+	while (content->line[++i])
+	{
+		if (ft_strchr(" \n\t", content->line[i]))
+			continue ;
+		token_split(content, &i);
+		if (content->line[i] && !ft_strchr("<|>", content->line[i]) && !ft_strchr(" \n\t", content->line[i]))
+		{
+			start = i;
+			if (skeep_special_char(content, &start) == 0)
+				return (0);
+			word = gc(start - i + 1, &content->g_collector);
+			ft_strlcpy(word, &content->line[i], start - i + 1);
+			ft_lstadd_back(&content->tokens, ft_lstnew(word, T_WORD, &content->g_collector));
+			i = start - 1;
+		}
+	}
+	return (1);
 }
+
 
 int token_checker(t_container *content)
 {

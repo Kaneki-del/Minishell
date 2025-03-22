@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 00:55:07 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:02:58 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,8 @@ typedef struct s_data {
   char **directions;
   int in_fd;
   int out_fd;
-  t_type_token dir_input_type;
-  t_type_token dir_output_type;
-  struct s_data *next;
   char *befor_expanding;
+  struct s_data *next;
 } t_data;
 
 typedef struct s_gc {
@@ -73,6 +71,13 @@ typedef struct s_env {
   struct s_env *next;
 } t_env;
 
+typedef struct s_vars
+{
+  int i;
+  int is_in;
+  char inexpand_here;
+} t_vars;
+
 typedef struct s_container
 {
   t_data *data;
@@ -83,12 +88,11 @@ typedef struct s_container
   int status;
   int flag;
   char *line;
-  int is_expandable;
   struct termios termios_value;
   char *save_path;
   int fork_failed;
   pid_t	pid;  
-
+  int shoud_skeep;
   char *new_command;
   int if_pipe;
   int is_status;
@@ -118,10 +122,10 @@ int parsing_case(t_container *content);
 void get_dir_files(char **dir_files, t_token *token, t_gc **g_collector);
 void get_command(char **only_command, t_token *token, t_gc **g_collector);
 t_token *init_data(t_token *token, char **dir_files, char **only_command, t_gc **g_collector);
-char *filer_qoutations(char *command_line,  t_gc **g_collector);
+int get_char_index(char *s, char c);
 char **filterd(char **cmds,t_gc **g_collector);
 int tokener(t_container *content);
-char *check_env_var(t_container *content, char *command, int shoud_skeep);
+char *check_env_var(t_container *content, char *command);
 char *ft_strchr_join(char *s1, char c, t_gc **g_collector);
 int	ft_isalpha(int c);
 int	redirection_pipe_check(t_token *iter, t_type_token CASE, t_container *content);
@@ -157,7 +161,7 @@ void	handle_unset(char **cmd, t_container *content, t_data *current);
 t_env *check_if_there(const char *key, t_env **env_list);
 void handle_echo(t_container *content, t_data *list);
 void	handle_pwd(t_container *content, t_data *current);
-void	handle_cd(char **new_path, t_container *content);
+void	handle_cd(t_data *current, t_container *content);
 int	ft_isdigit(int c);
 int ft_atoi( char *str, t_data *current, t_container *content);
 void handle_exit(t_data *current, t_container *content);
@@ -196,4 +200,5 @@ char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
 int	is_directory(char *path);char **ft_spl(const char *s, char c, t_gc **g_collector);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/13 15:16:16 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/21 22:37:22 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,67 +101,3 @@ char **ft_split(char const *s, char c, t_gc **g_collector)
   p[j] = NULL;
   return (p);
 }
-
-
-
-// char **ft_split(char const *s, char c, t_gc **g_collector) {
-//     char **result;
-//     size_t word_count;
-//     size_t i = 0;
-//     size_t j = 0;
-
-//     if (!s)
-//         return (NULL);
-    
-//     word_count = words_count(s, c);
-//     result = gc((word_count + 1) * sizeof(char *), g_collector);
-//     if (!result)
-//         return (clear_bin(g_collector), NULL);
-    
-//     while (j < word_count) {
-//         result[j] = store_next_word(s, &i, c, g_collector);
-//         if (!result[j]) {
-//             clear_bin(g_collector);
-//             return (NULL);
-//         }
-//         j++;
-//     }
-//     result[j] = NULL;
-//     return (result);
-// }
-
-// static size_t words_count(const char *s, char c) {
-//   size_t i;
-//   size_t count;
-//   char quote;
-
-//   i = -1;
-//   count = 0;
-//   quote = 0;
-//   while (s[++i]) {
-//     if (s[i] == '\'' || s[i] == '"') {
-//       count++;
-//       quote = s[i];
-//       while (s[++i] && s[i] != quote)
-//         ;
-//       if (s[i] == quote)
-//         i++;
-//       quote = 0;
-//     } else if (s[i] != c && (i == 0 || s[i - 1] == c) && !quote)
-//       count++;
-//   }
-//   return (count);
-// }
-
-// // static void mem_free(char **p) {
-// //   size_t i;
-
-// //   i = 0;
-// //   while (p[i]) {
-// //     free(p[i]);
-// //     i++;
-// //   }
-// //   free(p);
-// // }
-
-  

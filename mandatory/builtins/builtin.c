@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 00:52:47 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:02:32 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	built_in(t_data *current, t_container *content)
 	else if (ft_strcmp(current->cmds[0], "pwd") == 0)
 		handle_pwd(content, current);
 	else if (ft_strcmp(current->cmds[0], "cd") == 0)
-		handle_cd(current->cmds + 1, content);
+		handle_cd(current, content);
 	else if (ft_strcmp(current->cmds[0], "exit") == 0)
 		handle_exit(current, content);
 }

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 23:51:16 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:15:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,6 @@ void	exec_error(t_data *current, char *cmd_path)
 		exit(0);
 }
 
-// void ft_printdd2(char **str)
-// {
-//   int i;
-
-//   i = 0;
-//   if (!str)
-//     return ;
-//   while (str[i])
-//   {
-//     printf("(%s)\n", str[i]);
-//     i++;  
-//   }
-// }
-
-// void find_quotations(char **str)
-// {
-// 	int i;
-
-//   i = 0;
-//   if (!str)
-//     return ;
-//   while (str[i])
-//   {
-// 	printf();
-//     if (str[i][0] == '"' && check_is_in_qoutes(str[i]))
-// 		str[i] = 
-//     i++;  
-//   }
-// }
-
 void    executing(t_data *current, t_container *content)
 {
     char    *cmd_path;
@@ -71,7 +41,7 @@ void    executing(t_data *current, t_container *content)
         exit(0);
     if (!current->cmds || !current->cmds[0])
         exit(0);
-    if (content->flag == 5 && (ft_strchr(content->line, '\'') || ft_strchr(content->line, '"')))
+    if (content->flag == 5 && (ft_strchr(current->befor_expanding, '\'') || ft_strchr(current->befor_expanding, '"')))
         current->cmds = filter_all(current->cmds, &content->g_collector);
     cmd_path = find_executable_path(current, content);
     if (!cmd_path || ft_strcmp(current->cmds[0], "\0") == 0)
