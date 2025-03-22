@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:51:47 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 02:08:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:36:40 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	parser(t_container *content)
 
 int	parsing_case(t_container *content)
 {
-	if (!content)
+	if (!content || !content->line)
 		return (0);
 	if (tokener(content) == 0)
 		return (0);

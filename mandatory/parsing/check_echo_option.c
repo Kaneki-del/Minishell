@@ -1,79 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_echo_option.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 02:44:49 by kben-tou          #+#    #+#             */
+/*   Updated: 2025/03/22 03:02:20 by kben-tou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int get_cmds_length(char **cmds)
+int	get_cmds_length(char **cmds)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (cmds[i])
-        i++;
-    return (i);
+	i = 0;
+	while (cmds[i])
+		i++;
+	return (i);
 }
 
-char **remove_repeated(char **cmd, t_gc **g_collector)
+void	init_echo_vars(t_echo_vars *s_echo_vars, char **cmd)
 {
-    int i;
-    int check;
-    int second_check;
-    char **new_cmds;
-    int j;
-
-    i = 1;
-    j = 1;
-    second_check = 0;
-    check = 0;
-    new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), g_collector);
-
-    new_cmds[0] = cmd[0];
-    while (cmd[i])
-    {
-        if (ft_strcmp(cmd[i], "-n") == 0 && check == 0)
-        {
-            if (second_check == 0)
-                check = 1;
-            else
-                check = 0;
-            new_cmds[j++] = cmd[i++];
-            continue ;
-        }
-        else if(ft_strcmp(cmd[i], "-n") != 0)
-        {
-            second_check = 1;
-            check = 0;
-            new_cmds[j] = cmd[i];
-            j++;
-        }
-        i++;
-    }
-    new_cmds[j] = NULL;
-    return (new_cmds);
+	echo_vars->i = 1;
+	echo_vars->j = 1;
+	echo_vars->second_check = 0;
+	echo_vars->check = 0;
+	echo_vars->new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), g_collector);
+	echo_vars->new_cmds[0] = cmd[0];
 }
 
-char **check_echo_options(char **cmd, t_gc **g_collector)
+char	**remove_repeated(char **cmd, t_gc **g_collector)
 {
-    int i;
-    int j;
-   
+	int			check;
+	int			second_check;
+	t_echo_vars	echo_vars;
 
-    i = 1;
+	init_echo_vars(&echo_vars, cmd);
+	while (cmd[echo_vars.i])
+	{
+		if (ft_strcmp(cmd[echo_vars.i], "-n") == 0 && echo_vars.check == 0)
+		{
+			if (echo_vars.second_check == 0)
+				echo_vars.check = 1;
+			else
+				echo_vars.check = 0;
+			echo_vars.new_cmds[echo_vars.j++] = cmd[echo_vars.i++];
+			continue ;
+		}
+		else if (ft_strcmp(cmd[echo_vars.i], "-n") != 0)
+		{
+			echo_vars.second_check = 1;
+			echo_vars.check = 0;
+			echo_vars.new_cmds[echo_vars.j++] = cmd[echo_vars.i++];
+		}
+	}
+	echo_vars.new_cmds[echo_vars.j] = NULL;
+	return (echo_vars.new_cmds);
+}
 
-    if (!cmd || !cmd[0])
-        return (NULL);
-    if (ft_strcmp(cmd[0], "echo") != 0)
-        return (cmd);
-    while (cmd[i])
-    {
-        if (cmd[i][0] == '-' && cmd[i][1] != '\0')
-        {
-            j = 1;
-            while (cmd[i][j] == 'n')
-                j++;
-            if (cmd[i][j] == '\0')
-                cmd[i] = ft_strdup("-n", g_collector);
-            else
-                break ;
-        }
-        i++;
-    }
-    return (remove_repeated(cmd, g_collector));
+char	**check_echo_options(char **cmd, t_gc **g_collector)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (!cmd || !cmd[0])
+		return (NULL);
+	if (ft_strcmp(cmd[0], "echo") != 0)
+		return (cmd);
+	while (cmd[i])
+	{
+		if (cmd[i][0] == '-' && cmd[i][1] != '\0')
+		{
+			j = 1;
+			while (cmd[i][j] == 'n')
+				j++;
+			if (cmd[i][j] == '\0')
+				cmd[i] = ft_strdup("-n", g_collector);
+			else
+				break ;
+		}
+		i++;
+	}
+	return (remove_repeated(cmd, g_collector));
 }
