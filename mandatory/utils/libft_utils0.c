@@ -60,9 +60,9 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector, t_container
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
-		return (ft_strdup(s2, g_collector));
+		return (ft_strdup(s2, g_collector, content));
 	if (!s2)
-		return (ft_strdup(s1, g_collector));
+		return (ft_strdup(s1, g_collector, content));
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	result = gc(total_len, g_collector, content);
 	if (!result)

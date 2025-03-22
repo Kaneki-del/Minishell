@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:58:46 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/15 23:06:08 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:05:11 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static void	type_flag(t_env *current_old, t_env **new_node,
 {
 	if (current_old->print_flag != 0)
 		*new_node = lstnew_env(current_old->key, current_old->value,
-				&content->g_collector, 1);
+				content, 1);
 	else
 		*new_node = lstnew_env(current_old->key, current_old->value,
-				&content->g_collector, 0);
+				content, 0);
 }
 
 t_env	*copy_list(t_container *content)
@@ -34,10 +34,10 @@ t_env	*copy_list(t_container *content)
 		return (NULL);
 	if (content->env_list->print_flag != 0)
 		new_head = lstnew_env(content->env_list->key, content->env_list->value,
-				&content->g_collector, 1);
+				content, 1);
 	else
 		new_head = lstnew_env(content->env_list->key, content->env_list->value,
-				&content->g_collector, 0);
+				content, 0);
 	current_old = content->env_list->next;
 	current_new = new_head;
 	while (current_old)

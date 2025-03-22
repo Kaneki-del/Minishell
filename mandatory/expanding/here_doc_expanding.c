@@ -9,7 +9,7 @@ int here_doc_expander(t_container *content, char *command, char **new_command, i
 	if (command[(*i)] == '?')
 	{
 		(*i)++;
-		*new_command = ft_strjoin(*new_command, ft_itoa(content->status, &content->g_collector), &content->g_collector);
+		*new_command = ft_strjoin(*new_command, ft_itoa(content->status, content), &content->g_collector, content);
 		return (1);
 	}
 	else if (((ft_isdigit(command[(*i)]) || (!ft_isalpha(command[(*i)]) && command[(*i)] != '_'))))
@@ -18,7 +18,7 @@ int here_doc_expander(t_container *content, char *command, char **new_command, i
 	{
 		curent_part = expand(content, command, i, 1);
 		if (curent_part)
-			*new_command = ft_strjoin(*new_command, curent_part, &content->g_collector);
+			*new_command = ft_strjoin(*new_command, curent_part, &content->g_collector, content);
 		return (1);
 	}
 	return (0);
@@ -40,7 +40,7 @@ char *expand_here_doc_lines(t_container *content, char *command)
 			if (here_doc_expander(content, command, &new_command, &i) == 1)
 				continue;
         }
-        new_command = ft_strchr_join(new_command, command[i], &content->g_collector);
+        new_command = ft_strchr_join(new_command, command[i], content);
         i++;
     }
     return (new_command);

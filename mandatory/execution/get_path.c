@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:52:05 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 16:01:36 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:07:37 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	**get_path(t_container *content)
 	path_value = get_env_path(content);
 	if (!path_value)
 		return (NULL);
-	path_list = ft_split(path_value, ':', &content->g_collector);
+	path_list = ft_split(path_value, ':', &content->g_collector, content);
 	if (!path_list)
 		return (NULL);
 	return (path_list);

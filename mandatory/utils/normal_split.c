@@ -50,7 +50,7 @@ static char *fill(char *p, const char *s, size_t i, size_t len_chrs)
     return (p);
 }
 
-static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector)
+static char *store_next_word(const char *s, size_t *i, char c, t_container *content)
 {
     char *p;
     size_t char_count;
@@ -60,7 +60,7 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
         (*i)++;
     while (s[*i + char_count] && (s[*i + char_count] != c && s[*i + char_count] != '\t'))
         char_count++;
-    p = (char *)gc((char_count + 1), g_collector);
+    p = (char *)gc((char_count + 1), &content->g_collector, content);
     if (!p)
         return (NULL);
     fill(p, s, *i, char_count);
@@ -68,7 +68,7 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
     return (p);
 }
 
-char **normal_ft_split(char const *s, char c, t_gc **g_collector)
+char **normal_ft_split(char const *s, char c, t_gc **g_collector, t_container *content)
 {
     char **p;
     size_t i;
@@ -76,14 +76,14 @@ char **normal_ft_split(char const *s, char c, t_gc **g_collector)
 
     if (!s)
         return (NULL);
-    p = gc((w_count(s, c) + 1) * sizeof(char *), g_collector);
+    p = gc((w_count(s, c) + 1) * sizeof(char *), g_collector, content);
     if (!p)
         return (NULL);
     i = 0;
     j = 0;
     while ((w_count(s, c)) > j)
     {
-        p[j] = store_next_word(s, &i, c, g_collector);
+        p[j] = store_next_word(s, &i, c, content);
         if (!(p[j]))
         {
             mem_free(p);

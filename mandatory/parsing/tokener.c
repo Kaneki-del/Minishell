@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 02:23:32 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 02:44:05 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:24:03 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,37 @@ static void	token_split(t_container *content, int *i)
 	if (content->line[(*i)] == '<' && content->line[(*i) + 1] == '<')
 	{
 		ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("<<", \
-		&content->g_collector), T_REDIRECTE_HEREDOC, &content->g_collector));
+		&content->g_collector,content), T_REDIRECTE_HEREDOC, content));
 		(*i)++;
 	}
 	else if (content->line[(*i)] == '>' && content->line[(*i) + 1] == '>')
 	{
 		ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup(">>", \
-		&content->g_collector), T_REDIRECTE_APPEND, &content->g_collector));
+		&content->g_collector,content), T_REDIRECTE_APPEND, content));
 		(*i)++;
 	}
 	else if (content->line[(*i)] == '<')
 		ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("<", \
-		&content->g_collector), T_REDIRECTE_IN, &content->g_collector));
+		&content->g_collector,content), T_REDIRECTE_IN, content));
 	else if (content->line[(*i)] == '>')
 	{
 		ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup(">", \
-		&content->g_collector), T_REDIRECTE_OUT, &content->g_collector));
+		&content->g_collector,content), T_REDIRECTE_OUT, content));
 		if (content->line[(*i) + 1] == '|')
 			(*i)++;
 	}
 	else if (content->line[(*i)] == '|')
 		ft_lstadd_back(&content->tokens, ft_lstnew(ft_strdup("|", \
-		&content->g_collector), T_PIPE, &content->g_collector));
+		&content->g_collector,content), T_PIPE, content));
 }
 
-static int	check_is_syntax_err(int is_in)
+static int	check_is_syntax_err(int is_in, char qoute, t_container *content)
 {
 	if (is_in == 1)
 	{
 		content->status = 258;
 		return (ft_error("mshell: syntax error near unexpected token", \
-		ft_chrjoin(qoute, '\0', &content->g_collector), 2), 0);
+		ft_chrjoin(qoute, '\0', content), 2), 0);
 	}
 	return (1);
 }
@@ -76,7 +76,7 @@ static int	skeep_special_char(t_container *content, int *start)
 		!ft_strchr(" \n\t", content->line[(*start)]))
 			(*start)++;
 	}
-	if (check_is_syntax_err(is_in) == 0)
+	if (check_is_syntax_err(is_in, qoute, content) == 0)
 		return (0);
 	return (1);
 }
@@ -100,10 +100,10 @@ int	tokener(t_container *content)
 			start = i;
 			if (skeep_special_char(content, &start) == 0)
 				return (0);
-			word = gc(start - i + 1, &content->g_collector);
+			word = gc(start - i + 1, &content->g_collector, content);
 			ft_strlcpy(word, &content->line[i], start - i + 1);
 			ft_lstadd_back(&content->tokens, ft_lstnew(word, T_WORD, \
-			&content->g_collector));
+			content));
 			i = start - 1;
 		}
 	}

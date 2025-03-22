@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:30:14 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 02:20:25 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:07:53 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_file(t_container *content)
 	while (1)
 	{
 		file_name = ft_strjoin("/tmp/.her_doc",
-				ft_itoa(i, &content->g_collector), &content->g_collector,
+				ft_itoa(i, content), &content->g_collector,
 				content);
 		if (access(file_name, F_OK) == -1)
 			return (file_name);
@@ -79,7 +79,7 @@ int	her_doc(char *limiter, t_container *content)
 	final = buffer_content(limiter, content);
 	if (hrdc_ctrlc(fd, content) == -3)
 		return (-3);
-	file_name = get_file();
+	file_name = get_file(content);
 	fill_hdc_file(file_name, final, content);
 	hdc = end_hdc(fd, file_name);
 	return (hdc);

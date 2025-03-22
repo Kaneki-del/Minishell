@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:48:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 22:37:22 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:32:53 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ size_t words_count(const char *s, char c) // This name 's'
     return (count);
 }
 
-static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collector)
+static char *store_next_word(const char *s, size_t *i, char c, t_container *content)
 {
     size_t start;
     size_t len = 0;
@@ -72,14 +72,14 @@ static char *store_next_word(const char *s, size_t *i, char c, t_gc **g_collecto
         (*i)++;
         len++;
     }
-    char *word = gc(len + 1, g_collector);
+    char *word = gc(len + 1, &content->g_collector, content);
     if (!word)
         return (NULL);
     ft_strlcpy(word, s + start, len + 1);
     return (word);
 }
 
-char **ft_split(char const *s, char c, t_gc **g_collector)
+char **ft_split(char const *s, char c, t_gc **g_collector, t_container *content)
 {
   char **p;
   size_t i;
@@ -87,13 +87,13 @@ char **ft_split(char const *s, char c, t_gc **g_collector)
 
   if (!s)
     return (NULL);
-  p = gc((words_count(s, c) + 1) * sizeof(char *), g_collector);
+  p = gc((words_count(s, c) + 1) * sizeof(char *), g_collector, content);
   if (!p)
     return (NULL);
   i = 0;
   j = 0;
   while ((words_count(s, c)) > j) {
-    p[j] = store_next_word(s, &i, c, g_collector);
+    p[j] = store_next_word(s, &i, c, content);
     if (!(p[j]))
       return (NULL);
     j++;

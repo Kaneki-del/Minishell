@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 02:44:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 03:02:20 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:11:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,21 @@ int	get_cmds_length(char **cmds)
 	return (i);
 }
 
-void	init_echo_vars(t_echo_vars *s_echo_vars, char **cmd)
+void	init_echo_vars(t_echo_vars *echo_vars, char **cmd, t_container *content)
 {
 	echo_vars->i = 1;
 	echo_vars->j = 1;
 	echo_vars->second_check = 0;
 	echo_vars->check = 0;
-	echo_vars->new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), g_collector);
+	echo_vars->new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), &content->g_collector, content);
 	echo_vars->new_cmds[0] = cmd[0];
 }
 
-char	**remove_repeated(char **cmd, t_gc **g_collector)
+char	**remove_repeated(char **cmd, t_container *content)
 {
-	int			check;
-	int			second_check;
 	t_echo_vars	echo_vars;
 
-	init_echo_vars(&echo_vars, cmd);
+	init_echo_vars(&echo_vars, cmd, content);
 	while (cmd[echo_vars.i])
 	{
 		if (ft_strcmp(cmd[echo_vars.i], "-n") == 0 && echo_vars.check == 0)
@@ -61,7 +59,7 @@ char	**remove_repeated(char **cmd, t_gc **g_collector)
 	return (echo_vars.new_cmds);
 }
 
-char	**check_echo_options(char **cmd, t_gc **g_collector)
+char	**check_echo_options(char **cmd, t_gc **g_collector, t_container *content)
 {
 	int	i;
 	int	j;
@@ -79,11 +77,11 @@ char	**check_echo_options(char **cmd, t_gc **g_collector)
 			while (cmd[i][j] == 'n')
 				j++;
 			if (cmd[i][j] == '\0')
-				cmd[i] = ft_strdup("-n", g_collector);
+				cmd[i] = ft_strdup("-n", g_collector, content);
 			else
 				break ;
 		}
 		i++;
 	}
-	return (remove_repeated(cmd, g_collector));
+	return (remove_repeated(cmd, content));
 }

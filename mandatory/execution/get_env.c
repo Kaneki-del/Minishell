@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 02:18:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:07:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static char	**ft_split_equal_to(const char *s, t_container *content)
 		j++;
 	if (s[j] == '=')
 	{
-		str[0] = ft_substr(s, 0, j, &content->g_collector);
-		str[1] = ft_substr(s, j + 1, len - j, &content->g_collector);
+		str[0] = ft_substr(s, 0, j, content);
+		str[1] = ft_substr(s, j + 1, len - j, content);
 	}
 	else
 	{
@@ -48,7 +48,7 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 			&content->g_env_collector, content);
 	else
 		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
-				&content->g_env_collector, 0));
+				content, 0));
 	cpwd = check_if_there("PWD", env_list);
 	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 			env_list) != NULL)
@@ -56,7 +56,7 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 			&content->g_env_collector, content);
 	else if (cpwd != NULL && cpwd->value != NULL)
 		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
-				&content->g_env_collector, 3));
+				content, 3));
 }
 
 static void	get_pwd(t_env **env_list, t_container *content)
@@ -83,7 +83,7 @@ static void	check_flags(t_env *returned_env, t_container *content, int flag)
 		check_if_there("PATH", &returned_env)->print_flag = 1;
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
 		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL,
-				&content->g_env_collector, 0));
+				content, 0));
 	else
 		clean_old_pwd(&returned_env);
 }
@@ -107,7 +107,7 @@ t_env	*get_env_list(char **env, t_container *content)
 	{
 		temp = ft_split_equal_to(env[i], content);
 		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1],
-				&content->g_env_collector, 0));
+				content, 0));
 		i++;
 	}
 	check_flags(returned_env, content, flag);

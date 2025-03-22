@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:51:37 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 15:45:57 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:05:46 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	update_old_pwd(t_container *content)
 	}
 	else
 		lstadd_back_env(&content->env_list, lstnew_env("OLDPWD",
-				content->save_path, &content->g_env_collector, 1));
+				content->save_path, content, 1));
 }
 
 void	update_original_pwd(t_container *content, char *path)
@@ -55,7 +55,7 @@ void	update_original_pwd(t_container *content, char *path)
 		pwd->value = ft_strdup(path, &content->g_env_collector, content);
 	else if (path)
 		lstadd_back_env(&content->env_list, lstnew_env("PWD", path,
-				&content->g_env_collector, 1));
+				content, 1));
 	cpwd = check_if_there("CPWD", &content->env_list);
 	if (check_if_there("PWD", &content->env_list) != NULL
 		&& check_if_there("PWD", &content->env_list)->value != NULL)

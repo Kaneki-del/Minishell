@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 15:29:11 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:24:42 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (str_len);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collector)
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_container *content)
 {
 	size_t	s_len;
 	char	*sub;
@@ -59,10 +59,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 		return (NULL);
 	s_len = ft_strlen(s);
 	if (start >= s_len)
-		return (ft_strdup("", g_collector));
+		return (ft_strdup("", &content->g_collector, content));
 	if (start + len > s_len)
 		len = s_len - start;
-	sub = gc(len + 1, g_collector);
+	sub = gc(len + 1, &content->g_collector, content);
 	if (!sub)
 		return (NULL);
 	while (i < len)
@@ -74,11 +74,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collecto
 	return (sub);
 }
 
-char *ft_chrjoin(char c, char b,  t_gc **g_collector)
+char *ft_chrjoin(char c, char b, t_container *content)
 {
 	char *new;
 
-	new = gc(3, g_collector);
+	new = gc(3, &content->g_collector, content);
 	if (!new)
 		return (NULL);
 	new[0] = c;
@@ -87,14 +87,14 @@ char *ft_chrjoin(char c, char b,  t_gc **g_collector)
 	return (new);
 }
 
-char *ft_strchr_join(char *s1, char c, t_gc **g_collector)
+char *ft_strchr_join(char *s1, char c, t_container *content)
 {
 	size_t	total_len;
 	char	*result;
 
 	if (!s1)
 	{
-		result = gc(2, g_collector);
+		result = gc(2, &content->g_collector, content);
 		if (!result)
 			return (NULL);
 		result[0] = c;
@@ -102,7 +102,7 @@ char *ft_strchr_join(char *s1, char c, t_gc **g_collector)
 		return (result);
 	}
 	total_len = ft_strlen(s1) + 2;
-	result = gc(total_len, g_collector);
+	result = gc(total_len, &content->g_collector, content);
 	if (!result)
 		return (NULL);
 	ft_strlcpy(result, s1, total_len);

@@ -42,7 +42,7 @@ static char	*store(char *p, long num, size_t digitCount)
 	return (p);
 }
 
-char	*ft_itoa(int n, t_gc **g_collector)
+char	*ft_itoa(int n, t_container *content)
 {
 	size_t	len_digit;
 	char	*p;
@@ -50,7 +50,7 @@ char	*ft_itoa(int n, t_gc **g_collector)
 
 	num = n;
 	len_digit = digit_len(num);
-	p = gc(len_digit + 1, g_collector);
+	p = gc(len_digit + 1, &content->g_collector, content);
 	if (!p)
 		return (NULL);
 	p[len_digit] = '\0';

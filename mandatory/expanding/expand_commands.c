@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 03:19:18 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 13:55:03 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:31:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,30 @@ char** prepare_export_command(char **only_command, char **cmd_options, t_contain
 	if(ft_strlen_2d(cmd_options) < 3)
 	{
 		if (cmd_options && cmd_options[1] && cmd_options[1][0] == '$')
-			cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector);
+			cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector, content);
 		else
 		{
             if (ft_strcmp(cmd_options[0], "export") == 0)
             {
                 if (cmd_options[1] && cmd_options[1][get_char_index(cmd_options[1], '=') + 1] == '"' \
                 && cmd_options[1][ft_strlen(cmd_options[1]) - 1] == '"')
-                    *only_command = remove_quotes(*only_command, &content->g_collector);
-                cmd_options = ft_split(*only_command, ' ', &content->g_collector);
+                    *only_command = remove_quotes(*only_command, &content->g_collector, content);
+                cmd_options = ft_split(*only_command, ' ', &content->g_collector, content);
                 if (cmd_options[1])
                 {
-                    cmd_options[1] = ft_strdup(*only_command + 7, &content->g_collector); 
+                    cmd_options[1] = ft_strdup(*only_command + 7, &content->g_collector, content); 
                     cmd_options[2] = NULL;
                 }
             }
             else
             {
-		        cmd_options = ft_split(*only_command, ' ', &content->g_collector);
+		        cmd_options = ft_split(*only_command, ' ', &content->g_collector, content);
                 cmd_options = prepare_export_command(only_command, cmd_options, content);
             }
 		}
 	}
 	else
-		cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector);
+		cmd_options = normal_ft_split(*only_command, ' ', &content->g_collector, content);
 	return (cmd_options);
 }
 
@@ -50,7 +50,7 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 		return (NULL);
 	if (*only_command && ft_strncmp(*only_command, "export ", 7) == 0 && content->flag == 5)
 	{
-		cmd_options = ft_split(old_cmd, ' ', &content->g_collector);
+		cmd_options = ft_split(old_cmd, ' ', &content->g_collector, content);
         if (!cmd_options || !cmd_options[0])
             return (NULL);
 		cmd_options = prepare_export_command(only_command, cmd_options, content);
@@ -58,9 +58,9 @@ char **prepare_commands(char **only_command, char *old_cmd ,char **cmd_options, 
 	else
     {
         if (content->flag == 5)
-            cmd_options = ft_split(*only_command, ' ', &content->g_collector);
+            cmd_options = ft_split(*only_command, ' ', &content->g_collector, content);
         else
-		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector), &content->g_collector);
+		    cmd_options = filter_all(ft_split(*only_command, ' ', &content->g_collector, content), &content->g_collector, content);
     }
 	return (cmd_options);
 }
@@ -96,7 +96,7 @@ int is_here_doc)
 		return (1);
 	}
 	if (!is_here_doc && pair && content->flag == 1 && pair->value && \
-	(words_count(remove_quotes(pair->value, &content->g_collector), ' ') > 1))
+	(words_count(remove_quotes(pair->value, &content->g_collector, content), ' ') > 1))
 	{
 		ft_error_exec_two("mshell: $", key, ": ambiguous redirect", 2);
 		content->flag = 0;
@@ -118,12 +118,12 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
     while (command[start] && (ft_isalnum(command[start]) \
     || command[start] == '_'))
 		start++;
-	key = gc(start - (*i) + 1, &content->g_collector);
+	key = gc(start - (*i) + 1, &content->g_collector, content);
 	ft_strlcpy(key, &command[(*i)], start - (*i) + 1);
 	pair = check_if_there(key, &content->env_list);
 	(*i) = start;
 	if (pair_check_cases(content, pair, key, is_here_doc) == 1)
-		return (ft_strdup("\0", &content->g_collector));
+		return (ft_strdup("\0", &content->g_collector, content));
 	content->flag = 5;
 	if (!pair->value)
 		return (NULL);

@@ -6,21 +6,21 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:51:47 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 02:36:40 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:21:28 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 t_token	*init_data(t_token *token, char **dir_files, \
-char **only_command, t_gc **g_collector)
+char **only_command, t_container *content)
 {
 	*only_command = NULL;
 	*dir_files = NULL;
 	while (token && token->token_type != T_PIPE)
 	{
-		get_dir_files(dir_files, token, g_collector);
-		get_command(only_command, token, g_collector);
+		get_dir_files(dir_files, token, content);
+		get_command(only_command, token, content);
 		token = token->next;
 	}
 	if (token && token->token_type == T_PIPE && token->next)
@@ -48,8 +48,7 @@ int	parser(t_container *content)
 	iter = content->tokens;
 	while (iter)
 	{
-		iter = init_data(iter, &dir_files, &only_command, \
-		&content->g_collector);
+		iter = init_data(iter, &dir_files, &only_command, content);
 		init_norms(content, only_command, &old_command);
 		expanding_cmds_redirections(content, &only_command, &dir_files, 0);
 		if (content->flag == 0)
@@ -57,8 +56,7 @@ int	parser(t_container *content)
 		cmd_options = prepare_commands(&only_command, \
 		old_command, cmd_options, content);
 		add_data_back(&content->data, new_data_node(old_command, cmd_options, \
-		filterd(ft_split(dir_files, ' ', &content->g_collector), \
-		&content->g_collector), &content->g_collector));
+		filterd(ft_split(dir_files, ' ', &content->g_collector, content), &content->g_collector, content), content));
 	}
 	return (1);
 }

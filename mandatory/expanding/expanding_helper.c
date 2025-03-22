@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-char **filter_all(char **cmds, t_gc **g_collector)
+char **filter_all(char **cmds, t_gc **g_collector, t_container *content)
 {
     int i;
 
@@ -9,7 +9,7 @@ char **filter_all(char **cmds, t_gc **g_collector)
         return (NULL);
     while (cmds[i])
     {
-        cmds[i] = remove_quotes(cmds[i], g_collector);
+        cmds[i] = remove_quotes(cmds[i], g_collector, content);
         i++;
     }
     return (cmds);
@@ -42,7 +42,7 @@ int get_char_index(char *s, char c)
     return (store);
 }
 
-char *remove_quotes(char *command, t_gc **g_collector)
+char *remove_quotes(char *command, t_gc **g_collector ,t_container *content)
 {
     char *res;
     int i;
@@ -54,7 +54,7 @@ char *remove_quotes(char *command, t_gc **g_collector)
     i = 0;
     if (!command) 
         return (NULL);
-    res = gc(ft_strlen(command) + 1, g_collector);
+    res = gc(ft_strlen(command) + 1, g_collector, content);
     if (!res) 
         return (NULL);
     while (command[i])

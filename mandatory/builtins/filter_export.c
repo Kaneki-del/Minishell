@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:01:31 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 02:16:44 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:05:30 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ char	**get_befor(const char *cmd, t_container *content)
 	to_return = (char **)gc(sizeof(char *) * 3, &content->g_collector, content);
 	while (cmd[i] != '=' && cmd[i])
 		i++;
-	to_return[0] = ft_substr(cmd, 0, i, &content->g_collector);
+	to_return[0] = ft_substr(cmd, 0, i, content);
 	if (cmd[i] == '=')
 	{
 		i++;
 		to_return[1] = ft_substr(cmd, i, ft_strlen(cmd + i),
-				&content->g_collector);
+				content);
 	}
 	else
 		to_return[1] = NULL;
@@ -93,7 +93,7 @@ void	valid_key(char **key_value, t_container *content)
 			do_mode(key_value, &temp, content, a);
 		else
 			lstadd_back_env(&content->env_list, lstnew_env(key_value[0],
-					key_value[1], &content->g_env_collector, 0));
+					key_value[1], content, 0));
 	}
 }
 

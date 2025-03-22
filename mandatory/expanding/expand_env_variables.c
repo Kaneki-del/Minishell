@@ -6,24 +6,11 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:03:03 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/21 22:05:16 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:59:54 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char *exit_status(t_container *content, int *i)
-{
-    char *res;
-
-    if (!content)
-        return (NULL);
-    (*i)++;
-    res = ft_itoa(content->status, &content->g_collector);
-    if (!res)
-        return (NULL);
-    return (res);
-}
 
 static char *expand_telda(char *command, int *i, t_container *content)
 {
@@ -39,7 +26,7 @@ static char *expand_telda(char *command, int *i, t_container *content)
         (*i)++;
         pair = check_if_there("HOME", &content->env_list);
         if (!pair)
-            return (ft_strdup("", &content->g_collector));
+            return (ft_strdup("", &content->g_collector, content));
         return (pair->value);
     }
     return (NULL);
@@ -57,7 +44,7 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
     {
         (*i)++;
         content->new_command = ft_strjoin(content->new_command, \
-        ft_itoa(content->status, &content->g_collector), &content->g_collector);
+        ft_itoa(content->status, content), &content->g_collector, content);
         return (expanded_part);//----------
     }
     else if (((ft_isdigit(command[(*i)]) || (!ft_isalpha(command[(*i)]) && \
@@ -68,7 +55,7 @@ char  *check_expanding_variables(t_container *content, char *command, int *i, ch
         expanded_part = expand(content, command, i, 0);
         if (expanded_part)
             content->new_command = ft_strjoin(content->new_command, \
-            expanded_part, &content->g_collector);
+            expanded_part, &content->g_collector, content);
         return (expanded_part);
     }
     return (NULL);
@@ -84,7 +71,7 @@ int check_expanding_telda(t_container *content, char *command, t_vars *vars, cha
         expanded_part = expand_telda(command, &vars->i, content);
         if (expanded_part)
         {
-            content->new_command = ft_strjoin(content->new_command, expanded_part, &content->g_collector);
+            content->new_command = ft_strjoin(content->new_command, expanded_part, &content->g_collector, content);
             return (1);
         }
     }
@@ -135,7 +122,7 @@ char *check_env_var(t_container *content, char *command)
         qoute = in_quotations(command, &vars.i, qoute, &vars.is_in);
         if (finding_and_expanding(content, command, &vars, qoute))
             continue;
-        content->new_command = ft_strchr_join(content->new_command, command[vars.i], &content->g_collector);
+        content->new_command = ft_strchr_join(content->new_command, command[vars.i], content);
         vars.i++;
     }
     return (content->new_command);
