@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:51:47 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 15:21:28 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 17:48:09 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	parser(t_container *content)
 		cmd_options = prepare_commands(&only_command, \
 		old_command, cmd_options, content);
 		add_data_back(&content->data, new_data_node(old_command, cmd_options, \
-		filterd(ft_split(dir_files, ' ', &content->g_collector, content), &content->g_collector, content), content));
+		filterd(ft_split(dir_files, ' ', &content->g_collector, content), \
+		&content->g_collector, content), content));
 	}
 	return (1);
 }

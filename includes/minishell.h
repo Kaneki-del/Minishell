@@ -65,7 +65,7 @@ typedef struct s_vars
 {
   int i;
   int is_in;
-  char inexpand_here;
+  char here;
 } t_vars;
 
 typedef struct s_echo_vars
@@ -73,7 +73,7 @@ typedef struct s_echo_vars
   int i;
   int j;
   int is_in;
-  char inexpand_here;
+  char here;
   int   second_check;
   int check;
   char **new_cmds;

@@ -6,40 +6,49 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 14:30:43 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 18:10:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+char	**expand_echo(t_container *content, t_data *current, char **cmd)
+{
+	char	*old_cmd;
+	int		i;
+
+	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector, \
+	content);
+	if (!old_cmd)
+		return (NULL);
+	content->status = content->is_status;
+	expanding_cmds_redirections(content, &current->befor_expanding, NULL, 0);
+	content->status = 0;
+	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, \
+	content);
+	if (!cmd || !cmd[0])
+		return (NULL);
+	i = 0;
+	while (cmd[i])
+	{
+		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
+			cmd[i] = remove_quotes(cmd[i], &content->g_collector, content);
+		i++;
+	}
+	return (cmd);
+}
+
 static void	echo(t_container *content, t_data *current)
 {
-	int	i;
-	int	new_line;
-	int	espace;
-	char **cmd;
-	char *old_cmd;
-	int j;
+	int		i;
+	int		new_line;
+	int		espace;
+	char	**cmd;
 
 	espace = 0;
 	new_line = 0;
 	cmd = NULL;
-	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector, content);
-	if (!old_cmd)
-		return ;
-	content->status = content->is_status;
-	expanding_cmds_redirections(content, &current->befor_expanding, NULL, 0);
-	content->status = 0;
-	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, content);
-	if (!cmd || !cmd[0])
-		return ;
-	j = 0;
-	while (cmd[j])
-	{
-		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
-			cmd[j] = remove_quotes(cmd[j], &content->g_collector, content);
-		j++;
-	}
+	cmd = expand_echo(content, current, cmd);
 	cmd = check_echo_options(cmd, &content->g_collector, content);
 	i = 1;
 	if (ft_strcmp(cmd[i], "-n") == 0)
@@ -51,9 +60,8 @@ static void	echo(t_container *content, t_data *current)
 	{
 		if (espace == 1)
 			write(1, " ", 1);
-		ft_putstr_fd(cmd[i], 1);
+		ft_putstr_fd(cmd[i++], 1);
 		espace = 1;
-		i++;
 	}
 	if (new_line == 0)
 		write(1, "\n", 1);
@@ -64,10 +72,9 @@ void	handle_echo(t_container *content, t_data *current)
 	int		i;
 	int		saved_stdout;
 	char	**cmd;
-	
+
 	cmd = current->cmds;
 	saved_stdout = rideraction_builtins(current, content);
-	
 	i = 0;
 	while (cmd[i])
 		i++;

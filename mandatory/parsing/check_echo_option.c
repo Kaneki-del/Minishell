@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 02:44:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 15:11:16 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 17:41:06 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	init_echo_vars(t_echo_vars *echo_vars, char **cmd, t_container *content)
 	echo_vars->j = 1;
 	echo_vars->second_check = 0;
 	echo_vars->check = 0;
-	echo_vars->new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), &content->g_collector, content);
+	echo_vars->new_cmds = gc(sizeof(char *) * (get_cmds_length(cmd) + 1), \
+	&content->g_collector, content);
 	echo_vars->new_cmds[0] = cmd[0];
 }
 
@@ -59,7 +60,8 @@ char	**remove_repeated(char **cmd, t_container *content)
 	return (echo_vars.new_cmds);
 }
 
-char	**check_echo_options(char **cmd, t_gc **g_collector, t_container *content)
+char	**check_echo_options(char **cmd, t_gc **g_collector, \
+t_container *content)
 {
 	int	i;
 	int	j;

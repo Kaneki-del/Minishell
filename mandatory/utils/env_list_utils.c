@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:26:35 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 15:47:57 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/22 17:51:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_env	*lstnew_env(char *key, char *value, t_container *content, int set)
 	new_node->next = NULL;
 	return (new_node);
 }
+
 void	lstadd_back_env(t_env **lst, t_env *new_t)
 {
 	t_env	*ptr;
