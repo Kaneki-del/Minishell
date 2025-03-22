@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 01:15:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:17:56 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	exec_error(t_data *current, char *cmd_path)
 
 void    executing(t_data *current, t_container *content)
 {
-    char    *cmd_path;
-    char    **list_char;
+	char	*cmd_path;
+	char	**list_char;
 
     if (!content->env_list)
         exit(0);

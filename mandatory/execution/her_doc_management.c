@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 23:51:29 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:20:04 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ static char	*buffer_line(char *limiter, t_container *content)
 	char	*line;
 	char	*tmp;
 	char	*line_tmp;
-	
+
 	line_tmp = readline("> ");
 	if (line_tmp == NULL || g_sig)
 		return (NULL);
-	line = ft_strdup(line_tmp, &content->g_collector);
-	free(line_tmp); 
+	line = ft_strdup(line_tmp, &content->g_collector, content);
+	free(line_tmp);
 	if (ft_strcmp(line, remove_quotes(limiter, &content->g_collector)) == 0)
 		return (NULL);
 	else if (!ft_strchr(limiter, '"') && !ft_strchr(limiter, '\''))
 		line = expand_here_doc_lines(content, line);
-	tmp = ft_strjoin(line, "\n", &content->g_collector);
+	tmp = ft_strjoin(line, "\n", &content->g_collector, content);
 	return (tmp);
 }
 
@@ -71,7 +71,7 @@ char	*buffer_content(char *limiter, t_container *content)
 		tmp = buffer_line(limiter, content);
 		if (tmp == NULL)
 			break ;
-		final = ft_strjoin(final, tmp, &content->g_collector);
+		final = ft_strjoin(final, tmp, &content->g_collector, content);
 	}
 	return (final);
 }

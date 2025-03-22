@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:01:31 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 00:19:12 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:16:44 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,38 @@ int	filter_key(char *key, char *value)
 	return (0);
 }
 
-void	do_mode(char **key_value, t_env **node, t_gc **g_env_collector, int a)
+void	do_mode(char **key_value, t_env **node, t_container *content, int a)
 {
 	char	*value;
 
 	value = NULL;
 	value = key_value[1];
 	if (a == 1)
-		(*node)->value = ft_strjoin((*node)->value, value, g_env_collector);
+		(*node)->value = ft_strjoin((*node)->value, value,
+				&content->g_env_collector, content);
 	else
 	{
 		if (value)
-			(*node)->value = ft_strdup(value, g_env_collector);
+			(*node)->value = ft_strdup(value, &content->g_env_collector,
+					content);
 	}
 }
 
-char	**get_befor(const char *cmd, t_gc **g_collector)
+char	**get_befor(const char *cmd, t_container *content)
 {
 	int		i;
 	char	**to_return ;
 
 	i = 0;
-	to_return = (char **)gc(sizeof(char *) * 3, g_collector);
+	to_return = (char **)gc(sizeof(char *) * 3, &content->g_collector, content);
 	while (cmd[i] != '=' && cmd[i])
 		i++;
-	to_return[0] = ft_substr(cmd, 0, i, g_collector);
+	to_return[0] = ft_substr(cmd, 0, i, &content->g_collector);
 	if (cmd[i] == '=')
 	{
 		i++;
-		to_return[1] = ft_substr(cmd, i, ft_strlen(cmd + i), g_collector);
+		to_return[1] = ft_substr(cmd, i, ft_strlen(cmd + i),
+				&content->g_collector);
 	}
 	else
 		to_return[1] = NULL;
@@ -87,7 +90,7 @@ void	valid_key(char **key_value, t_container *content)
 	if (key_value[0] && ft_strcmp(key_value[0], "_"))
 	{
 		if (temp != NULL)
-			do_mode(key_value, &temp, &content->g_env_collector, a);
+			do_mode(key_value, &temp, content, a);
 		else
 			lstadd_back_env(&content->env_list, lstnew_env(key_value[0],
 					key_value[1], &content->g_env_collector, 0));
@@ -103,8 +106,9 @@ void	add_export(char **cmd, t_container *content)
 	clean_fd(content->data);
 	while (cmd[i])
 	{
-		splited_equal = get_befor(cmd[i], &content->g_collector);
-		if (splited_equal[0] && filter_key(splited_equal[0], splited_equal[1]) == 0)
+		splited_equal = get_befor(cmd[i], content);
+		if (filter_key(splited_equal[0], splited_equal[1]) == 0
+			&& splited_equal[0])
 			valid_key(splited_equal, content);
 		else
 		{

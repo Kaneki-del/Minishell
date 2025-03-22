@@ -6,10 +6,9 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 01:02:32 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:14:55 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -18,7 +17,7 @@ void	print_env_list(t_container *content, t_data *list)
 	t_env	*current;
 	int		saved_stdout;
 
-	saved_stdout = rideraction_builtins(list);
+	saved_stdout = rideraction_builtins(list, content);
 	current = content->env_list;
 	while (current != NULL)
 	{
@@ -31,7 +30,7 @@ void	print_env_list(t_container *content, t_data *list)
 		if (dup2(saved_stdout, 1) == -1)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		close(saved_stdout);
 	}

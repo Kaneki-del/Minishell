@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:16:09 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 01:34:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:20:38 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void	last_child(t_data *current, int *p_fd, t_container *content)
 		if (dup2(current->in_fd, 0) < 0)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 	}
 	if (current->out_fd != 0)
 	{
 		if (dup2(current->out_fd, 1) < 0)
-			(perror("error in dup2"), exit(1));
+			(perror("error in dup2"), clean_exit2(content, 1));
 	}
 	executing(current, content);
 }
@@ -78,14 +78,14 @@ static int	handle_pipes(t_container *content)
 
 	current = content->data;
 	if (pipe(p_fd) == -1)
-		return(perror("pipe"), -1);
+		return (perror("pipe"), -1);
 	execute_first(current, p_fd, content);
 	current = current->next;
 	while (current != NULL && current->next != NULL)
 	{
 		t = p_fd[0];
 		if (pipe(p_fd) == -1)
-			return(perror("pipe"), -1);
+			return (perror("pipe"), -1);
 		execut(content, current, p_fd, t);
 		close(t);
 		current = current->next;
@@ -97,7 +97,7 @@ static int	handle_pipes(t_container *content)
 void	run_multiple(t_container *content)
 {
 	int	id_last_command;
-	
+
 	content->if_pipe = PIPE;
 	id_last_command = handle_pipes(content);
 	if (id_last_command == -1)

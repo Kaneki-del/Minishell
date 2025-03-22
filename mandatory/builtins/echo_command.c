@@ -6,10 +6,9 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 00:47:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:16:09 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -18,9 +17,9 @@ static void	echo(t_container *content, t_data *current)
 	int	i;
 	int	new_line;
 	int	espace;
-	// char **temp_cmd;
 	char **cmd;
 	char *old_cmd;
+	int j;
 
 	espace = 0;
 	new_line = 0;
@@ -34,7 +33,7 @@ static void	echo(t_container *content, t_data *current)
 	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector);
 	if (!cmd || !cmd[0])
 		return ;
-	int j = 0;
+	j = 0;
 	while (cmd[j])
 	{
 		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
@@ -68,9 +67,8 @@ void	handle_echo(t_container *content, t_data *current)
 	int		saved_stdout;
 	char	**cmd;
 	
-	
 	cmd = current->cmds;
-	saved_stdout = rideraction_builtins(current);
+	saved_stdout = rideraction_builtins(current, content);
 	
 	i = 0;
 	while (cmd[i])
@@ -84,7 +82,7 @@ void	handle_echo(t_container *content, t_data *current)
 		if (dup2(saved_stdout, 1) == -1)
 		{
 			perror("error in dup2");
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		close(saved_stdout);
 	}

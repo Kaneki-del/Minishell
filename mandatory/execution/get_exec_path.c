@@ -6,13 +6,14 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 01:21:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:19:01 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
+static char	*check_cmd_path(char **path_list, char *cmd_name,
+	t_container *content)
 {
 	int		i;
 	char	*full_cmd_path;
@@ -20,8 +21,10 @@ static char	*check_cmd_path(char **path_list, char *cmd_name, t_gc **gc)
 	i = 0;
 	while (path_list[i])
 	{
-		full_cmd_path = ft_strjoin(path_list[i], "/", gc);
-		full_cmd_path = ft_strjoin(full_cmd_path, cmd_name, gc);
+		full_cmd_path = ft_strjoin(path_list[i], "/", &content->g_collector,
+				content);
+		full_cmd_path = ft_strjoin(full_cmd_path, cmd_name,
+				&content->g_collector, content);
 		if (!full_cmd_path)
 			return (NULL);
 		if (access(full_cmd_path, X_OK) == 0)
@@ -37,7 +40,7 @@ static void	print_dir_error(t_data *current)
 			"..") == 0)
 	{
 		ft_error_exec_two("mshell: ",
-				current->cmds[0], ": command not found", 2);
+			current->cmds[0], ": command not found", 2);
 		exit(127);
 	}
 }
@@ -50,7 +53,7 @@ static char	*try_direct_access(t_data *current, t_container *content)
 	{
 		if (access(current->cmds[0], X_OK) == 0)
 		{
-			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
 		}
 		else
@@ -91,7 +94,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 	{
 		if (access(current->cmds[0], X_OK) == 0)
 		{
-			cmd_v = ft_strdup(current->cmds[0], &content->g_collector);
+			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
 		}
 		else
@@ -102,6 +105,6 @@ char	*find_executable_path(t_data *current, t_container *content)
 		}
 	}
 	print_dir_error(current);
-	cmd_v = check_cmd_path(path, current->cmds[0], &content->g_collector);
+	cmd_v = check_cmd_path(path, current->cmds[0], content);
 	return (cmd_v);
 }

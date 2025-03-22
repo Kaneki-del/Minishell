@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:02:41 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/20 21:38:46 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:05:44 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_pwd(t_container *content, t_data *current)
 
 	env_list = &content->env_list;
 	pwd = getcwd(NULL, 0);
-	saved_stdout = rideraction_builtins(current);
+	saved_stdout = rideraction_builtins(current, content);
 	if (pwd == NULL)
 	{
 		temp = check_if_there("CPWD", env_list);
@@ -43,7 +43,7 @@ void	handle_pwd(t_container *content, t_data *current)
 	if (saved_stdout != -1)
 	{
 		if (dup2(saved_stdout, 1) == -1)
-			(perror("error in dup2"), exit(1));
+			(perror("error in dup2"), clean_exit2(content, 1));
 		close(saved_stdout);
 	}
 }

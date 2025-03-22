@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:22:24 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/19 03:10:01 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:37:29 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ static int	open_file_part_two(char *file, int in_or_out)
 			return (ft_error_exec_two("mshell: ", file,
 					": Is a directory", 2), -1);
 		if (ret == -1)
-		{
-			ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
-			return (-1);
-		}
+			return (ft_error_exec_two("mshell: ", file,
+					": Permission denied", 2), -1);
 	}
 	else if (in_or_out == 2)
 	{
@@ -36,10 +34,8 @@ static int	open_file_part_two(char *file, int in_or_out)
 			return (ft_error_exec_two("mshell: ", file,
 					": Is a directory", 2), -1);
 		if (ret == -1)
-		{
-			ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
-			return (-1);
-		}
+			return (ft_error_exec_two("mshell: ", file,
+					": Permission denied", 2), -1);
 	}
 	return (ret);
 }
@@ -62,7 +58,6 @@ static int	open_file(char *file, int in_or_out)
 			if (access(file, F_OK) == -1)
 				ft_error_exec_two("mshell: ", file,
 					": No such file or directory", 2);
-			
 			else if (access(file, R_OK) == -1)
 				ft_error_exec_two("mshell: ", file, ": Permission denied", 2);
 		}

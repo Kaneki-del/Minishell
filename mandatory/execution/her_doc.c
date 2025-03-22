@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:30:14 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 23:58:11 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:20:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ int	hrdc_ctrlc(int fd, t_container *content)
 		content->status = 1;
 		if (dup2(fd, 0) == -1)
 		{
+			close(fd);
 			perror("error in dup2");
-			clear_bin(&content->g_collector);
-			clear_bin(&content->g_env_collector);
-			clean_fds(content->data);
-			exit(1);
+			clean_exit2(content, 1);
 		}
 		close(fd);
 		return (-3);
@@ -48,7 +46,7 @@ int	end_hdc(int fd, char *file)
 	return (hdc);
 }
 
-char	*get_file(t_gc **g_collector)
+char	*get_file(t_container *content)
 {
 	char	*file_name;
 	int		i;
@@ -56,8 +54,9 @@ char	*get_file(t_gc **g_collector)
 	i = 0;
 	while (1)
 	{
-		file_name = ft_strjoin("/tmp/.her_doc", ft_itoa(i, g_collector),
-				g_collector);
+		file_name = ft_strjoin("/tmp/.her_doc",
+				ft_itoa(i, &content->g_collector), &content->g_collector,
+				content);
 		if (access(file_name, F_OK) == -1)
 			return (file_name);
 		i++;
@@ -73,11 +72,14 @@ int	her_doc(char *limiter, t_container *content)
 
 	fd = dup(0);
 	if (fd == -1)
-		return (-1);
+	{
+		perror("error in dup");
+		clean_exit2(content, 1);
+	}
 	final = buffer_content(limiter, content);
 	if (hrdc_ctrlc(fd, content) == -3)
 		return (-3);
-	file_name = get_file(&content->g_collector);
+	file_name = get_file();
 	fill_hdc_file(file_name, final, content);
 	hdc = end_hdc(fd, file_name);
 	return (hdc);

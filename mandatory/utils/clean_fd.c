@@ -14,3 +14,19 @@ void clean_fds(t_data *list)
         current = current->next;
     }
 }
+void	clean_exit2(t_container *content, int exit_code)
+{
+	clean_fds(content->data);
+	clear_bin(&content->g_collector);
+	clear_bin(&content->g_env_collector);
+	exit(exit_code);
+}
+void	clean_exit(t_container *content, int exit_code)
+{
+	clean_fds(content->data);
+	clear_bin(&content->g_collector);
+	clear_bin(&content->g_env_collector);
+	if (content->if_pipe != PIPE)
+		write(1, "exit\n", 5);
+	exit(exit_code);
+}

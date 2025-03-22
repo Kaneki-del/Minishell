@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/07 19:42:19 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 01:02:58 by kben-tou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 
 #ifndef MINISHELL_H
@@ -100,10 +90,9 @@ typedef struct s_container
 
 char *ft_strrchr(const char *s, int c);
 size_t ft_strlen(const char *s);
-char *ft_strdup(const char *s1, t_gc **g_collector);
+char *ft_strdup(const char *s1, t_gc **g_collector, t_container *content);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
 size_t ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char *ft_substr(char const *s, unsigned int start, size_t len, t_gc **g_collector);
 t_data *new_data_node(char *before_command,char **command, char **directions, t_gc **g_collector);
@@ -137,7 +126,7 @@ int check_is_in_qoutes(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char *filter_one_sides(char *command_line,  t_gc **g_collector);
 size_t words_count(const char *s, char c);
-void *gc(size_t size, t_gc **garbage_list);
+void *gc(size_t size, t_gc **garbage_list, t_container *content);
 void ft_error(char *msg, char *dis,int fd);
 void clear_bin(t_gc **garbage_list);
 t_env *copy_list(t_container *content);
@@ -148,9 +137,9 @@ t_env	*get_env_list(char **env,t_container *content);
 int ft_strcmp(const char *s1, const char *s2);
 int check_builtin_commands(char **commands);
 void	built_in(t_data *current, t_container *content); 
-t_env *lstnew_env(char *key, char *value, t_gc **g_env_collector, int set);
+t_env *lstnew_env(char *key, char *value, t_container *content, int set);
 void	print_env_list(t_container *content, t_data *list);
-char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc);
+char	*ft_strjoin(char const *s1, char const *s2, t_gc **gc, t_container *content);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void	print_export(t_data *current ,t_container *content);
 void add_export(char **cmd, t_container *content);
@@ -167,7 +156,7 @@ int ft_atoi( char *str, t_data *current, t_container *content);
 void handle_exit(t_data *current, t_container *content);
 void clean_fds(t_data *list);
 void ft_error_exec(char *msg, char *dis, char *left, int fd);
-int rideraction_builtins(t_data *current);
+int rideraction_builtins(t_data *current, t_container *content);
 void clean_fd(t_data *list);
 void ft_error_exec_two(char *msg, char *dis, char *left, int fd);
 int her_doc(char *limiter, t_container *content);
@@ -200,5 +189,7 @@ char	**get_backup_env(t_container *content);
 char *remove_quotes(char *command, t_gc **g_collector);
 char **filter_all(char **cmds, t_gc **g_collector);
 int	is_directory(char *path);char **ft_spl(const char *s, char c, t_gc **g_collector);
+void	clean_exit(t_container *content, int exit_code);
+void	clean_exit2(t_container *content, int exit_code);
 
 #endif
