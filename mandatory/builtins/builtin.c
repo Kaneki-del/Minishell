@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 02:14:55 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 10:19:13 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	print_env_list(t_container *content, t_data *list)
 	int		saved_stdout;
 
 	saved_stdout = rideraction_builtins(list, content);
+	if (!content->env_list)
+		return ;
 	current = content->env_list;
 	while (current != NULL)
 	{
