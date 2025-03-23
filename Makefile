@@ -21,8 +21,7 @@ P_SRC = $(addprefix $(PARSING_DIR), check_echo_option.c find_data.c parser.c qou
 
 SRCS = $(SRC) $(B_SRC) $(ET_SRC) $(ED_SRC) $(P_SRC) $(UT_SRC)
 
-CFLAGS =  -Wall -Wextra -Werror  -g -fsanitize=address
-CFLAGS =  -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror -g -fsanitize=address
 RLLIB1 = $(shell brew --prefix readline)/lib
 RLINC1 = $(shell brew --prefix readline)/include
 REDLINE = -lreadline -lncurses

@@ -6,14 +6,14 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:56:11 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 17:56:12 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:15:43 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	status_check(unsigned long long n,
-		size_t i, char *str, t_data *current, t_container *content)
+static int	status_check(unsigned long long n,
+		size_t i, char *str, t_data *current)
 {
 	if (n > LLONG_MAX / 10
 		|| (n == LLONG_MAX / 10 && str[i] - '0' > LLONG_MAX % 10))
@@ -23,16 +23,16 @@ static void	status_check(unsigned long long n,
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		clean_fds(current);
-        clear_bin(&content->g_collector);
-        clear_bin(&content->g_env_collector);
-		exit(255);
+		return (0);
 	}
+	return (1);
 }
-int ft_atoi( char *str, t_data *current, t_container *content)
+
+int	ft_atoi( char *str, t_data *current, t_container *content)
 {
 	unsigned long long	result;
-	int		signe;
-	int 	i;
+	int					signe;
+	int					i;
 
 	i = 0;
 	result = 0;
@@ -49,7 +49,8 @@ int ft_atoi( char *str, t_data *current, t_container *content)
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		status_check(result, i, str, current, content);
+		if (status_check(result, i, str, current) == 0)
+			clean_exit2(content, 255);
 		result = (result * 10) + str[i++] - '0';
 	}
 	return ((result * signe));

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 14:25:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 21:13:27 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,9 @@ static void	cd_home(t_container *content)
 void	handle_cd(t_data *current, t_container *content)
 {
 	t_env	*tmp;
-	char **new_path = current->cmds+1;
-	
+	char	**new_path;
+
+	new_path = current->cmds + 1;
 	tmp = check_if_there("PWD", &content->env_list);
 	if (tmp != NULL && tmp->value != NULL)
 		content->save_path = tmp->value;
@@ -80,8 +81,10 @@ void	handle_cd(t_data *current, t_container *content)
 		content->save_path = ft_strdup("", &content->g_collector, content);
 	if (new_path && new_path[0])
 	{
-		if (content->flag == 5 && (ft_strchr(current->befor_expanding, '"') || ft_strchr(current->befor_expanding, '\'')) )
-			new_path[0] = remove_quotes(new_path[0], &content->g_collector, content);
+		if (content->flag == 5 && (ft_strchr(current->befor_expanding, '"') \
+		|| ft_strchr(current->befor_expanding, '\'')))
+			new_path[0] = remove_quotes(new_path[0], &content->g_collector, \
+			content);
 		if (chdir(new_path[0]) == -1)
 		{
 			perror(new_path[0]);

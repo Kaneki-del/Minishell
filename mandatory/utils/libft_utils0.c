@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_utils0.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 21:41:11 by kben-tou          #+#    #+#             */
+/*   Updated: 2025/03/22 21:41:50 by kben-tou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 size_t	ft_strlen(const char *s)
@@ -10,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1,  t_gc **g_collector, t_container *content)
+char	*ft_strdup(const char *s1, t_gc **g_collector, t_container *content)
 {
 	size_t	i;
 	char	*p;
@@ -52,7 +64,8 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector, t_container *content)
+char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector, \
+t_container *content)
 {
 	size_t	total_len;
 	char	*result;
@@ -71,5 +84,3 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc **g_collector, t_container
 	ft_strlcat(result, s2, total_len);
 	return (result);
 }
-
-

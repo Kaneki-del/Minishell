@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:35:48 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 15:24:42 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 21:42:35 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (str_len);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len, t_container *content)
+char	*ft_substr(char const *s, unsigned int start, size_t len, \
+t_container *content)
 {
 	size_t	s_len;
 	char	*sub;
@@ -74,9 +75,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_container *cont
 	return (sub);
 }
 
-char *ft_chrjoin(char c, char b, t_container *content)
+char	*ft_chrjoin(char c, char b, t_container *content)
 {
-	char *new;
+	char	*new;
 
 	new = gc(3, &content->g_collector, content);
 	if (!new)
@@ -87,7 +88,7 @@ char *ft_chrjoin(char c, char b, t_container *content)
 	return (new);
 }
 
-char *ft_strchr_join(char *s1, char c, t_container *content)
+char	*ft_strchr_join(char *s1, char c, t_container *content)
 {
 	size_t	total_len;
 	char	*result;

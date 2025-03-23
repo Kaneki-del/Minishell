@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 02:44:49 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 17:41:06 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/22 22:51:43 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ char	**remove_repeated(char **cmd, t_container *content)
 		{
 			echo_vars.second_check = 1;
 			echo_vars.check = 0;
-			echo_vars.new_cmds[echo_vars.j++] = cmd[echo_vars.i++];
+			echo_vars.new_cmds[echo_vars.j] = cmd[echo_vars.i];
+			echo_vars.j++;
 		}
+		echo_vars.i++;
 	}
 	echo_vars.new_cmds[echo_vars.j] = NULL;
 	return (echo_vars.new_cmds);
