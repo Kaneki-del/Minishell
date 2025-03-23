@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:45:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 00:01:41 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 01:41:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static char	*buffer_line(char *limiter, t_container *content)
 	if (ft_strcmp(line, remove_quotes(limiter, &content->g_collector,
 				content)) == 0)
 		return (NULL);
-	else if (!ft_strchr(limiter, '"') && !ft_strchr(limiter, '\''))
+	else if (!ft_strchr(limiter, '"') && !ft_strchr(limiter, '\'') && \
+	limiter[0] != '\0')
 		line = expand_here_doc_lines(content, line);
 	tmp = ft_strjoin(line, "\n", &content->g_collector, content);
 	return (tmp);
