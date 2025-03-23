@@ -6,7 +6,7 @@
 #    By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 00:40:03 by kben-tou          #+#    #+#              #
-#    Updated: 2025/03/23 00:40:40 by kben-tou         ###   ########.fr        #
+#    Updated: 2025/03/23 10:21:35 by kben-tou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRCS = $(SRC) $(B_SRC) $(ET_SRC) $(ED_SRC) $(P_SRC) $(UT_SRC)
 CFLAGS =  -Wall -Wextra -Werror
 RLLIB1 = $(shell brew --prefix readline)/lib
 RLINC1 = $(shell brew --prefix readline)/include
-REDLINE = -lreadline -lncurses
+REDLINE = -lreadline -lncurses #----------------------------------------------------
 HEADER = includes/minishell.h
 
 OBJS = $(SRCS:.c=.o)
@@ -47,7 +47,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	# cc $(CFLAGS) $(OBJS) $(REDLINE) -o $@
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L ${RLLIB1} -lreadline
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L ${RLLIB1} -lreadline 
 
 clean:
 	rm -rf $(OBJS)

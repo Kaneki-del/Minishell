@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:35:12 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 17:38:44 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 11:01:25 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 	char	*key;
 	int		start;
 
+	if(!content->env_list)
+		return (NULL);
 	pair = NULL;
 	key = NULL;
 	start = (*i);
