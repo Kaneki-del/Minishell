@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_exec_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 02:19:01 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 01:24:09 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,6 @@ static char	*try_direct_access(t_data *current, t_container *content)
 		{
 			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
-		}
-		else
-		{
-			ft_error_exec_two("mshell: ", current->cmds[0],
-				": Permission denied", 2);
-			exit(126);
 		}
 	}
 	return (NULL);

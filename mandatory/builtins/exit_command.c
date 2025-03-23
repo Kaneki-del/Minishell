@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:58 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:24:49 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/23 01:03:57 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ void	handle_exit(t_data *current, t_container *content)
 		clean_exit(content, exit_code);
 	}
 	else
-		clean_exit(content, 0);
+		clean_exit(content, content->is_status);
 }
