@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+         #
+#    By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 00:40:03 by kben-tou          #+#    #+#              #
-#    Updated: 2025/03/23 11:06:58 by kben-tou         ###   ########.fr        #
+#    Updated: 2025/03/23 11:08:19 by sait-nac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ P_SRC = $(addprefix $(PARSING_DIR), check_echo_option.c find_data.c parser.c qou
 
 SRCS = $(SRC) $(B_SRC) $(ET_SRC) $(ED_SRC) $(P_SRC) $(UT_SRC)
 
-CFLAGS =  -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror -fsanitize=address
 
 RLLIB1 = $(shell brew --prefix readline)/lib
 RLINC1 = $(shell brew --prefix readline)/include

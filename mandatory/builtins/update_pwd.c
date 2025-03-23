@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:51:37 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 15:05:46 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/23 11:30:55 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	update_original_pwd(t_container *content, char *path)
 	t_env	*pwd;
 	t_env	*cpwd;
 
+	if (!content || !path)
+		return ;
 	update_old_pwd(content);
 	pwd = check_if_there("PWD", &content->env_list);
 	if (pwd && path)
