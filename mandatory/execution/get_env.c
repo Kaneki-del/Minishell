@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 15:07:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/24 23:48:37 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,14 @@ static char	**ft_split_equal_to(const char *s, t_container *content)
 static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 {
 	t_env	*cpwd;
-
+	
+	char path[] = "PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
+	if (check_if_there("PATH", env_list) != NULL)
+		check_if_there("PATH", env_list)->value = ft_strdup(path,
+			&content->g_env_collector, content);
+	else
+		lstadd_back_env(env_list, lstnew_env("PATH", path,
+				content, 0));
 	if (check_if_there("PWD", env_list) != NULL)
 		check_if_there("PWD", env_list)->value = ft_strdup(pwd,
 			&content->g_env_collector, content);
@@ -52,8 +59,11 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 	cpwd = check_if_there("PWD", env_list);
 	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
 			env_list) != NULL)
+	{
 		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
 			&content->g_env_collector, content);
+		// check_if_there("CPWD", &content->env_list)->print_flag = 3;
+	}
 	else if (cpwd != NULL && cpwd->value != NULL)
 		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
 				content, 3));
@@ -79,8 +89,8 @@ static void	get_pwd(t_env **env_list, t_container *content)
 
 static void	check_flags(t_env *returned_env, t_container *content, int flag)
 {
-	if (check_if_there("PATH", &returned_env) != NULL && flag == 1)
-		check_if_there("PATH", &returned_env)->print_flag = 1;
+	(void)flag;
+	
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
 		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL,
 				content, 0));
@@ -101,7 +111,6 @@ t_env	*get_env_list(char **env, t_container *content)
 	if (!env || !env[0])
 	{
 		env = get_backup_env(content);
-		flag = 1;
 	}
 	while (env[i])
 	{

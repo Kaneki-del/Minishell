@@ -1,0 +1,16 @@
+bash-3.2$ ls > tmp > $gg
+bash: $gg: ambiguous redirect // Should create the tmp but empty
+------------------------------------------------------------------------------
+➜  Minishell git:(test) ✗ env -i ./minishell
+mshell$> export 
+declare -x PWD="/mnt/homes/sait-nac/Desktop/Minishell"
+declare -x SHLVL="1"
+declare -x OLDPWD
+mshell$> ./minishell 
+mshell$> export
+declare -x CPWD="/mnt/homes/sait-nac/Desktop/Minishell" // should be hidden (not mandatory)
+declare -x PATH="/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:." // should be hidden (not mandatory)
+declare -x PWD="/mnt/homes/sait-nac/Desktop/Minishell"
+declare -x SHLVL="1"
+declare -x OLDPWD
+-------------------------------------------------------------------------------------------

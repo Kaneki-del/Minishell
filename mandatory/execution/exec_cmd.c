@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:47:20 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 00:00:45 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/24 23:00:53 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	executing(t_data *current, t_container *content)
 	char	*cmd_path;
 	char	**list_char;
 
-	if (!content->env_list)
-		exit(0);
+	
 	if (!current->cmds || !current->cmds[0])
 		exit(0);
 	if (content->flag == 5 && (ft_strchr(current->befor_expanding, '\'') \

@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 01:24:09 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/24 23:27:22 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static char	*check_cmd_path(char **path_list, char *cmd_name,
 {
 	int		i;
 	char	*full_cmd_path;
-
+	
+	if (!path_list || !path_list[0])
+		return (NULL);
 	i = 0;
 	while (path_list[i])
 	{
@@ -82,7 +84,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 	path = NULL;
 	if (ft_strchr(current->cmds[0], '/') != NULL)
 		cmd_v = executable(current, content);
-	else
+	else if (content->env_list)
 		path = get_path(content);
 	if (!path || !path[0])
 	{
