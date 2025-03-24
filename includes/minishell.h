@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 23:55:06 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/24 16:09:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:27:52 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,8 @@ char				**normal_ft_split(char const *s, char c, t_gc **g_collector,
 char				*expand_here_doc_lines(t_container *content, char *command);
 char				**prepare_commands(char **only_command, char *old_cmd,
 						char **cmd_options, t_container *content);
-void				expanding_cmds_redirections(t_container *content,
-						char **only_command, char **dir_files, int shoud_skeep);
+char				*expanding_cmds_redirections(t_container *content,
+						char *only_command, char *dir_files, int shoud_skeep);
 int					token_checker(t_container *content);
 int					check_is_last_redirection(t_token *iter,
 						t_container *content);

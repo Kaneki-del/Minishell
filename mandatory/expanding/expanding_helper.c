@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:35:12 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/23 11:38:03 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/24 23:06:50 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,56 @@ char	*remove_quotes(char *command, t_gc **g_collector, t_container *content)
 	return (res);
 }
 
+char *add_quotes(char *str, t_container *content)
+{
+    if (str == NULL) {
+        return NULL;
+    }
+
+    // Allocate memory for the new string with quotes
+    size_t len = ft_atoi(str);
+    char *quoted_str = gc(len + 3, &content->g_collector, content); // 2 quotes + 1 null terminator
+
+    if (quoted_str == NULL) {
+        return NULL;
+    }
+
+    // Add the quotes and copy the original string
+    quoted_str[0] = '"';
+    ft_strlcpy(quoted_str + 1, str, len + 1);
+    quoted_str[len + 1] = '"';
+    quoted_str[len + 2] = '\0';
+
+    return quoted_str;
+}
+
+char *ft_strtrim(char *s1, char *set, t_container *content) {
+    size_t s;
+    size_t e;
+    size_t i;
+    char *res;
+
+    s = 0;
+    e = 0;
+    i = 0;
+    if (!s1)
+        return (NULL);
+    if (!set)
+        return (ft_strdup(s1, &content->g_collector, content));
+    while (s1[s] && ft_strchr(set, s1[s]))
+        s++;
+    e = ft_strlen(s1);
+    while (e > s && ft_strchr(set, s1[e - 1]))
+        e--;
+    res = (char *)malloc((e - s) + 1);
+    if (!res)
+        return (NULL);
+    while (s < e)
+        res[i++] = s1[s++];
+    res[i] = '\0';
+    return (res);
+}
+
 char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 {
 	t_env	*pair;
@@ -108,5 +158,7 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 	content->flag = 5;
 	if (!pair->value)
 		return (NULL);
+	if (content->shoud_skeep == 2)
+		pair->value = add_quotes(pair->value, content);
 	return (pair->value);
 }
