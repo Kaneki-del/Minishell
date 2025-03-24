@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_fd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:50:11 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/23 00:00:03 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:09:40 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,12 @@ void	clean_exit(t_container *content, int exit_code)
 	if (content->if_pipe != PIPE)
 		write(1, "exit\n", 5);
 	exit(exit_code);
+}
+
+void	exit_choice(t_container *content)
+{
+	if (content->if_pipe != PIPE)
+		clean_exit(content, content->is_status);
+	else
+		clean_exit(content, 0);
 }
