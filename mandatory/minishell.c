@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 00:20:16 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/24 16:13:48 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:31:45 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,15 @@ static int	repeat_line(t_container *content)
 	return (0);
 }
 
+// void f()
+// {
+// 	system("lsof -c minishell");
+// }
 int	main(int ac, char **av, char **env)
 {
 	t_container	content;
 
+	// atexit(f);
 	(void)av;
 	tcgetattr(STDERR_FILENO, &content.termios_value);
 	content.g_env_collector = NULL;

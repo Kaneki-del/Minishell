@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/24 23:48:37 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:10:10 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ static char	**ft_split_equal_to(const char *s, t_container *content)
 static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 {
 	t_env	*cpwd;
+	t_env	*ccpwd;
 	
-	char path[] = "PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
+	char path[] = "/mnt/homes/sait-nac/.local/nvim/bin:/mnt/homes/sait-nac/.homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/mnt/homes/sait-nac/.local/nvim/bin:/mnt/homes/sait-nac/.homebrew/bin";
 	if (check_if_there("PATH", env_list) != NULL)
 		check_if_there("PATH", env_list)->value = ft_strdup(path,
 			&content->g_env_collector, content);
@@ -57,16 +58,17 @@ static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
 		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
 				content, 0));
 	cpwd = check_if_there("PWD", env_list);
-	if (cpwd != NULL && cpwd->value != NULL && check_if_there("CPWD",
-			env_list) != NULL)
-	{
-		check_if_there("CPWD", env_list)->value = ft_strdup(cpwd->value,
-			&content->g_env_collector, content);
-		// check_if_there("CPWD", &content->env_list)->print_flag = 3;
-	}
-	else if (cpwd != NULL && cpwd->value != NULL)
-		lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value,
-				content, 3));
+	ccpwd = check_if_there("CPWD", env_list);
+	if (cpwd != NULL && cpwd->value != NULL) {
+    if (ccpwd != NULL) {
+        ccpwd->print_flag = 3;
+        ccpwd->value = ft_strdup(cpwd->value, &content->g_env_collector, content);
+    }
+    else {
+        lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, content, 3));
+    }
+}
+
 }
 
 static void	get_pwd(t_env **env_list, t_container *content)

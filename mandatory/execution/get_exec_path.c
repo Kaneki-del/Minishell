@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/24 23:27:22 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:34:07 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ static char	*try_direct_access(t_data *current, t_container *content)
 		{
 			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
+		}
+		else if (access(current->cmds[0], X_OK) != 0)
+		{
+			ft_error_exec_two("mshell: ", current->cmds[0],
+				": Permission denied", 2);
+			exit(126);
 		}
 	}
 	return (NULL);
