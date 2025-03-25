@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 10:19:13 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:39:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,60 @@ void	print_env_list(t_container *content, t_data *list)
 
 void	handle_export(t_data *current, t_container *content)
 {
-	int	i;
-
+    int	i;
+	int	j;
+	char **cmd;
+	char **hold;
+	char **res;
+	int counter;
 	i = 0;
+
+	counter = 0;
+	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, content);
+	while (cmd[i])
+	{
+		cmd[i]= expanding_cmds_redirections(content, cmd[i], NULL, 3);
+		cmd[i]= remove_quotes(cmd[i], &content->g_collector, content);
+		if (cmd[i] && cmd[i][get_char_index(cmd[i], '=')] != '=')
+		{
+			hold = ft_split(cmd[i], ' ', &content->g_collector, content);
+			j = 0;
+            if (hold)
+            {
+                while (hold[j])
+                    j++;
+            }
+			counter += j;
+		}
+		else
+			counter++;
+		i++;
+	}
+	res = gc((sizeof(char *) * (counter + 1)), &content->g_collector, content);
+	i = 0;
+	counter = 0;
+	while (cmd[i])
+	{
+		if (cmd[i][get_char_index(cmd[i], '=')] != '=')
+		{
+			hold = NULL;
+			hold = ft_split(cmd[i], ' ', &content->g_collector, content);
+            if (hold)
+            {
+				j = 0;
+                while (hold[j])
+                    res[counter++] = hold[j++];
+            }
+			i++;
+		}
+		else
+			res[counter++] = cmd[i++];
+	}
+	res[counter] = NULL;
+	current->cmds = res;
+	i = 0;
+	if (!current->cmds)
+		return ;
 	while (current->cmds[i])
 		i++;
 	if (i == 1)

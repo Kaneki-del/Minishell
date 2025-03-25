@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/24 21:48:15 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:44:44 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 char	**expand_echo(t_container *content, t_data *current, char **cmd)
 {
-	char	*old_cmd;
 	int		i;
 
-	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector, \
-	content);
-	if (!old_cmd)
-		return (NULL);
 	content->status = content->is_status;
 	current->befor_expanding = expanding_cmds_redirections(content, current->befor_expanding, NULL, 2);
 	content->status = 0;
@@ -36,58 +31,6 @@ char	**expand_echo(t_container *content, t_data *current, char **cmd)
 	}
 	return (cmd);
 }
-
-// char	**expand_echo(t_container *content, t_data *current, char **cmd)
-// {
-// 	char	*old_cmd;
-// 	char	**res;
-// 	int 	k;
-
-
-// 	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector, \
-// 	content);
-// 	if (!old_cmd)
-// 		return (NULL);
-// 	content->status = content->is_status;
-// 	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, \
-// 	content);
-// 	content->status = 0;
-// 	int j = 0;
-// 	int count = 0;
-// 	char **hd;
-// 	while (cmd[j])
-// 	{
-// 		char *s = expanding_cmds_redirections(content, cmd[j], NULL, 1);
-// 		hd = ft_split(s, ' ',&content->g_collector, content);
-// 		if(hd)
-// 		{
-// 			k = 0;
-// 			while (hd[k++])
-// 				count++;
-// 		}
-// 		j++;
-// 	}
-// 	j = 0;
-// 	hd = NULL;
-// 	res = gc((sizeof (char *) * (count + 1)), &content->g_collector, content);
-// 	count = 0;
-// 	while (cmd[j])
-// 	{
-// 		char *l = expanding_cmds_redirections(content, cmd[j], NULL, 1);
-// 		hd = ft_split(l, ' ',&content->g_collector, content);
-// 		if(hd)
-// 		{
-// 			k = 0;
-// 			while (hd[k])
-// 			{
-// 				res[count++] = hd[k++];
-// 			}
-// 		}
-// 		j++;
-// 	}
-// 	res[count] = NULL;
-// 	return (res);
-// }
 
 static void	echo(t_container *content, t_data *current)
 {

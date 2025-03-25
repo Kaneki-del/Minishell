@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:35:12 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/24 23:06:50 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:32:11 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,30 +85,29 @@ char	*remove_quotes(char *command, t_gc **g_collector, t_container *content)
 	return (res);
 }
 
-char *add_quotes(char *str, t_container *content)
+char *add_qoutations(char *command, char qoute, t_container *content)
 {
-    if (str == NULL) {
-        return NULL;
-    }
+  int i;
+  int j;
+  char *res;
 
-    // Allocate memory for the new string with quotes
-    size_t len = ft_atoi(str);
-    char *quoted_str = gc(len + 3, &content->g_collector, content); // 2 quotes + 1 null terminator
-
-    if (quoted_str == NULL) {
-        return NULL;
-    }
-
-    // Add the quotes and copy the original string
-    quoted_str[0] = '"';
-    ft_strlcpy(quoted_str + 1, str, len + 1);
-    quoted_str[len + 1] = '"';
-    quoted_str[len + 2] = '\0';
-
-    return quoted_str;
+  i = 0;
+  j = 1;
+  res = gc(ft_strlen(command) + 3, &content->g_collector, content);
+  res[0] = qoute;
+  while (command[i])
+  {
+    res[j] = command[i];
+    i++;
+    j++;
+  }
+  res[j] = qoute;
+  res[j + 1] = '\0';
+  return (res);
 }
 
-char *ft_strtrim(char *s1, char *set, t_container *content) {
+char *ft_strtrim(char *s1, char *set, t_container *content)
+{
     size_t s;
     size_t e;
     size_t i;
@@ -126,7 +125,7 @@ char *ft_strtrim(char *s1, char *set, t_container *content) {
     e = ft_strlen(s1);
     while (e > s && ft_strchr(set, s1[e - 1]))
         e--;
-    res = (char *)malloc((e - s) + 1);
+    res = gc((e - s) + 1, &content->g_collector, content);
     if (!res)
         return (NULL);
     while (s < e)
@@ -135,11 +134,26 @@ char *ft_strtrim(char *s1, char *set, t_container *content) {
     return (res);
 }
 
+int is_in_quotes(char *command, int pos)
+{
+    int i;
+    char quote = '\0';
+    int is_in = 0;
+
+    for (i = 0; i < pos; i++)
+    {
+        quote = in_quotations(command, &i, quote, &is_in);
+    }
+
+    return (is_in);
+}
+
 char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 {
 	t_env	*pair;
 	char	*key;
 	int		start;
+	char	qoute;
 
 	if (!content->env_list)
 		return (NULL);
@@ -158,7 +172,19 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 	content->flag = 5;
 	if (!pair->value)
 		return (NULL);
-	if (content->shoud_skeep == 2)
-		pair->value = add_quotes(pair->value, content);
+	if ((content->shoud_skeep == 2 || content->shoud_skeep == 3) && \
+    (ft_strchr(pair->value, '\'') || ft_strchr(pair->value, '"')))
+    {
+		if (ft_strchr(pair->value, '"'))
+			qoute = '\'';
+		else
+			qoute = '"';
+		if (!is_in_quotes(command, *i) && content->shoud_skeep == 3)
+			return (add_qoutations(pair->value, qoute, content));
+		else if (!is_in_quotes(command, *i))
+			return (add_qoutations(ft_strtrim(pair->value, " \t",\
+				content), qoute, content));
+		return (ft_strtrim(pair->value, " \t", content));
+    }
 	return (pair->value);
 }

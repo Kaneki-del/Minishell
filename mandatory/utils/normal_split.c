@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 21:54:35 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 23:51:52 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/25 02:07:41 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,15 @@ t_container *content)
 		p[j] = store_next_word(s, &i, c, content);
 		if (!(p[j]))
 		{
-			mem_free(p);
+			mem_free(p); ///
+
+
+
+
+
+
+
+
 			return (NULL);
 		}
 		j++;

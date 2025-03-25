@@ -6,7 +6,7 @@
 #    By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 00:40:03 by kben-tou          #+#    #+#              #
-#    Updated: 2025/03/24 17:15:29 by kben-tou         ###   ########.fr        #
+#    Updated: 2025/03/25 23:43:04 by kben-tou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,20 +45,17 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@ -MMD
+	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L ${RLLIB1} -lreadline
 
 clean:
 	rm -rf $(OBJS)
-	rm -rf $(OBJS:.o=.d) 
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
--include $(OBJS:.o=.d)
 
 .PHONY: all clean fclean re
