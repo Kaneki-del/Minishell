@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:51:47 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/26 16:58:58 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 22:50:30 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,23 @@ int	parser(t_container *content)
 {
 	t_token		*iter;
 	char		*dir_files;
-	char		*only_command;
+	char		*on_cmd;
 	char		*old_command;
 	char		**cmd_options;
 
 	dir_files = NULL;
-	only_command = NULL;
+	on_cmd = NULL;
 	cmd_options = NULL;
 	iter = content->tokens;
 	while (iter)
 	{
-		iter = init_data(iter, &dir_files, &only_command, content);
-		init_norms(content, only_command, &old_command);
-		only_command = expanding_cmds_redirections(content, only_command, \
-		NULL, 0);
+		iter = init_data(iter, &dir_files, &on_cmd, content);
+		init_norms(content, on_cmd, &old_command);
+		on_cmd = expanding_cmds_redirections(content, on_cmd, NULL, 0);
 		dir_files = expanding_cmds_redirections(content, NULL, dir_files, 0);
-		cmd_options = prepare_commands(&only_command, \
+		if (content->flag == 0)
+			return (0);
+		cmd_options = prepare_commands(&on_cmd, \
 		old_command, cmd_options, content);
 		add_data_back(&content->data, new_data_node(old_command, cmd_options, \
 		filterd(ft_split(dir_files, ' ', &content->g_collector, content), \
