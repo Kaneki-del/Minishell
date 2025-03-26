@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/25 12:34:07 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:06:36 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*check_cmd_path(char **path_list, char *cmd_name,
 {
 	int		i;
 	char	*full_cmd_path;
-	
+
 	if (!path_list || !path_list[0])
 		return (NULL);
 	i = 0;
