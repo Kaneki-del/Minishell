@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:26:35 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 17:51:27 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:46:33 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,26 @@ void	lstadd_back_env(t_env **lst, t_env *new_t)
 	{
 		ptr = ft_lstlast(current);
 		ptr->next = new_t;
+	}
+}
+
+void	get_pwd_part3(t_container *content, t_env **env_list)
+{
+	t_env	*cpwd;
+	t_env	*ccpwd;
+
+	cpwd = check_if_there("PWD", env_list);
+	ccpwd = check_if_there("CPWD", env_list);
+	if (cpwd != NULL && cpwd->value != NULL)
+	{
+		if (ccpwd != NULL)
+		{
+			ccpwd->print_flag = 3;
+			ccpwd->value = ft_strdup(cpwd->value, &content->g_env_collector,
+					content);
+		}
+		else
+			lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, content,
+					3));
 	}
 }

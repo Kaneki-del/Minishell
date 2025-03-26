@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 23:55:06 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/24 16:09:51 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:47:02 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,5 +246,6 @@ int					is_directory(char *path);
 void				clean_exit(t_container *content, int exit_code);
 void				clean_exit2(t_container *content, int exit_code);
 void				exit_choice(t_container *content);
+void				get_pwd_part3(t_container *content, t_env **env_list);
 
 #endif

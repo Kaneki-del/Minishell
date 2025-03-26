@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/26 01:30:26 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:45:24 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,40 +38,22 @@ static char	**ft_split_equal_to(const char *s, t_container *content)
 	str[2] = NULL;
 	return (str);
 }
-void get_pwd_part3(t_container *content, t_env **env_list)
+
+static void	get_pwd_part2(t_env **env_list, t_container *content, char *pwd)
 {
-	t_env	*cpwd;
-	t_env	*ccpwd;
-	
-	cpwd = check_if_there("PWD", env_list);
-	ccpwd = check_if_there("CPWD", env_list);
-	if (cpwd != NULL && cpwd->value != NULL) 
-	{
-    	if (ccpwd != NULL) 
-		{
-        	ccpwd->print_flag = 3;
-        	ccpwd->value = ft_strdup(cpwd->value, &content->g_env_collector, content);
-		}
-		else
-        	lstadd_back_env(env_list, lstnew_env("CPWD", cpwd->value, content, 3));
-    }
-    
-}
-static void	get_pwd_part2(t_env **env_list, t_container *content, char	*pwd)
-{
-	char path[] = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
+	char	*path;
+
+	path = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
 	if (check_if_there("PATH", env_list) != NULL)
 		check_if_there("PATH", env_list)->value = ft_strdup(path,
 			&content->g_env_collector, content);
 	else
-		lstadd_back_env(env_list, lstnew_env("PATH", path,
-				content, 0));
+		lstadd_back_env(env_list, lstnew_env("PATH", path, content, 0));
 	if (check_if_there("PWD", env_list) != NULL)
 		check_if_there("PWD", env_list)->value = ft_strdup(pwd,
 			&content->g_env_collector, content);
 	else
-		lstadd_back_env(env_list, lstnew_env("PWD", pwd,
-				content, 0));
+		lstadd_back_env(env_list, lstnew_env("PWD", pwd, content, 0));
 	get_pwd_part3(content, env_list);
 }
 
@@ -96,10 +78,8 @@ static void	get_pwd(t_env **env_list, t_container *content)
 static void	check_flags(t_env *returned_env, t_container *content, int flag)
 {
 	(void)flag;
-	
 	if (check_if_there("OLDPWD", &returned_env) == NULL)
-		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL,
-				content, 0));
+		lstadd_back_env(&returned_env, lstnew_env("OLDPWD", NULL, content, 0));
 	else
 		clean_old_pwd(&returned_env);
 }
@@ -119,8 +99,8 @@ t_env	*get_env_list(char **env, t_container *content)
 	while (env[i])
 	{
 		temp = ft_split_equal_to(env[i], content);
-		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1],
-				content, 0));
+		lstadd_back_env(&returned_env, lstnew_env(temp[0], temp[1], content,
+				0));
 		i++;
 	}
 	check_flags(returned_env, content, flag);
