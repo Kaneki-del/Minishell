@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/25 23:39:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 00:33:01 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	handle_export(t_data *current, t_container *content)
 	while (cmd[i])
 	{
 		cmd[i]= expanding_cmds_redirections(content, cmd[i], NULL, 3);
+		if (cmd[i] && cmd[i][0] == '\0')
+			cmd[i] = NULL;
 		cmd[i]= remove_quotes(cmd[i], &content->g_collector, content);
-		if (cmd[i] && cmd[i][get_char_index(cmd[i], '=')] != '=')
+		if (cmd[i] && cmd[i][get_char_index(cmd[i], '=')] != '=' && content->flag == 5)
 		{
 			hold = ft_split(cmd[i], ' ', &content->g_collector, content);
 			j = 0;
@@ -72,16 +74,16 @@ void	handle_export(t_data *current, t_container *content)
 	res = gc((sizeof(char *) * (counter + 1)), &content->g_collector, content);
 	i = 0;
 	counter = 0;
-	while (cmd[i])
+	while (cmd[i] != NULL)
 	{
-		if (cmd[i][get_char_index(cmd[i], '=')] != '=')
+		if (cmd[i][get_char_index(cmd[i], '=')] != '=' && content->flag == 5)
 		{
 			hold = NULL;
 			hold = ft_split(cmd[i], ' ', &content->g_collector, content);
             if (hold)
             {
 				j = 0;
-                while (hold[j])
+                while (hold[j] != NULL)
                     res[counter++] = hold[j++];
             }
 			i++;
