@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 23:55:06 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/25 00:46:52 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:18:39 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,5 +246,14 @@ int					is_directory(char *path);
 void				clean_exit(t_container *content, int exit_code);
 void				clean_exit2(t_container *content, int exit_code);
 void				exit_choice(t_container *content);
+char				*expand_and_remove(t_container *content, char *cmd,
+						char **key);
+char				**split_and_expand(t_container *content, char **cmd,
+						int *counter);
+int					is_expanded_key(char *str);
+char				*add_qoutations(char *command, char qoute,
+						t_container *content);
+int					is_in_quotes(char *command, int pos);
+int					get_expanded_len(t_container *content, char *key);
 
 #endif

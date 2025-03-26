@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/25 23:44:44 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:56:37 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	**expand_echo(t_container *content, t_data *current, char **cmd)
 	int		i;
 
 	content->status = content->is_status;
-	current->befor_expanding = expanding_cmds_redirections(content, current->befor_expanding, NULL, 2);
+	current->befor_expanding = expanding_cmds_redirections(content, \
+	current->befor_expanding, NULL, 2);
 	content->status = 0;
 	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, \
 	content);

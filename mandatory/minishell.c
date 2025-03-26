@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 00:20:16 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/25 23:22:17 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:24:03 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		// if (ac != 1 || !isatty(0))
-		// 	return (1);
+		// 	return (clear_bin(&content.g_env_collector), 1);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ctrl_c);
 		init_content(&content);
