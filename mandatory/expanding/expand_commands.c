@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 03:19:18 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 22:34:12 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/25 01:43:48 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,21 @@ char **cmd_options, t_container *content)
 	return (cmd_options);
 }
 
-void	expanding_cmds_redirections(t_container *content, char **only_command, \
-char **dir_files, int shoud_skeep)
+char	*expanding_cmds_redirections(t_container *content, char *only_command, \
+char *dir_files, int shoud_skeep)
 {
 	content->shoud_skeep = shoud_skeep;
-	if (only_command && *only_command)
+	if (only_command)
 	{
 		content->flag = 2;
-		*only_command = check_env_var(content, *only_command);
+		return (check_env_var(content, only_command));
 	}
-	if (dir_files && *dir_files)
+	if (dir_files)
 	{
 		content->flag = 1;
-		*dir_files = check_env_var(content, *dir_files);
+		return (check_env_var(content, dir_files));
 	}
+	return (NULL);
 }
 
 int	pair_check_cases(t_container *content, t_env *pair, char *key, \

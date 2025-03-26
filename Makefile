@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+         #
+#    By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 00:40:03 by kben-tou          #+#    #+#              #
-#    Updated: 2025/03/25 12:55:01 by sait-nac         ###   ########.fr        #
+#    Updated: 2025/03/26 17:30:48 by kben-tou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,20 +45,17 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@ -MMD
+	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L ${RLLIB1} -lreadline
 
 clean:
 	rm -rf $(OBJS)
-	rm -rf $(OBJS:.o=.d) 
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
--include $(OBJS:.o=.d)
 
 .PHONY: all clean fclean re

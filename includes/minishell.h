@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 23:55:06 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/26 01:47:02 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 18:02:37 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,8 @@ char				**normal_ft_split(char const *s, char c, t_gc **g_collector,
 char				*expand_here_doc_lines(t_container *content, char *command);
 char				**prepare_commands(char **only_command, char *old_cmd,
 						char **cmd_options, t_container *content);
-void				expanding_cmds_redirections(t_container *content,
-						char **only_command, char **dir_files, int shoud_skeep);
+char				*expanding_cmds_redirections(t_container *content,
+						char *only_command, char *dir_files, int shoud_skeep);
 int					token_checker(t_container *content);
 int					check_is_last_redirection(t_token *iter,
 						t_container *content);
@@ -247,5 +247,14 @@ void				clean_exit(t_container *content, int exit_code);
 void				clean_exit2(t_container *content, int exit_code);
 void				exit_choice(t_container *content);
 void				get_pwd_part3(t_container *content, t_env **env_list);
+char				*expand_and_remove(t_container *content, char *cmd,
+						char **key);
+char				**split_and_expand(t_container *content, char **cmd,
+						int *counter);
+int					is_expanded_key(char *str);
+char				*add_qoutations(char *command, char qoute,
+						t_container *content);
+int					is_in_quotes(char *command, int pos);
+int					get_expanded_len(t_container *content, char *key);
 
 #endif

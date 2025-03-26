@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:42:51 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 10:19:13 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:57:16 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,69 @@ void	print_env_list(t_container *content, t_data *list)
 	}
 }
 
-void	handle_export(t_data *current, t_container *content)
+int	get_expanded_len(t_container *content, char *key)
 {
-	int	i;
+	char	**hold;
+	int		j;
+
+	j = 0;
+	hold = normal_ft_split(key, ' ', &content->g_collector, content);
+	if (hold)
+	{
+		while (hold[j])
+			j++;
+	}
+	return (j);
+}
+
+char	**fill_and_set_value(char **res, t_container *content, char **cmd, \
+int *counter)
+{
+	int		i;
+	int		j;
+	char	*key;
+	char	**hold;
 
 	i = 0;
+	while (cmd[i] != NULL)
+	{
+		cmd[i] = expand_and_remove(content, cmd[i], &key);
+		if (cmd[i] && ((cmd[i][get_char_index(cmd[i], '=')] != '=' && content-> \
+			flag == 5) || (content->flag == 5 && is_expanded_key(key))))
+		{
+			hold = normal_ft_split(cmd[i], ' ', &content->g_collector, content);
+			if (hold)
+			{
+				j = 0;
+				while (hold[j] != NULL)
+					res[(*counter)++] = hold[j++];
+			}
+			i++;
+		}
+		else
+			res[(*counter)++] = cmd[i++];
+	}
+	return (res);
+}
+
+void	handle_export(t_data *current, t_container *content)
+{
+	int		i;
+	int		counter;
+	char	**cmd;
+	char	**res;
+
+	counter = 0;
+	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, \
+		content);
+	res = split_and_expand(content, cmd, &counter);
+	counter = 0;
+	res = fill_and_set_value(res, content, cmd, &counter);
+	res[counter] = NULL;
+	current->cmds = res;
+	i = 0;
+	if (!current->cmds)
+		return ;
 	while (current->cmds[i])
 		i++;
 	if (i == 1)

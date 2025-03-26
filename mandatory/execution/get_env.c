@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:15:28 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/26 01:45:24 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:57:08 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,6 @@ static char	**ft_split_equal_to(const char *s, t_container *content)
 
 static void	get_pwd_part2(t_env **env_list, t_container *content, char *pwd)
 {
-	char	*path;
-
-	path = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
-	if (check_if_there("PATH", env_list) != NULL)
-		check_if_there("PATH", env_list)->value = ft_strdup(path,
-			&content->g_env_collector, content);
-	else
-		lstadd_back_env(env_list, lstnew_env("PATH", path, content, 0));
 	if (check_if_there("PWD", env_list) != NULL)
 		check_if_there("PWD", env_list)->value = ft_strdup(pwd,
 			&content->g_env_collector, content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 00:20:16 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/26 01:06:11 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 18:02:21 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **env)
 	t_container	content;
 
 	(void)av;
+	(void)ac;
 	tcgetattr(STDERR_FILENO, &content.termios_value);
 	content.g_env_collector = NULL;
 	content.g_collector = NULL;
@@ -73,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		if (ac != 1 || !isatty(0))
-			return (1);
+			return (clear_bin(&content.g_env_collector), 1);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ctrl_c);
 		init_content(&content);

@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:03:03 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 17:34:53 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/24 21:40:57 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char qoute)
 	if (content->flag == 1 && command[vars->i] == '<' && \
 	command[vars->i + 1] == '<' && !vars->is_in)
 		vars->here = 1;
-	if (content->shoud_skeep && (((command[vars->i] == '"' || \
+	if (content->shoud_skeep == 1 && (((command[vars->i] == '"' || \
 	command[vars->i] == '\'') && \
 	qoute == command[vars->i] && vars->is_in) || ((command[vars->i] == '"' || \
 	command[vars->i] == '\'') && !vars->is_in)))

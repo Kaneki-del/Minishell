@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:53:15 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/22 23:17:04 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:56:37 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 char	**expand_echo(t_container *content, t_data *current, char **cmd)
 {
-	char	*old_cmd;
 	int		i;
 
-	old_cmd = ft_strdup(current->befor_expanding, &content->g_collector, \
-	content);
-	if (!old_cmd)
-		return (NULL);
 	content->status = content->is_status;
-	expanding_cmds_redirections(content, &current->befor_expanding, NULL, 0);
+	current->befor_expanding = expanding_cmds_redirections(content, \
+	current->befor_expanding, NULL, 2);
 	content->status = 0;
 	cmd = ft_split(current->befor_expanding, ' ', &content->g_collector, \
 	content);
@@ -31,8 +27,7 @@ char	**expand_echo(t_container *content, t_data *current, char **cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		if (ft_strchr(old_cmd, '"') || ft_strchr(old_cmd, '\''))
-			cmd[i] = remove_quotes(cmd[i], &content->g_collector, content);
+		cmd[i] = remove_quotes(cmd[i], &content->g_collector, content);
 		i++;
 	}
 	return (cmd);
