@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 23:55:06 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/26 18:02:37 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:33:32 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ int					her_doc(char *limiter, t_container *content);
 char				**normal_ft_split(char const *s, char c, t_gc **g_collector,
 						t_container *content);
 char				*expand_here_doc_lines(t_container *content, char *command);
-char				**prepare_commands(char **only_command, char *old_cmd,
+char				**prepare_commands(char **only_command,
 						char **cmd_options, t_container *content);
 char				*expanding_cmds_redirections(t_container *content,
 						char *only_command, char *dir_files, int shoud_skeep);

@@ -3,82 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   expand_commands.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 03:19:18 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/25 01:43:48 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:32:54 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	**export_cases(char **only_command, char **cmd_options, \
-t_container *content)
-{
-	if (cmd_options[1] && cmd_options[1][get_char_index(cmd_options[1], \
-	'=') + 1] == '"' && cmd_options[1][ft_strlen(cmd_options[1]) - 1] == '"')
-		*only_command = remove_quotes(*only_command, &content->g_collector, \
-		content);
-	cmd_options = ft_split(*only_command, ' ', &content->g_collector, content);
-	if (cmd_options[1])
-	{
-		cmd_options[1] = ft_strdup(*only_command + 7, &content->g_collector, \
-		content);
-		cmd_options[2] = NULL;
-	}
-	return (cmd_options);
-}
-
-char	**prepare_export_command(char **only_command, char **cmd_options, \
-t_container *content)
-{
-	if (ft_strlen_2d(cmd_options) < 3)
-	{
-		if (cmd_options && cmd_options[1] && cmd_options[1][0] == '$')
-			cmd_options = normal_ft_split(*only_command, ' ', \
-			&content->g_collector, content);
-		else
-		{
-			if (ft_strcmp(cmd_options[0], "export") == 0)
-				cmd_options = export_cases(only_command, cmd_options, content);
-			else
-			{
-				cmd_options = ft_split(*only_command, ' ', \
-				&content->g_collector, content);
-				cmd_options = prepare_export_command(only_command, \
-				cmd_options, content);
-			}
-		}
-	}
-	else
-		cmd_options = normal_ft_split(*only_command, ' ', \
-		&content->g_collector, content);
-	return (cmd_options);
-}
-
-char	**prepare_commands(char **only_command, char *old_cmd, \
+char	**prepare_commands(char **only_command, \
 char **cmd_options, t_container *content)
 {
 	if (!only_command || !*only_command)
 		return (NULL);
-	if (*only_command && ft_strncmp(*only_command, "export ", 7) == 0 && \
-	content->flag == 5)
-	{
-		cmd_options = ft_split(old_cmd, ' ', &content->g_collector, content);
-		if (!cmd_options || !cmd_options[0])
-			return (NULL);
-		cmd_options = \
-		prepare_export_command(only_command, cmd_options, content);
-	}
+	if (content->flag == 5)
+		cmd_options = ft_split(*only_command, ' ', &content->g_collector, \
+		content);
 	else
-	{
-		if (content->flag == 5)
-			cmd_options = ft_split(*only_command, ' ', &content->g_collector, \
-			content);
-		else
-			cmd_options = filter_all(ft_split(*only_command, ' ', \
-			&content->g_collector, content), &content->g_collector, content);
-	}
+		cmd_options = filter_all(ft_split(*only_command, ' ', \
+		&content->g_collector, content), &content->g_collector, content);
 	return (cmd_options);
 }
 

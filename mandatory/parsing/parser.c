@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:51:47 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/26 22:50:30 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:36:11 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ int	parser(t_container *content)
 		dir_files = expanding_cmds_redirections(content, NULL, dir_files, 0);
 		if (content->flag == 0)
 			return (0);
-		cmd_options = prepare_commands(&on_cmd, \
-		old_command, cmd_options, content);
+		cmd_options = prepare_commands(&on_cmd, cmd_options, content);
 		add_data_back(&content->data, new_data_node(old_command, cmd_options, \
 		filterd(ft_split(dir_files, ' ', &content->g_collector, content), \
 		&content->g_collector, content), content));
