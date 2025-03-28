@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:45:04 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 11:39:14 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:31:38 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*join_chdir(char *currpwd, char *path, t_container *content)
 {
 	if (!content->env_list || !currpwd || !path || !content)
 		return (NULL);
-	ft_putstr_fd("cd: error retrieving current directory: ", 2);
+	ft_putstr_fd(": error retrieving current directory: ", 2);
 	ft_putstr_fd("getcwd: cannot access ", 2);
 	ft_putstr_fd("parent directories: No such file or directory\n", 2);
 	if (currpwd[ft_strlen(currpwd) - 1] != '/')
@@ -37,7 +37,9 @@ static void	update_pwd(t_container *content, char *new_path)
 		if (check_if_there("CPWD", &content->env_list) != NULL)
 			current_pwd = check_if_there("CPWD", &content->env_list)->value;
 		current_pwd = join_chdir(current_pwd, new_path, content);
+		update_original_pwd(content, current_pwd);
 	}
+	else
 	{
 		update_original_pwd(content, current_pwd);
 		free(current_pwd);

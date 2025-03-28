@@ -6,7 +6,7 @@
 #    By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 00:40:03 by kben-tou          #+#    #+#              #
-#    Updated: 2025/03/23 11:08:19 by sait-nac         ###   ########.fr        #
+#    Updated: 2025/03/27 10:43:50 by sait-nac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ P_SRC = $(addprefix $(PARSING_DIR), check_echo_option.c find_data.c parser.c qou
 
 SRCS = $(SRC) $(B_SRC) $(ET_SRC) $(ED_SRC) $(P_SRC) $(UT_SRC)
 
-CFLAGS =  -Wall -Wextra -Werror -fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror
 
 RLLIB1 = $(shell brew --prefix readline)/lib
 RLINC1 = $(shell brew --prefix readline)/include
@@ -45,20 +45,17 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@ -MMD
+	$(CC) $(CFLAGS) -I ${RLINC1} -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L ${RLLIB1} -lreadline
 
 clean:
 	rm -rf $(OBJS)
-	rm -rf $(OBJS:.o=.d) 
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
--include $(OBJS:.o=.d)
 
 .PHONY: all clean fclean re

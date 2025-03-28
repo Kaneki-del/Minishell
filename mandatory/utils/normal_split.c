@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 21:54:35 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 23:51:52 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:30:40 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,6 @@ static	size_t	w_count(const char *s, char c)
 		i++;
 	}
 	return (count);
-}
-
-static void	mem_free(char **p)
-{
-	size_t	i;
-
-	i = 0;
-	while (p[i])
-	{
-		free(p[i]);
-		i++;
-	}
-	free(p);
 }
 
 static char	*fill(char *p, const char *s, size_t i, size_t len_chrs)
@@ -100,10 +87,7 @@ t_container *content)
 	{
 		p[j] = store_next_word(s, &i, c, content);
 		if (!(p[j]))
-		{
-			mem_free(p);
 			return (NULL);
-		}
 		j++;
 	}
 	p[j] = NULL;

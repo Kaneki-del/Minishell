@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:21 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/21 01:30:19 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:12:07 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,5 @@ void	execute_package(t_container *content)
 	}
 	else if (list_size >= 2)
 		run_multiple(content);
-	clean_fds(content->data);
 	tcsetattr(STDERR_FILENO, TCSANOW, &content->termios_value);
 }

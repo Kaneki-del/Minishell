@@ -6,7 +6,7 @@
 /*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:38:51 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/22 17:40:23 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:18:23 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,59 @@ char	*expand_here_doc_lines(t_container *content, char *command)
 		i++;
 	}
 	return (new_command);
+}
+
+char	*expand_and_remove(t_container *content, char *cmd, char **key)
+{
+	*key = cmd;
+	cmd = expanding_cmds_redirections(content, cmd, NULL, 3);
+	if (cmd && cmd[0] == '\0')
+		cmd = NULL;
+	cmd = remove_quotes(cmd, &content->g_collector, content);
+	return (cmd);
+}
+
+char	**split_and_expand(t_container *content, char **cmd, int *counter)
+{
+	char	*key;
+	char	**res;
+	int		i;
+
+	i = 0;
+	*counter = 0;
+	while (cmd[i])
+	{
+		key = expanding_cmds_redirections(content, cmd[i], NULL, 3);
+		if (key && key[0] == '\0')
+			key = NULL;
+		key = remove_quotes(key, &content->g_collector, content);
+		if (key && ((key[get_char_index(key, '=')] != '=' && content-> \
+			flag == 5) || (content->flag == 5 && is_expanded_key(cmd[i]))))
+			(*counter) += get_expanded_len(content, key);
+		else
+			(*counter)++;
+		i++;
+	}
+	res = gc((sizeof(char *) * (*counter + 1)), &content->g_collector, content);
+	return (res);
+}
+
+int	is_expanded_key(char *str)
+{
+	int	i;
+	int	has_dollar;
+
+	i = 0;
+	has_dollar = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$')
+			has_dollar = 1;
+		if (str[i] == '=')
+			return (has_dollar);
+		i++;
+	}
+	return (0);
 }

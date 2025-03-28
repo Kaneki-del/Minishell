@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 00:20:16 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/23 10:31:14 by kben-tou         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:25:47 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ static void	init_content(t_container *content)
 	content->is_status = 0;
 	content->new_command = NULL;
 	content->if_pipe = 0;
+}
+
+void	clean_exec(t_container *content)
+{
+	clean_fds(content->data);
+	free(content->line);
+	clear_bin(&content->g_collector);
 }
 
 static int	repeat_line(t_container *content)
@@ -46,8 +53,7 @@ static int	repeat_line(t_container *content)
 		return (1);
 	}
 	execute_package(content);
-	free(content->line);
-	clear_bin(&content->g_collector);
+	clean_exec(content);
 	content->g_collector = NULL;
 	content->line = NULL;
 	return (0);
@@ -67,7 +73,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		if (ac != 1 || !isatty(0))
-			return (1);
+			return (clear_bin(&content.g_env_collector), 1);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, ctrl_c);
 		init_content(&content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kben-tou <kben-tou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:35:12 by kben-tou          #+#    #+#             */
-/*   Updated: 2025/03/23 11:38:03 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:20:38 by kben-tou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,48 @@ int	get_char_index(char *s, char c)
 	return (store);
 }
 
-char	*remove_quotes(char *command, t_gc **g_collector, t_container *content)
+char	*ft_strtrim(char *s1, char *set, t_container *content)
 {
+	size_t	s;
+	size_t	e;
+	size_t	i;
 	char	*res;
-	int		i;
-	int		j;
-	char	current_quote;
 
-	current_quote = '\0';
-	j = 0;
+	s = 0;
+	e = 0;
 	i = 0;
-	if (!command)
+	if (!s1)
 		return (NULL);
-	res = gc(ft_strlen(command) + 1, g_collector, content);
-	while (command[i])
-	{
-		if (current_quote == '\0' && (command[i] == '\'' || command[i] == '"'))
-			current_quote = command[i++];
-		else if (current_quote && command[i] == current_quote)
-		{
-			current_quote = '\0';
-			i++;
-		}
-		else
-			res[j++] = command[i++];
-	}
-	res[j] = '\0';
+	if (!set)
+		return (ft_strdup(s1, &content->g_collector, content));
+	while (s1[s] && ft_strchr(set, s1[s]))
+		s++;
+	e = ft_strlen(s1);
+	while (e > s && ft_strchr(set, s1[e - 1]))
+		e--;
+	res = gc((e - s) + 1, &content->g_collector, content);
+	if (!res)
+		return (NULL);
+	while (s < e)
+		res[i++] = s1[s++];
+	res[i] = '\0';
 	return (res);
+}
+
+char	*add_or_trim(char *value, t_container *content, int *i, char *command)
+{
+	char	qoute;
+
+	if (ft_strchr(value, '"'))
+		qoute = '\'';
+	else
+		qoute = '"';
+	if (!is_in_quotes(command, *i) && content->shoud_skeep == 3)
+		return (add_qoutations(value, qoute, content));
+	else if (!is_in_quotes(command, *i))
+		return (add_qoutations(ft_strtrim(value, " \t", \
+			content), qoute, content));
+	return (ft_strtrim(value, " \t", content));
 }
 
 char	*expand(t_container *content, char *command, int *i, int is_here_doc)
@@ -97,7 +112,7 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 	key = NULL;
 	start = (*i);
 	while (command[start] && (ft_isalnum(command[start]) \
-	|| command[start] == '_'))
+		|| command[start] == '_'))
 		start++;
 	key = gc(start - (*i) + 1, &content->g_collector, content);
 	ft_strlcpy(key, &command[(*i)], start - (*i) + 1);
@@ -108,5 +123,8 @@ char	*expand(t_container *content, char *command, int *i, int is_here_doc)
 	content->flag = 5;
 	if (!pair->value)
 		return (NULL);
+	if (!is_here_doc && (content->shoud_skeep == 2 || content->shoud_skeep \
+	== 3) && (ft_strchr(pair->value, '\'') || ft_strchr(pair->value, '"')))
+		return (add_or_trim(pair->value, content, i, command));
 	return (pair->value);
 }

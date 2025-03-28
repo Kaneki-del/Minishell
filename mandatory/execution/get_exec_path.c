@@ -6,7 +6,7 @@
 /*   By: sait-nac <sait-nac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:39:16 by sait-nac          #+#    #+#             */
-/*   Updated: 2025/03/23 01:24:09 by sait-nac         ###   ########.fr       */
+/*   Updated: 2025/03/26 01:06:36 by sait-nac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*check_cmd_path(char **path_list, char *cmd_name,
 	int		i;
 	char	*full_cmd_path;
 
+	if (!path_list || !path_list[0])
+		return (NULL);
 	i = 0;
 	while (path_list[i])
 	{
@@ -56,6 +58,12 @@ static char	*try_direct_access(t_data *current, t_container *content)
 			cmd_v = ft_strdup(current->cmds[0], &content->g_collector, content);
 			return (cmd_v);
 		}
+		else if (access(current->cmds[0], X_OK) != 0)
+		{
+			ft_error_exec_two("mshell: ", current->cmds[0],
+				": Permission denied", 2);
+			exit(126);
+		}
 	}
 	return (NULL);
 }
@@ -82,7 +90,7 @@ char	*find_executable_path(t_data *current, t_container *content)
 	path = NULL;
 	if (ft_strchr(current->cmds[0], '/') != NULL)
 		cmd_v = executable(current, content);
-	else
+	else if (content->env_list)
 		path = get_path(content);
 	if (!path || !path[0])
 	{
